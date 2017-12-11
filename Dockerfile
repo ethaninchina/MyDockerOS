@@ -38,7 +38,6 @@ RUN echo PermitRootLogin  yes >> /etc/ssh/sshd_config\
     && ssh-keygen -t rsa -f /etc/ssh/ssh_host_ecdsa_key\
     && ssh-keygen -t rsa -f /etc/ssh/ssh_host_ed25519_key
 
-
 #安装php
 RUN yum install epel-release -y && yum update -y\
     && yum -y install pcre pcre-devel zlib zlib-devel openssl openssl-devel libxml2 libxml2-devel libjpeg libjpeg-devel libpng libpng-devel curl curl-devel libicu libicu-devel libmcrypt  libmcrypt-devel freetype freetype-devel libmcrypt libmcrypt-devel autoconf gcc-c++
@@ -56,7 +55,6 @@ RUN cp php-fpm.conf.default php-fpm.conf \
     && cp ./php-fpm.d/www.conf.default ./php-fpm.d/www.conf \
     && sed -i "s/export PATH/PATH=\/usr\/local\/php\/bin:\$PATH\nexport PATH/" /etc/profile \
     && sed -i "s/export PATH/PATH=\/etc\/init.d:\$PATH\nexport PATH/" /etc/profile
-
 
 #安装nginx/Openresty
 WORKDIR /usr/src
@@ -96,7 +94,6 @@ RUN  mkdir -p -m 777 /tmp/nginx \
      && sed -i "s/# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000/location ~ \.php\$ { \nfastcgi_pass 127.0.0.1:9000;\nfastcgi_index  index.php;\nfastcgi_param  SCRIPT_FILENAME  \$document_root\$fastcgi_script_name;\ninclude fastcgi_params;\n }/" /opt/openresty/nginx/conf/nginx.conf \
      && echo "<?php phpinfo()?>" > /opt/openresty/nginx/html/index.php
 
-
 #安装redis server
 WORKDIR /usr/src
 RUN curl -o redis.tar.gz http://download.redis.io/releases/redis-${REDIS_VER}.tar.gz -L && mkdir redis && tar -xzvf redis.tar.gz -C ./redis --strip-components 1
@@ -131,7 +128,6 @@ RUN /usr/local/php/bin/pecl install redis && echo "extension=redis.so" >> /etc/p
 
 #安装php swoole扩展
 RUN /usr/local/php/bin/pecl install swoole && echo "extension=swoole.so" >> /etc/php/php.ini
-
 
 #安装必要的服务
 RUN yum install vixie-cron crontabs -y \
