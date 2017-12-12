@@ -38,14 +38,13 @@ RUN echo PermitRootLogin  yes >> /etc/ssh/sshd_config\
     && ssh-keygen -t rsa -f /etc/ssh/ssh_host_ecdsa_key\
     && ssh-keygen -t rsa -f /etc/ssh/ssh_host_ed25519_key
 
-
 #安装php
 RUN yum install epel-release -y && yum update -y\
     && yum -y install pcre pcre-devel zlib zlib-devel openssl openssl-devel libxml2 libxml2-devel libjpeg libjpeg-devel libpng libpng-devel curl curl-devel libicu libicu-devel libmcrypt  libmcrypt-devel freetype freetype-devel libmcrypt libmcrypt-devel autoconf gcc-c++
 WORKDIR /usr/src
 RUN curl -o php.tar.gz http://php.net/get/php-${PHP_VER}.tar.gz/from/this/mirror -L && mkdir php && tar -xzvf php.tar.gz -C ./php --strip-components 1
 WORKDIR php
-RUN ./configure --prefix=/usr/local/php --with-config-file-path=/etc/php --enable-soap --enable-mbstring=all --enable-sockets --enable-fpm --with-gd --with-freetype-dir=/usr/include/freetype2/freetype --with-jpeg-dir=/usr/lib64 --with-zlib --with-iconv --enable-libxml --enable-xml  --enable-intl --enable-zip --enable-pcntl --enable-bcmath --enable-maintainer-zts --with-curl --with-mcrypt --with-openssl --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+RUN ./configure --prefix=/usr/local/php --with-config-file-path=/etc/php --enable-soap --enable-mbstring=all --enable-sockets --enable-session --with-gettext --with-xmlrpc --enable-fpm --with-gd --with-freetype-dir=/usr/include/freetype2/freetype --with-jpeg-dir=/usr/lib64 --with-zlib --with-iconv --enable-libxml --enable-xml --enable-intl --enable-zip --enable-inline-optimization --enable-ftp --enable-gd-native-ttf --enable-pcntl --enable-shmop --enable-sysvsem --enable-mbregex --enable-bcmath --enable-maintainer-zts --with-curl --with-mcrypt --with-openssl --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
     && make && make install \
     && mkdir /etc/php \
     && cp /usr/src/php/php.ini-development /etc/php/php.ini \
@@ -57,13 +56,11 @@ RUN cp php-fpm.conf.default php-fpm.conf \
     && sed -i "s/export PATH/PATH=\/usr\/local\/php\/bin:\$PATH\nexport PATH/" /etc/profile \
     && sed -i "s/export PATH/PATH=\/etc\/init.d:\$PATH\nexport PATH/" /etc/profile
 
-
 #安装nginx/Openresty
 WORKDIR /usr/src
 RUN curl -o nginx.tar.gz https://openresty.org/download/openresty-${NGINX_VER}.tar.gz && mkdir nginx && tar -zxvf nginx.tar.gz -C ./nginx --strip-components 1
 WORKDIR nginx
-RUN  mkdir -p -m 777 /tmp/nginx \
-     && ./configure --prefix=/opt/openresty --user=nginx --group=nginx --with-luajit --with-http_iconv_module --with-http_ssl_module --with-http_flv_module --with-http_stub_status_module --with-http_gzip_static_module --http-client-body-temp-path=/tmp/nginx/client/ --http-proxy-temp-path=/tmp/nginx/proxy/ --http-fastcgi-temp-path=/tmp/nginx/fcgi/ --with-pcre --with-http_dav_module \
+RUN ./configure --prefix=/opt/openresty --user=nginx --group=nginx --with-luajit --with-http_iconv_module --with-http_ssl_module --with-http_flv_module --with-http_stub_status_module --with-http_gzip_static_module --with-pcre --with-http_dav_module \
      && make && make install \
      && echo "#!/bin/sh" > /etc/init.d/nginx \
      && echo "#description: Nginx web server." >> /etc/init.d/nginx \
@@ -96,7 +93,6 @@ RUN  mkdir -p -m 777 /tmp/nginx \
      && sed -i "s/# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000/location ~ \.php\$ { \nfastcgi_pass 127.0.0.1:9000;\nfastcgi_index  index.php;\nfastcgi_param  SCRIPT_FILENAME  \$document_root\$fastcgi_script_name;\ninclude fastcgi_params;\n }/" /opt/openresty/nginx/conf/nginx.conf \
      && echo "<?php phpinfo()?>" > /opt/openresty/nginx/html/index.php
 
-
 #安装redis server
 WORKDIR /usr/src
 RUN curl -o redis.tar.gz http://download.redis.io/releases/redis-${REDIS_VER}.tar.gz -L && mkdir redis && tar -xzvf redis.tar.gz -C ./redis --strip-components 1
@@ -124,14 +120,14 @@ RUN make \
          esac" > /etc/init.d/redis \
     && chmod +x /etc/init.d/redis
 
-
 #安装php redis扩展
 RUN /usr/local/php/bin/pecl install redis && echo "extension=redis.so" >> /etc/php/php.ini
-
 
 #安装php swoole扩展
 RUN /usr/local/php/bin/pecl install swoole && echo "extension=swoole.so" >> /etc/php/php.ini
 
+#安装php mongodb扩展
+RUN /usr/local/php/bin/pecl install mongodb && echo "extension=mongodb.so" >> /etc/php/php.ini
 
 #安装必要的服务
 RUN yum install vixie-cron crontabs -y \
@@ -157,6 +153,6 @@ RUN echo [supervisord] > /etc/supervisord.conf \
     && echo [program:crond] >> /etc/supervisord.conf \
     && echo command=/usr/sbin/crond -n >> /etc/supervisord.conf
 
-EXPOSE 80 3306 6379
+EXPOSE 80 443 3306 6379
 
 CMD ["/usr/bin/supervisord"]
