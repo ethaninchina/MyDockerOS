@@ -71,8 +71,7 @@ RUN ./configure --prefix=/opt/openresty --user=nginx --group=nginx --with-luajit
      && sed -i "s/#pid/pid/g" /opt/openresty/nginx/conf/nginx.conf
 
 #安装cron必要的服务
-RUN yum install vixie-cron crontabs -y \
-     && cd /usr/src && /usr/local/php/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && /usr/local/php/bin/php composer-setup.php  --install-dir=/usr/local/bin --filename=composer && rm -rf composer-setup.php && /usr/local/php/bin/php /usr/local/bin/composer config -g repo.packagist composer https://packagist.phpcomposer.com
+RUN yum install vixie-cron crontabs -y
 
 #配置supervisor
 WORKDIR ~/
