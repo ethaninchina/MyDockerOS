@@ -6,8 +6,7 @@ MYLOGIN="mysql -u$MYUSER -p$MYPASS"
 MYDUMP="mysqldump -u$MYUSER -p$MYPASS -B"
 cd $BCK_DIR
 find ./ -mtime +7 -name "*.sql.gz" -exec rm -fr {} \;
-wait
-rm -fr /tmp/sess_*
+
 wait
 
 DATABASE="$($MYLOGIN -e "show databases;"|egrep -vi "Data|_schema|mysql|sys")"
