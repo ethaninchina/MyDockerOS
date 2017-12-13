@@ -153,6 +153,6 @@ RUN echo [supervisord] > /etc/supervisord.conf \
     && echo [program:crond] >> /etc/supervisord.conf \
     && echo command=/usr/sbin/crond -n >> /etc/supervisord.conf
 
-EXPOSE 80 443 3306 6379
+EXPOSE 80 443 6379 22
 
 CMD ["/usr/bin/supervisord"]
