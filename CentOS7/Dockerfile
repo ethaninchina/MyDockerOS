@@ -1,8 +1,6 @@
 FROM centos:latest
 MAINTAINER wyz test@test.com
 
-#SSH root用户密码
-ARG ROOT_PASSWORD=123456
 #php版本,因为php版本间配置文件模板不相同，此处的版本号为大于7.0以上版本
 ARG PHP_VER=7.1.12
 #nginx 版本,此处为 Openresty
@@ -26,17 +24,6 @@ RUN yum install vim wget git net-tools -y
 
 #安装supervisor
 RUN  yum install python-setuptools -y && easy_install supervisor
-
-#安装openssh server，设置root密码为变量ROOT_PASSWORD
-RUN yum install openssh-server -y
-RUN echo PermitRootLogin  yes >> /etc/ssh/sshd_config\
-    && echo PasswordAuthentication yes >> /etc/ssh/sshd_config\
-    && echo RSAAuthentication yes >> etc/ssh/sshd_config\
-    && sed -i "s/UseDNS yes/UseDNS no/" /etc/ssh/sshd_config\
-    && echo "root:$ROOT_PASSWORD" | chpasswd\
-    && ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key\
-    && ssh-keygen -t rsa -f /etc/ssh/ssh_host_ecdsa_key\
-    && ssh-keygen -t rsa -f /etc/ssh/ssh_host_ed25519_key
 
 #安装php
 RUN yum install epel-release -y && yum update -y\
@@ -130,16 +117,12 @@ RUN /usr/local/php/bin/pecl install swoole && echo "extension=swoole.so" >> /etc
 RUN /usr/local/php/bin/pecl install mongodb && echo "extension=mongodb.so" >> /etc/php/php.ini
 
 #安装必要的服务
-RUN yum install vixie-cron crontabs -y \
-     && cd /usr/src && /usr/local/php/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && /usr/local/php/bin/php composer-setup.php  --install-dir=/usr/local/bin --filename=composer && rm -rf composer-setup.php && /usr/local/php/bin/php /usr/local/bin/composer config -g repo.packagist composer https://packagist.phpcomposer.com
+RUN cd /usr/src && /usr/local/php/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && /usr/local/php/bin/php composer-setup.php  --install-dir=/usr/local/bin --filename=composer && rm -rf composer-setup.php && /usr/local/php/bin/php /usr/local/bin/composer config -g repo.packagist composer https://packagist.phpcomposer.com
 
 #配置supervisor
 WORKDIR ~/
 RUN echo [supervisord] > /etc/supervisord.conf \
     && echo nodaemon=true >> /etc/supervisord.conf \
-    \
-    && echo [program:sshd] >> /etc/supervisord.conf \
-    && echo command=/usr/sbin/sshd -D >> /etc/supervisord.conf \
     \
     && echo [program:nginx] >> /etc/supervisord.conf \
     && echo command=/etc/init.d/nginx start >> /etc/supervisord.conf \
@@ -148,10 +131,8 @@ RUN echo [supervisord] > /etc/supervisord.conf \
     && echo command=/etc/init.d/php-fpm start >> /etc/supervisord.conf \
     \
     && echo [program:redis] >> /etc/supervisord.conf \
-    && echo command=/usr/local/redis/bin/redis-server /etc/redis.conf >> /etc/supervisord.conf \
-    \
-    && echo [program:crond] >> /etc/supervisord.conf \
-    && echo command=/usr/sbin/crond -n >> /etc/supervisord.conf
+    && echo command=/usr/local/redis/bin/redis-server /etc/redis.conf >> /etc/supervisord.conf
 
-EXPOSE 22 80 443 6379
+EXPOSE 80 443 6379
+
 CMD ["/usr/bin/supervisord"]
