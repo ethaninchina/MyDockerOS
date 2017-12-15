@@ -8,7 +8,7 @@ ARG NGINX_VER=1.13.6.1
 #redis版本
 ARG REDIS_VER=3.2.9
 #redis密码
-ARG REDIS_PASS=123456
+ARG REDIS_PASS=my123456pass
 
 #服务器基础设置
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -120,7 +120,6 @@ RUN /usr/local/php/bin/pecl install mongodb && echo "extension=mongodb.so" >> /e
 RUN cd /usr/src && /usr/local/php/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && /usr/local/php/bin/php composer-setup.php  --install-dir=/usr/local/bin --filename=composer && rm -rf composer-setup.php && /usr/local/php/bin/php /usr/local/bin/composer config -g repo.packagist composer https://packagist.phpcomposer.com
 
 #配置supervisor
-WORKDIR ~/
 RUN echo [supervisord] > /etc/supervisord.conf \
     && echo nodaemon=true >> /etc/supervisord.conf \
     \
