@@ -1,0 +1,54 @@
+version: '2'
+    #定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql
+services:
+        #服务名称
+        lrnp:
+            #依赖mysql服务，意味着在启动openresty+php7之前先启动mysql服务容器
+            depends_on:
+                - mysql
+            #nginx镜像的路径
+            #image: docker.io/wuyuzai/mydockeros:lrnp
+            #aliyun镜像地址
+            image: registry.cn-hangzhou.aliyuncs.com/webss/lrnp
+            #这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
+            volumes:
+                - /root/web:/opt/openresty/nginx/html
+                - /root/logs/nginx_log:/opt/openresty/nginx/logs
+                - /root/logs/php_log:/tmp/phplogs
+                - /root/php/php.ini:/etc/php/php.ini
+                - /root/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
+                - /root/nginx-conf:/opt/openresty/nginx/conf
+            #nginx意外退出时自动重启
+            restart: always
+            #网络模式HOST
+            network_mode: host
+            #容器名称
+            container_name: lrnp7   
+        #服务名称
+        mysql:
+            #image: docker.io/mysql:5.7
+            #阿里云镜像地址
+            image: registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7
+            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。这里为13246。
+            environment:
+                MYSQL_ROOT_PASSWORD: 123456
+            #映射文件路径
+            volumes:
+                - /root/mysqld/config:/etc/mysql
+                - /root/mysqld/mysqldata:/var/lib/mysql
+                - /root/logs/mysql_log:/var/log/mysql
+            restart: always
+            #容器名称
+            container_name: mysql57
+        #docker服务
+        shadowsocks:
+            image: docker.io/vimagick/shadowsocks-libev
+            #网络模式HOST
+            network_mode: host
+            environment:
+                SERVER_ADDR: 127.0.0.1
+                PASSWORD: 123456
+                SERVER_PORT: 7879
+            restart: always
+            #容器名称
+            container_name: shadowsocks
