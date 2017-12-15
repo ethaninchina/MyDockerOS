@@ -8,8 +8,8 @@ services:
                 - mysql
             # nginx镜像的路径
             image: docker.io/wuyuzai/mydockeros:lrnp
-	    #aliyun镜像地址
-	    #image: registry.cn-hangzhou.aliyuncs.com/webss/lrnp
+            #aliyun镜像地址
+            #image: registry.cn-hangzhou.aliyuncs.com/webss/lrnp
             # 这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
             volumes:
                 - /root/web:/opt/openresty/nginx/html
@@ -27,8 +27,8 @@ services:
         #服务名称
         mysql:
             image: docker.io/mysql:5.7
-	    #阿里云镜像地址
-	    #image: registry.cn-hangzhou.aliyuncs.com/webss/mysql
+            #阿里云镜像地址
+            #image: registry.cn-hangzhou.aliyuncs.com/webss/mysql
             # 设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。这里为13246。
             environment:
                 MYSQL_ROOT_PASSWORD: 123456
