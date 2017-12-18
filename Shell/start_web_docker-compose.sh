@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+#OS: CentOS7x64
 if [ "$(id -u)" -ne "0" ];then
 echo "非root用户无权限执行"
 exit 1
@@ -21,7 +22,7 @@ setenforce 0
 #安装必要工具
 yum install -y zip unzip lrzsz wget curl
 
-#绑定SS端口为eth0的IP
+#绑定SS服务IP为eth0的IP
 ss_ip=$(ifconfig eth0|grep -w inet|awk '{print $2}')
 
 #创建docker相关文件路径,下载配置文件
@@ -29,7 +30,6 @@ mkdir /root/docker
 cd /root/docker
 wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdocker/wwwdocker.tar.gz
 tar zxvf wwwdocker.tar.gz
-
 #删除压缩包
 rm -fr /root/docker/wwwdocker.tar.gz
 
@@ -135,7 +135,7 @@ services:
 EOF
 
 #添加开机启动docker服务
-echo "cd /root/docker/ && /usr/local/bin/docker-compose up -d" >> /etc/rc.local
+echo "/usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d" >> /etc/rc.local
 
 #关闭系统自带防火墙 firewall
 systemctl stop firewalld.service
@@ -187,7 +187,7 @@ chattr +i /root/docker/docker-compose.yml
 chmod 777 /root/docker/logs -R
 
 #首次启动docker-compose,查看docker服务
-cd /root/docker/ && docker-compose up -d
+/usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d
 docker-compose ps
 
 #结束语
