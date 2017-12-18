@@ -1,0 +1,90 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Nginx后端健康检查</title>
+<body bgcolor="	#FFFFFF">
+<!--<center><font color=red face="隶书" size=6>Nginx后端健康检查</font></center> -->
+<center><font color="red" face="隶书" size="6">Nginx后端健康检查</font></center>  
+<!-- 倒计时代码 -->
+<script language="javascript" type="text/JavaScript">
+function Counter(nMax,nInterval)
+{
+this.maxTime=nMax;
+this.interval=nInterval;
+this.objId="timer";
+this.obj=null;
+this.num=this.maxTime;
+this.timer=null;
+this.start=function()
+{ 
+this.obj=document.getElementById(this.objId);
+if(this.num>0) setTimeout(this.run,this.interval*1000);
+};
+this.run=function()
+{
+if(myCounter.num>0) 
+{
+myCounter.num--;
+myCounter.obj.innerHTML=myCounter.num;
+myCounter.timer=setTimeout(myCounter.run,myCounter.interval*1000);
+}
+else clearTimeout(myCounter.timer);
+};
+this.show=function()
+{
+document.write("<span id="+this.objId+">"+this.num+"</span>");
+this.obj=document.getElementById(this.objId);
+//alert(this.obj.innerHTML);
+}
+}
+</script>
+</head>
+ 
+<body onload="myCounter.start();">
+ 
+<script language="JavaScript" type="text/JavaScript">
+var myCounter=new Counter(10,1);   <!--10秒刷新一次-->
+</script>
+ 
+<h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp刷新倒计时
+<script language="JavaScript" type="text/JavaScript">
+myCounter.show();
+</script>
+秒钟!</p></h2>
+<!-- 倒计时代码结束-->
+
+
+<style type="text/css">
+<!--
+body {  font-family: "宋体"; font-size: 9pt; margin-top: 0px; margin-left: 4px; margin-right: 0px}
+A { COLOR: black; FONT-SIZE: 13px; FONT-WEIGHT: 400; TEXT-DECORATION: none }
+ A:hover { COLOR: white; FONT-SIZE: 13px; FONT-WEIGHT: 400; TEXT-DECORATION: underline }
+a:active     { font: 9pt "宋体"; cursor: hand; color: #000000 }
+--></style>
+
+
+</head>
+
+
+<h1><div style="float:left"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备：10.0.0.2  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设备：10.0.0.3 </div></h1>
+
+<br>
+<meta http-equiv="refresh" content="10"> <!--10秒刷新一次-->
+
+<object type="text/x-scriptlet" width="49%;" algin="left" height="100%" data="http://10.0.0.2:666/upstreamstatus"> </object>  <!--负载调度机器: 10.0.0.2-->
+
+<object type="text/x-scriptlet" width="49%;" algin="right" height="100%" data="http://10.0.0.3:666/upstreamstatus"> </object>  <!--负载调度机器: 10.0.0.3-->
+<br>
+
+
+<center>
+<script language="JavaScript">
+<!-- hide
+function goHist(a)
+{
+   history.go(a);
+}
+//-->
+</script>
+<br>
+
+</center></body></html>
