@@ -6,87 +6,35 @@ fi
 
 #全局参数 
 # ****** 自定义参数 start ******
-#mysql变量
+#mysql密码
 mysql_pass=123456
-#shadowsocks变量
-ss_ip=$(ifconfig eth0|grep inet|awk '{print $2}')
+#自定义ss server端口，ss密码
 ss_port=7879
 ss_pass=Wn#98gsf#
 # ****** 自定义参数 end ******
 
-# ************** 下面我程序自动执行，
+# ************** 下面我程序自动执行 ************** 
 #关闭selinux
 sed -i s/=enforcing/=disabled/g /etc/selinux/config
 setenforce 0
 
-#内核优化
-cat>/etc/sysctl.conf<<EOF
-#CTCDN系统优化参数
-#系统所有进程一共可以打开的文件数量 
-fs.file-max = 10240000
-#关闭ipv6
-#net.ipv6.conf.all.disable_ipv6 = 1
-#net.ipv6.conf.default.disable_ipv6 = 1
-# 避免放大攻击
-net.ipv4.icmp_echo_ignore_broadcasts = 1
-# 开启恶意icmp错误消息保护
-net.ipv4.icmp_ignore_bogus_error_responses = 1
-#开启路由转发
-net.ipv4.ip_forward = 1
-net.ipv4.conf.all.send_redirects = 1
-net.ipv4.conf.default.send_redirects = 1
-#开启反向路径过滤
-net.ipv4.conf.all.rp_filter = 1
-net.ipv4.conf.default.rp_filter = 1
-#处理无源路由的包
-net.ipv4.conf.all.accept_source_route = 0
-net.ipv4.conf.default.accept_source_route = 0
-#关闭sysrq功能
-kernel.sysrq = 0
-#core文件名中添加pid作为扩展名
-kernel.core_uses_pid = 1
-# 开启SYN洪水攻击保护
-net.ipv4.tcp_syncookies = 1
-#修改消息队列长度
-kernel.msgmnb = 65536
-kernel.msgmax = 65536
-#设置最大内存共享段大小bytes
-kernel.shmmax = 68719476736
-kernel.shmall = 4294967296
-#timewait的数量，默认180000
-net.ipv4.tcp_max_tw_buckets = 6000
-net.ipv4.tcp_sack = 1
-net.ipv4.tcp_window_scaling = 1
-net.ipv4.tcp_rmem = 4096  87380   4194304
-net.ipv4.tcp_wmem = 4096  16384   4194304
-net.core.wmem_default = 8388608
-net.core.rmem_default = 8388608
-net.core.rmem_max = 16777216
-net.core.wmem_max = 16777216
-#每个网络接口接收数据包的速率比内核处理这些包的速率快时，允许送到队列的数据包的最大数目
-net.core.netdev_max_backlog = 262144
-#限制仅仅是为了防止简单的DoS 攻击
-net.ipv4.tcp_max_orphans = 3276800
-#未收到客户端确认信息的连接请求的最大值
-net.ipv4.tcp_max_syn_backlog = 262144
-net.ipv4.tcp_timestamps = 0
-#内核放弃建立连接之前发送SYNACK 包的数量
-net.ipv4.tcp_synack_retries = 1
-#内核放弃建立连接之前发送SYN 包的数量
-net.ipv4.tcp_syn_retries = 1
-#启用timewait 快速回收
-net.ipv4.tcp_tw_recycle = 1
-#开启重用。允许将TIME-WAIT sockets 重新用于新的TCP 连接
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_mem = 94500000 915000000 927000000
-net.ipv4.tcp_fin_timeout = 1
-#当keepalive 起用的时候，TCP 发送keepalive 消息的频度。缺省是2 小时
-net.ipv4.tcp_keepalive_time = 30
-#允许系统打开的端口范围
-net.ipv4.ip_local_port_range = 1024    65000
-EOF
+#安装必要工具
+yum install -y zip unzip lrzsz wget curl
 
-#内核修改即时生效
+#绑定SS端口为eth0的IP
+ss_ip=$(ifconfig eth0|grep -w inet|awk '{print $2}')
+
+#创建docker相关文件路径,下载配置文件
+mkdir /root/docker
+cd /root/docker
+wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdocker/wwwdocker.tar.gz
+tar zxvf wwwdocker.tar.gz
+
+#删除压缩包
+rm -fr /root/docker/wwwdocker.tar.gz
+
+#内核优化,内核修改即时生效
+curl -o /etc/sysctl.conf https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/sysctl.conf
 sysctl -p
 
 #配置ulimit
@@ -94,7 +42,6 @@ echo -e "
 * soft nofile 102400
 * hard nofile 102400
 " >>/etc/security/limits.conf
-
 echo "ulimit -SHn 102400" >>/etc/profile
 
 #安装docker
@@ -104,16 +51,35 @@ yum install docker -y
 systemctl enable docker.service
 systemctl start docker.service
 
-#拉取docker项目
-docker pull registry.cn-hangzhou.aliyuncs.com/webss/lrnp
-docker pull registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7
-docker pull docker.io/vimagick/shadowsocks-libev
-
 #安装docker-compose编排服务
 curl -L https://github.com/docker/compose/releases/download/1.18.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+if [ $? -ne  0 ]
+    then
+    echo "docker-compose 下载安装失败"
+    exit 1
+fi
+
+#拉取docker项目,根据服务器IP判断选择镜像地址
+sourceIP=$(curl -sk http://www.3322.org/dyndns/getip)
+IPgsd=$(curl -sk http://ip.taobao.com/service/getIpInfo.php?ip=$sourceIP|cut -d "\"" -f 12)
+#如果IP为中国，则使用阿里云镜像,反之则为docker.io官方
+if [[ "$IPgsd" -eq "CN" ]]; then
+    lrnp_version="registry.cn-hangzhou.aliyuncs.com/webss/lrnp"
+    mysql_version="registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7"
+    shadowsocks_version="docker.io/vimagick/shadowsocks-libev"
+else
+    lrnp_version="docker.io/wuyuzai/mydockeros:lrnp"
+    mysql_version="docker.io/mysql:5.7"
+    shadowsocks_version="docker.io/vimagick/shadowsocks-libev"
+fi
+
+#拉取docker文件文件
+docker pull $lrnp_version
+docker pull $mysql_version
+docker pull $shadowsocks_version
 
 #配置docker-compose.yml 文件
-cat>/root/docker-compose.yml<<EOF
+cat>/root/docker/docker-compose.yml<<EOF
 version: '2'
     #定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql(mysql5.7)
 services:
@@ -123,19 +89,17 @@ services:
             depends_on:
                 - mysql
             #nginx镜像的路径
-            #image: docker.io/wuyuzai/mydockeros:lrnp
-            #aliyun镜像地址
-            image: registry.cn-hangzhou.aliyuncs.com/webss/lrnp
+            image: $lrnp_version
             #映射文件/文件夹到宿主机，持久化和方便管理
             volumes:
-                - /root/web:/opt/openresty/nginx/html
-                - /root/logs/nginx_log:/opt/openresty/nginx/logs
-                - /root/nginx-conf:/opt/openresty/nginx/conf
-                - /root/logs/php_log:/tmp/phplogs
-                - /root/php/php.ini:/etc/php/php.ini
-                - /root/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
-                - /root/redis/redis.conf:/etc/redis.conf
-                - /root/logs/redis_log:/tmp/redislogs
+                - /root/docker/web:/opt/openresty/nginx/html
+                - /root/docker/logs/nginx_log:/opt/openresty/nginx/logs
+                - /root/docker/nginx-conf:/opt/openresty/nginx/conf
+                - /root/docker/logs/php_log:/tmp/phplogs
+                - /root/docker/php/php.ini:/etc/php/php.ini
+                - /root/docker/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
+                - /root/docker/redis/redis.conf:/etc/redis.conf
+                - /root/docker/logs/redis_log:/tmp/redislogs
             #openresty服务意外退出时自动重启
             restart: always
             #网络模式HOST(使用宿主机网络)
@@ -144,23 +108,21 @@ services:
             container_name: lrnp7   
         #服务名称
         mysql:
-            #image: docker.io/mysql:5.7
-            #阿里云镜像地址
-            image: registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7
+            image: $mysql_version
             #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
             environment:
                 MYSQL_ROOT_PASSWORD: $mysql_pass
             #映射文件路径
             volumes:
-                - /root/mysqld/config:/etc/mysql
-                - /root/mysqld/mysqldata:/var/lib/mysql
-                - /root/logs/mysql_log:/var/log/mysql
+                - /root/docker/mysqld/config:/etc/mysql
+                - /root/docker/mysqld/mysqldata:/var/lib/mysql
+                - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
             #容器名称(hostname)
             container_name: mysql57
         #docker服务
         shadowsocks:
-            image: docker.io/vimagick/shadowsocks-libev
+            image: $shadowsocks_version
             #网络模式HOST(使用宿主机网络)
             network_mode: host
             environment:
@@ -173,7 +135,7 @@ services:
 EOF
 
 #添加开机启动docker服务
-echo "cd /root/ && docker-compose up -d" >> /etc/rc.local
+echo "cd /root/docker/ && /usr/local/bin/docker-compose up -d" >> /etc/rc.local
 
 #关闭系统自带防火墙 firewall
 systemctl stop firewalld.service
@@ -211,10 +173,6 @@ cat>/etc/sysconfig/iptables<<EOF
 COMMIT
 EOF
 
-#首次启动docker-compose
-cd /root/ && docker-compose up -d
-docker-compose ps
-
 #开机启动iptables
 systemctl enable iptables.service
 #开启iptables服务
@@ -223,9 +181,18 @@ systemctl start iptables.service
 iptables -L -n
 
 #增加权限防止误删docker-compose.yml文件
-chattr +i /root/docker-compose.yml
+chattr +i /root/docker/docker-compose.yml
+
+#日志写入权限,否则会导致mysql启动失败问题
+chmod 777 /root/docker/logs -R
+
+#首次启动docker-compose,查看docker服务
+cd /root/docker/ && docker-compose up -d
+docker-compose ps
 
 #结束语
 echo -e "
-   ***  安装完成 ***
+   ***  安装完成, 新系统第一次安装 可能需要重启系统后才能使用 docker-compose 启动服务, 请执行 reboot ***
+        
+        *** 如正常使用 请忽略 ***
  "
