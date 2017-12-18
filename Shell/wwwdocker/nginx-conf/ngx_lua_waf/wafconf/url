@@ -1,0 +1,12 @@
+-- 过滤 点 后面带关键词中间或结尾
+\.(svn|htaccess|bash_history)
+-- 过滤 点 后面带关键词结尾
+\.(bak|inc|old|mdb|sql|backup|java|class|log|ini)$
+-- 过滤压缩包
+(vhost|bbs|host|html|wwwroot|www|site|root|hytop|flashfxp).*\.(rar|zip|gz|tar)
+-- 过滤关键字和配置文件
+(phpmyadmin|jmx-console|jmxinvokerservlet|wp-config)
+-- 过滤Java相关
+java\.lang
+-- 过滤敏感文件
+/(admin|attachments|upimg|images|css|uploadfiles|html|uploads|templets|static|template|data|inc|forumdata|upload|includes|cache|avatar)/(\\w+).(php|jsp)
