@@ -147,6 +147,9 @@ EOF
 #添加开机启动docker服务
 echo "/usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d" >> /etc/rc.local
 
+#首次启动docker-compose
+/usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d
+
 #关闭系统自带防火墙 firewall
 systemctl stop firewalld.service
 #禁止firewall开机自启
@@ -196,8 +199,7 @@ chattr +i /root/docker/docker-compose.yml
 #日志写入权限,否则会导致mysql启动失败问题
 chmod 777 /root/docker/logs -R
 
-#首次启动docker-compose,查看docker服务
-/usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d
+#查看docker服务
 docker-compose ps
 
 #结束语
