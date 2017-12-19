@@ -73,7 +73,7 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && sed -i "s/#pid/pid/g" /opt/openresty/nginx/conf/nginx.conf \
 #安装redis server
     && cd /usr/src \
-    && cd curl -o redis.tar.gz http://download.redis.io/releases/redis-${REDIS_VER}.tar.gz -L && mkdir redis && tar -xzvf redis.tar.gz -C ./redis --strip-components 1 \
+    && curl -o redis.tar.gz http://download.redis.io/releases/redis-${REDIS_VER}.tar.gz -L && mkdir redis && tar -xzvf redis.tar.gz -C ./redis --strip-components 1 \
     && cd /usr/src/redis \
     && make \
     && make install \
