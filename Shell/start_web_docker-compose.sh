@@ -102,8 +102,12 @@ services:
                 - /root/docker/logs/redis_log:/tmp/redislogs
             #openresty服务意外退出时自动重启
             restart: always
-            #网络模式HOST(使用宿主机网络)
-            network_mode: host
+            #网络模式HOST(使用宿主机网络) 性能更优
+            #network_mode: host
+            ports:
+                - 80:80
+                - 443:443
+                - 6379:6379
             #容器名称(hostname)
             container_name: lrnp7   
         #服务名称
@@ -118,18 +122,24 @@ services:
                 - /root/docker/mysqld/mysqldata:/var/lib/mysql
                 - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
+            #网络模式HOST 性能更优
+            #network_mode: host
+            ports:
+                - 3306:3306
             #容器名称(hostname)
             container_name: mysql57
         #docker服务
         shadowsocks:
             image: $shadowsocks_version
-            #网络模式HOST(使用宿主机网络)
-            network_mode: host
             environment:
                 SERVER_ADDR: $ss_ip
                 PASSWORD: $ss_pass
                 SERVER_PORT: $ss_port
             restart: always
+            #网络模式HOST(使用宿主机网络)性能更优
+            #network_mode: host
+            ports:
+                - 7879:7879
             #容器名称(hostname)
             container_name: shadowsocks
 EOF
