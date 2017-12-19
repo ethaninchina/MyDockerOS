@@ -66,7 +66,7 @@ IPgsd=$(curl -sk http://ip.taobao.com/service/getIpInfo.php?ip=$sourceIP|cut -d 
 if [[ "$IPgsd" -eq "CN" ]]; then
     lrnp_version="registry.cn-hangzhou.aliyuncs.com/webss/lrnp"
     mysql_version="registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7"
-    shadowsocks_version="docker.io/easypi/shadowsocks-libev"
+    shadowsocks_version="registry.cn-hangzhou.aliyuncs.com/webss/sslibev"
 else
     lrnp_version="docker.io/wuyuzai/mydockeros:lrnp"
     mysql_version="docker.io/mysql:5.7"
