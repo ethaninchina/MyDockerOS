@@ -22,7 +22,7 @@ services:
                 - /root/docker/logs/redis_log:/tmp/redislogs
             #nginx意外退出时自动重启
             restart: always
-            #网络模式HOST
+            #网络模式HOST(性能更优)
             #network_mode: host
             ports:
                 - 80:80
@@ -44,7 +44,7 @@ services:
                 - /root/docker/mysqld/mysqldata:/var/lib/mysql
                 - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
-            #网络模式HOST
+            #网络模式HOST(性能更优)
             #network_mode: host
             ports:
                 - 3306:3306
@@ -59,9 +59,7 @@ services:
                 PASSWORD: 123456
                 SERVER_PORT: 7879
             restart: always
-            #网络模式HOST
-            #network_mode: host
-            ports:
-                - 7879:7879
+            #网络模式HOST(性能更优)
+            network_mode: host
             #容器名称
             container_name: shadowsocks
