@@ -34,7 +34,7 @@ tar zxvf wwwdocker.tar.gz
 rm -fr /root/docker/wwwdocker.tar.gz
 
 #内核优化,内核修改即时生效
-curl -o /etc/sysctl.conf https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/sysctl.conf
+curl -o /etc/sysctl.conf https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctl.conf
 sysctl -p
 
 #配置ulimit
