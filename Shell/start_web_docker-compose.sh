@@ -11,7 +11,7 @@ fi
 mysql_pass=123456
 #自定义ss server端口，ss密码
 ss_port=7879
-ss_pass=Wn#98gsf#
+ss_pass=www.baidu.com
 # ****** 自定义参数 end ******
 
 # ************** 下面我程序自动执行 ************** 
@@ -137,9 +137,9 @@ services:
                 SERVER_PORT: $ss_port
             restart: always
             #网络模式HOST(使用宿主机网络)性能更优
-            network_mode: host
-            #ports:
-                #- $ss_port:$ss_port
+            #network_mode: host
+            ports:
+                - $ss_port:$ss_port
             #容器名称(hostname)
             container_name: shadowsocks
 EOF
