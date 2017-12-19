@@ -137,9 +137,9 @@ services:
                 SERVER_PORT: $ss_port
             restart: always
             #网络模式HOST(使用宿主机网络)性能更优
-            #network_mode: host
-            ports:
-                - $ss_port:$ss_port
+            network_mode: host
+            #ports:
+                #- $ss_port:$ss_port
             #容器名称(hostname)
             container_name: shadowsocks
 EOF
