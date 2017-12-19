@@ -23,7 +23,7 @@ setenforce 0
 yum install -y zip unzip lrzsz wget curl
 
 #绑定SS服务IP为eth0的IP
-ss_ip=$(ifconfig eth0|grep -w inet|awk '{print $2}')
+#ss_ip=$(ifconfig eth0|grep -w inet|awk '{print $2}')
 
 #创建docker相关文件路径,下载配置文件
 mkdir /root/docker
@@ -132,7 +132,7 @@ services:
         shadowsocks:
             image: $shadowsocks_version
             environment:
-                SERVER_ADDR: $ss_ip
+                SERVER_ADDR: 0.0.0.0
                 PASSWORD: $ss_pass
                 SERVER_PORT: $ss_port
             restart: always
