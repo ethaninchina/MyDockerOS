@@ -12,16 +12,22 @@ services:
             image: registry.cn-hangzhou.aliyuncs.com/webss/lrnp
             #这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
             volumes:
-                - /root/web:/opt/openresty/nginx/html
-                - /root/logs/nginx_log:/opt/openresty/nginx/logs
-                - /root/logs/php_log:/tmp/phplogs
-                - /root/php/php.ini:/etc/php/php.ini
-                - /root/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
-                - /root/nginx-conf:/opt/openresty/nginx/conf
+                - /root/docker/web:/opt/openresty/nginx/html
+                - /root/docker/logs/nginx_log:/opt/openresty/nginx/logs
+                - /root/docker/nginx-conf:/opt/openresty/nginx/conf
+                - /root/docker/logs/php_log:/tmp/phplogs
+                - /root/docker/php/php.ini:/etc/php/php.ini
+                - /root/docker/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
+                - /root/docker/redis/redis.conf:/etc/redis.conf
+                - /root/docker/logs/redis_log:/tmp/redislogs
             #nginx意外退出时自动重启
             restart: always
             #网络模式HOST
-            network_mode: host
+            #network_mode: host
+            ports:
+                - 80:80
+                - 443:443
+                - 6379:6379
             #容器名称
             container_name: lrnp7   
         #服务名称
@@ -34,21 +40,28 @@ services:
                 MYSQL_ROOT_PASSWORD: 123456
             #映射文件路径
             volumes:
-                - /root/mysqld/config:/etc/mysql
-                - /root/mysqld/mysqldata:/var/lib/mysql
-                - /root/logs/mysql_log:/var/log/mysql
+                - /root/docker/mysqld/config:/etc/mysql
+                - /root/docker/mysqld/mysqldata:/var/lib/mysql
+                - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
+            #网络模式HOST
+            #network_mode: host
+            ports:
+                - 3306:3306
             #容器名称
             container_name: mysql57
         #docker服务
         shadowsocks:
             image: docker.io/vimagick/shadowsocks-libev
-            #网络模式HOST
-            network_mode: host
             environment:
-                SERVER_ADDR: 127.0.0.1
+                #IP为0.0.0.0 或者eth0的IP
+                SERVER_ADDR: 0.0.0.0
                 PASSWORD: 123456
                 SERVER_PORT: 7879
             restart: always
+            #网络模式HOST
+            #network_mode: host
+            ports:
+                - 7879:7879
             #容器名称
             container_name: shadowsocks
