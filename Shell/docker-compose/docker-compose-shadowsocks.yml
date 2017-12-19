@@ -1,11 +1,15 @@
 version: '2'
 services:
-        shadowsocks-libev:
+        shadowsocks:
             image: docker.io/easypi/shadowsocks-libev
+            #网络模式HOST
+            #network_mode: host
+            ports:
+                - 7879:7879
             environment:
                 SERVER_ADDR: 0.0.0.0
-                PASSWORD: 123456798
+                PASSWORD: www.baidu.com
                 SERVER_PORT: 7879
-            network_mode: host
             restart: always
-            container_name: shadowsocks-libev
+            #容器名称
+            container_name: shadowsocks
