@@ -1,14 +1,11 @@
 version: '2'
 services:
-        shadowsocks:
+        shadowsocks-libev:
             image: docker.io/easypi/shadowsocks-libev
             environment:
                 SERVER_ADDR: 0.0.0.0
                 PASSWORD: 123456798
                 SERVER_PORT: 7879
-            #网络模式HOST 性能更优
-            #network_mode: host
-            ports:
-                - 7879:7879
+            network_mode: host
             restart: always
-            container_name: shadowsocks
+            container_name: shadowsocks-libev
