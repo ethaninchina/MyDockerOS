@@ -56,10 +56,12 @@ services:
             environment:
                 #IP为0.0.0.0 或者eth0的IP
                 SERVER_ADDR: 0.0.0.0
-                PASSWORD: 123456
+                PASSWORD: www.baidu.com
                 SERVER_PORT: 7879
             restart: always
             #网络模式HOST(性能更优)
-            network_mode: host
+            #network_mode: host
+            ports:
+                - 7879:7879
             #容器名称
             container_name: shadowsocks
