@@ -139,7 +139,7 @@ services:
             #网络模式HOST(使用宿主机网络)性能更优
             #network_mode: host
             ports:
-                - 7879:7879
+                - $ss_port:$ss_port
             #容器名称(hostname)
             container_name: shadowsocks
 EOF
