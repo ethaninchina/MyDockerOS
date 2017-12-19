@@ -147,6 +147,12 @@ EOF
 #添加开机启动docker服务
 echo "/usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d" >> /etc/rc.local
 
+#增加权限防止误删docker-compose.yml文件
+chattr +i /root/docker/docker-compose.yml
+
+#日志写入权限,否则会导致mysql启动失败问题
+chmod 777 /root/docker/logs -R
+
 #首次启动docker-compose
 /usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d
 
@@ -192,12 +198,6 @@ systemctl enable iptables.service
 systemctl start iptables.service
 #查看iptables配置端口
 iptables -L -n
-
-#增加权限防止误删docker-compose.yml文件
-chattr +i /root/docker/docker-compose.yml
-
-#日志写入权限,否则会导致mysql启动失败问题
-chmod 777 /root/docker/logs -R
 
 #查看docker服务
 docker-compose ps
