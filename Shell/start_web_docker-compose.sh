@@ -14,7 +14,7 @@ ss_port=7879
 ss_pass=www.baidu.com
 # ****** 自定义参数 end ******
 
-# ************** 下面我程序自动执行 ************** 
+# ************** 下面内容是程序自动执行 ************** 
 #关闭selinux
 sed -i s/=enforcing/=disabled/g /etc/selinux/config
 setenforce 0
