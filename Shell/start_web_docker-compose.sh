@@ -173,7 +173,7 @@ cat>/etc/sysconfig/iptables<<EOF
 *filter
 :INPUT ACCEPT [0:0]
 :FORWARD ACCEPT [0:0]
-:OUTPUT ACCEPT [12135:65324]
+:OUTPUT ACCEPT [0:0]
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 #-A INPUT -s 192.168.0.19/32 -p tcp --dport 22 -j ACCEPT
