@@ -63,7 +63,7 @@ fi
 sourceIP=$(curl -sk http://www.3322.org/dyndns/getip)
 IPgsd=$(curl -sk http://ip.taobao.com/service/getIpInfo.php?ip=$sourceIP|cut -d "\"" -f 12)
 #如果IP为中国，则使用阿里云镜像,反之则为docker.io官方
-if [[ "$IPgsd" -eq "CN" ]]; then
+if [[ "$IPgsd" = "CN" ]]; then
     lrnp_version="registry.cn-hangzhou.aliyuncs.com/webss/lrnp"
     mysql_version="registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7"
     shadowsocks_version="registry.cn-hangzhou.aliyuncs.com/webss/sslibev"
