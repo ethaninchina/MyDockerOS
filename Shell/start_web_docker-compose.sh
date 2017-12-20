@@ -22,9 +22,6 @@ setenforce 0
 #安装必要工具
 yum install -y zip unzip lrzsz wget curl
 
-#绑定SS服务IP为eth0的IP
-#ss_ip=$(ifconfig eth0|grep -w inet|awk '{print $2}')
-
 #创建docker相关文件路径,下载配置文件
 mkdir /root/docker
 cd /root/docker
