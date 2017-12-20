@@ -201,7 +201,7 @@ docker-compose ps
 
 #结束语
 echo -e "
-   ***  安装完成, 新系统第一次安装 可能需要重启系统后才能使用 docker-compose 启动服务, 请执行 reboot ***
+   ***  安装完成, 新系统第一次安装 可能需要重启系统后才能使用 iptables的NAT服务, 请执行 reboot 命令重启服务器 ***
         
         *** 如正常使用 请忽略 ***
  "
