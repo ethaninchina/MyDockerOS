@@ -71,9 +71,9 @@ else
 fi
 
 #拉取docker文件文件
-docker pull $lrnp_version
-docker pull $mysql_version
-docker pull $shadowsocks_version
+#docker pull $lrnp_version
+#docker pull $mysql_version
+#docker pull $shadowsocks_version
 
 #配置docker-compose.yml 文件
 cat>/root/docker/docker-compose.yml<<EOF
