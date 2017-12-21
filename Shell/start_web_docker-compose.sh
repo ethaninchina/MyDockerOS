@@ -171,7 +171,7 @@ cat>/etc/sysconfig/iptables<<EOF
 # you can edit this manually or use system-config-firewall
 # please do not ask us to add additional ports/services to this default configuration
 *filter
-:INPUT ACCEPT [0:0]
+:INPUT DROP [0:0]
 :FORWARD ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 -A INPUT -p icmp -j ACCEPT
