@@ -100,10 +100,10 @@ services:
             #openresty服务意外退出时自动重启
             restart: always
             #网络模式HOST(使用宿主机网络) 性能更优
-            network_mode: host
-            #ports:
-                #- 80:80
-                #- 443:443
+            #network_mode: host
+            ports:
+                - 80:80
+                - 443:443
                 #- 6379:6379
             #容器名称
             container_name: lrnp7   
@@ -120,9 +120,9 @@ services:
                 - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
             #网络模式HOST 性能更优
-            network_mode: host
-            #ports:
-                #- 3306:3306
+            #network_mode: host
+            ports:
+                - 3306:3306
             #容器名称
             container_name: mysql57
         #docker服务
@@ -134,9 +134,9 @@ services:
                 SERVER_PORT: $ss_port
             restart: always
             #网络模式HOST(使用宿主机网络)性能更优
-            network_mode: host
-            #ports:
-                #- $ss_port:$ss_port
+            #network_mode: host
+            ports:
+                - $ss_port:$ss_port
             #容器名称
             container_name: shadowsocks
 EOF
@@ -172,7 +172,7 @@ cat>/etc/sysconfig/iptables<<EOF
 # please do not ask us to add additional ports/services to this default configuration
 *filter
 :INPUT DROP [0:0]
-:FORWARD ACCEPT [0:0]
+:FORWARD DROP [0:0]
 :OUTPUT ACCEPT [0:0]
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
@@ -181,7 +181,7 @@ cat>/etc/sysconfig/iptables<<EOF
 #-A INPUT -p tcp -m multiport --dport 20441,20443,20445,51443 -j ACCEPT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport $ss_port -j ACCEPT
+#-A INPUT -p tcp -m state --state NEW -m tcp --dport $ss_port -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp-host-prohibited
