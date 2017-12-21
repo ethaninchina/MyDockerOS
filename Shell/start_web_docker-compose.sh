@@ -105,6 +105,7 @@ services:
                 - 80:80
                 - 443:443
                 #- 6379:6379
+            hostname: lrnp7
             #容器名称
             container_name: lrnp7   
         #服务名称
@@ -123,6 +124,7 @@ services:
             #network_mode: host
             ports:
                 - 3306:3306
+            hostname: mysql57
             #容器名称
             container_name: mysql57
         #docker服务
@@ -137,6 +139,7 @@ services:
             #network_mode: host
             ports:
                 - $ss_port:$ss_port
+            hostname: shadowsocks
             #容器名称
             container_name: shadowsocks
 EOF
