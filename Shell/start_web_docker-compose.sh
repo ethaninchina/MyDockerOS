@@ -235,9 +235,9 @@ docker-compose ps
 
 #结束语
 echo -e "
-   ***  安装完成, 新系统第一次安装 可能需要重启系统后才能使用 iptables的NAT服务docker端口映射, 请执行 reboot 命令重启服务器 ***
+   ***  安装完成, 系统第一次安装 需要重启(reboot)系统后 iptables的NAT服务才能成功自动映射docker端口, 请执行命令 reboot 重启服务器 ***
         
-        *** 如正常使用 请忽略 ***
+        *** 如iptables nat转发正常使用 请忽略 ***
  "
 #over
 rm $0
