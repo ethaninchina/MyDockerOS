@@ -50,32 +50,22 @@ yum install docker -y
 systemctl enable docker.service
 systemctl start docker.service
 
-#安装docker-compose编排服务
-curl -L https://github.com/docker/compose/releases/download/$docker_compose_version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-if [ $? -ne 0 ]; then
-echo "docker-compose 下载安装失败"
-exit 1
-fi
-
 #拉取docker项目,根据服务器IP判断选择镜像地址和选择docker0compose地址安装
 sourceIP=$(curl -sk http://www.3322.org/dyndns/getip)
 IPgsd=$(curl -sk http://ip.taobao.com/service/getIpInfo.php?ip=$sourceIP|cut -d "\"" -f 12)
-#如果IP为中国，则使用阿里云镜像,反之则为docker.io官方
-if [[ "$IPgsd" = "CN" ]]; then
-#IP属于CN,则利用CN pip加速安装docker-compose
-    mkdir -p ~/.pip
-cat >> ~/.pip/pip.conf <<EOF
-[global]
-index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-[install]
-trusted-host=mirrors.aliyun.com
-EOF
 
+#如果IP为中国，则使用阿里云镜像
+if [[ "$IPgsd" = "CN" ]]; then
+#IP属于CN,则利用CN 加速镜像安装docker-compose
+curl -L https://get.daocloud.io/docker/compose/releases/download/$docker_compose_version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+#阿里云docker镜像地址
     lrnp_version="registry.cn-hangzhou.aliyuncs.com/webss/lrnp"
     mysql_version="registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7"
     shadowsocks_version="registry.cn-hangzhou.aliyuncs.com/webss/sslibev"
-
 else
+#使用github安装docker-compose编排服务
+curl -L https://github.com/docker/compose/releases/download/$docker_compose_version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+#docker.io镜像地址   
     lrnp_version="docker.io/wuyuzai/mydockeros:lrnp"
     mysql_version="docker.io/mysql:5.7"
     shadowsocks_version="docker.io/easypi/shadowsocks-libev"
@@ -215,7 +205,7 @@ cat>/etc/sysconfig/iptables<<EOF
 # you can edit this manually or use system-config-firewall
 # please do not ask us to add additional ports/services to this default configuration
 *filter
-:INPUT ACCEPT [0:0]
+:INPUT DROP [0:0]
 :FORWARD ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 -A INPUT -p icmp -j ACCEPT
