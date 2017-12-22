@@ -78,7 +78,7 @@ fi
 #配置docker-compose.yml 文件
 cat>/root/docker/docker-compose.yml<<EOF
 version: '2'
-    #定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql(mysql5.7)
+#定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql(mysql5.7)
 services:
         #服务名称
         lrnp:
@@ -99,6 +99,9 @@ services:
                 - /root/docker/logs/redis_log:/tmp/redislogs
             #openresty服务意外退出时自动重启
             restart: always
+            #加入网络 webserver (lrnp和mysql服务属于同一网络/局域网)
+            networks:
+                - webserver
             #网络模式HOST(使用宿主机网络) 性能更优
             #network_mode: host
             ports:
@@ -120,6 +123,9 @@ services:
                 - /root/docker/mysqld/mysqldata:/var/lib/mysql
                 - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
+            #加入网络 webserver (mysql和lrnp服务属于同一网络/局域网)
+            networks:
+                - webserver
             #网络模式HOST 性能更优
             #network_mode: host
             ports:
@@ -135,6 +141,9 @@ services:
                 PASSWORD: $ss_pass
                 SERVER_PORT: $ss_port
             restart: always
+            #加入网络 shadowsocks
+            networks:
+                - shadowsocks
             #网络模式HOST(使用宿主机网络)性能更优
             #network_mode: host
             ports:
@@ -142,6 +151,12 @@ services:
             hostname: shadowsocks
             #容器名称
             container_name: shadowsocks
+#定义网络服务
+networks:
+        webserver:
+            driver: bridge
+        shadowsocks:
+            driver: bridge      
 EOF
 
 #添加开机启动docker服务
