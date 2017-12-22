@@ -13,7 +13,7 @@ mysql_pass=123456
 ss_port=7879
 ss_pass=www.baidu.com
 #自定义docker-compose版本 （非CN 的IP归属地地址生效,CN 的IP地址无视）
-docker-compose-version=1.18.0
+docker_compose_version=1.18.0
 # ****** 自定义参数 end ******
 
 # ************** 下面内容是程序自动执行 ************** 
@@ -51,7 +51,7 @@ systemctl enable docker.service
 systemctl start docker.service
 
 #安装docker-compose编排服务
-curl -L https://github.com/docker/compose/releases/download/$docker-compose-version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/$docker_compose_version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
 
 #拉取docker项目,根据服务器IP判断选择镜像地址和选择docker0compose地址安装
 sourceIP=$(curl -sk http://www.3322.org/dyndns/getip)
