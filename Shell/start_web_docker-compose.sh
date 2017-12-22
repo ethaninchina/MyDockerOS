@@ -192,7 +192,7 @@ systemctl stop firewalld.service
 #禁止firewall开机自启
 systemctl mask firewalld
 #禁止firewall开机自启
-sytsemctl disable firewalld.service
+systemctl disable firewalld.service
 
 #安装iptables
 yum install -y iptables
