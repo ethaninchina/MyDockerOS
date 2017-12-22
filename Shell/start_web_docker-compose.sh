@@ -128,6 +128,7 @@ services:
                 - /root/docker/mysqld/config:/etc/mysql
                 - /root/docker/mysqld/mysqldata:/var/lib/mysql
                 - /root/docker/logs/mysql_log:/var/log/mysql
+            #mysql服务意外退出时自动重启
             restart: always
             #docker中ulimit设置
             ulimits:
@@ -152,6 +153,7 @@ services:
                 SERVER_ADDR: 0.0.0.0
                 PASSWORD: $ss_pass
                 SERVER_PORT: $ss_port
+            #shadowsocks服务意外退出时自动重启
             restart: always
             #docker中ulimit设置
             ulimits:
