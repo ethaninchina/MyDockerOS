@@ -80,7 +80,7 @@ cat>/root/docker/docker-compose.yml<<EOF
 version: '2'
 #定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql(mysql5.7)
 services:
-        #服务名称
+        #指定lrnp服务
         lrnp:
             #依赖mysql服务，意味着在启动lrnp之前先启动mysql服务容器
             depends_on:
@@ -111,7 +111,7 @@ services:
             hostname: lrnp7
             #容器名称
             container_name: lrnp7   
-        #服务名称
+        #指定mysql服务
         mysql:
             image: $mysql_version
             #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
@@ -128,12 +128,12 @@ services:
                 - webserver
             #网络模式HOST 性能更优
             #network_mode: host
-            ports:
-                - 3306:3306
+            #ports:
+                #- 3306:3306
             hostname: mysql57
             #容器名称
             container_name: mysql57
-        #docker服务
+        #指定shadowsocks服务
         shadowsocks:
             image: $shadowsocks_version
             environment:
