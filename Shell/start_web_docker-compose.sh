@@ -99,6 +99,12 @@ services:
                 - /root/docker/logs/redis_log:/tmp/redislogs
             #openresty服务意外退出时自动重启
             restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
             #加入网络 webserver (lrnp和mysql服务属于同一网络/局域网)
             networks:
                 - webserver
@@ -123,6 +129,12 @@ services:
                 - /root/docker/mysqld/mysqldata:/var/lib/mysql
                 - /root/docker/logs/mysql_log:/var/log/mysql
             restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
             #加入网络 webserver (mysql和lrnp服务属于同一网络/局域网)
             networks:
                 - webserver
@@ -141,6 +153,12 @@ services:
                 PASSWORD: $ss_pass
                 SERVER_PORT: $ss_port
             restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 65535
+                nofile:
+                    soft: 65535
+                    hard: 65535
             #加入网络 shadowsocks
             networks:
                 - shadowsocks
