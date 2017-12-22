@@ -12,7 +12,7 @@ mysql_pass=123456
 #自定义ss server端口，ss密码
 ss_port=7879
 ss_pass=www.baidu.com
-#自定义docker-compose版本
+#自定义docker-compose版本 （非CN 的IP归属地地址生效,CN 的IP地址无视）
 docker-compose-version=1.18.0
 # ****** 自定义参数 end ******
 
@@ -50,32 +50,36 @@ yum install docker -y
 systemctl enable docker.service
 systemctl start docker.service
 
-#安装docker-compose编排服务
-curl -L https://github.com/docker/compose/releases/download/$docker-compose-version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-if [ $? -ne  0 ]
-    then
-    echo "docker-compose 下载安装失败"
-    exit 1
-fi
-
-#拉取docker项目,根据服务器IP判断选择镜像地址
+#拉取docker项目,根据服务器IP判断选择镜像地址和选择docker0compose地址安装
 sourceIP=$(curl -sk http://www.3322.org/dyndns/getip)
 IPgsd=$(curl -sk http://ip.taobao.com/service/getIpInfo.php?ip=$sourceIP|cut -d "\"" -f 12)
 #如果IP为中国，则使用阿里云镜像,反之则为docker.io官方
 if [[ "$IPgsd" = "CN" ]]; then
+#IP属于CN,则利用CN pip加速安装docker-compose
+    mkdir -p ~/.pip
+cat >> ~/.pip/pip.conf <<EOF
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+[install]
+trusted-host=mirrors.aliyun.com
+EOF
+    rpm -ivh http://mirrors.aliyun.com/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+    yum -y install certbot libevent-devel gcc libffi-devel python-devel openssl-devel python2-pip
+    pip install --upgrade pip
+    pip install -U docker-compose
+
     lrnp_version="registry.cn-hangzhou.aliyuncs.com/webss/lrnp"
     mysql_version="registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7"
     shadowsocks_version="registry.cn-hangzhou.aliyuncs.com/webss/sslibev"
+
 else
+    #非CN IP从github官方安装镜像
+    curl -L https://github.com/docker/compose/releases/download/$docker-compose-version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+
     lrnp_version="docker.io/wuyuzai/mydockeros:lrnp"
     mysql_version="docker.io/mysql:5.7"
     shadowsocks_version="docker.io/easypi/shadowsocks-libev"
 fi
-
-#拉取docker文件文件
-#docker pull $lrnp_version
-#docker pull $mysql_version
-#docker pull $shadowsocks_version
 
 #配置docker-compose.yml 文件
 cat>/root/docker/docker-compose.yml<<EOF
