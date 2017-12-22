@@ -64,7 +64,7 @@ index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 trusted-host=mirrors.aliyun.com
 EOF
     rpm -ivh http://mirrors.aliyun.com/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
-    yum -y install certbot libevent-devel gcc libffi-devel python-devel openssl-devel python2-pip
+    yum -y install certbot libevent-devel gcc libffi-devel python-devel openssl-devel python-pip
     pip install --upgrade pip
     pip install -U docker-compose
 
