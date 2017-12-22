@@ -52,6 +52,10 @@ systemctl start docker.service
 
 #安装docker-compose编排服务
 curl -L https://github.com/docker/compose/releases/download/$docker_compose_version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+if [ $? -ne 0 ]; then
+echo "docker-compose 下载安装失败"
+exit 1
+fi
 
 #拉取docker项目,根据服务器IP判断选择镜像地址和选择docker0compose地址安装
 sourceIP=$(curl -sk http://www.3322.org/dyndns/getip)
