@@ -239,5 +239,3 @@ echo -e "
         
         *** 如iptables nat转发正常使用 请忽略 ***
  "
-#over
-rm $0
