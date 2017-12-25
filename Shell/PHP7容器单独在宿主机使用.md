@@ -1,7 +1,7 @@
 # 相关配置下载
 wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdocker/wwwdocker.tar.gz
 
-# ################启动脚本服务
+# 启动脚本服务
 #!/bin/bash
 #停止/清空无效的容器记录
 #docker stop $(docker ps -a -q)
