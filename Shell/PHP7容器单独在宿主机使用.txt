@@ -3,11 +3,8 @@ wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdock
 
 # 启动脚本服务
 #!/bin/bash
-
 #停止/清空无效的容器记录
-
 #docker stop $(docker ps -a -q)
-
 #docker rm -f $(docker ps -a -q)
 
 #启动docker容器,宿主机项目存放目录 映射到 PHP7容器/tmp/html目录
