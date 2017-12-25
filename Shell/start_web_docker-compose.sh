@@ -24,7 +24,7 @@ setenforce 0
 #安装工具
 yum install -y zip unzip lrzsz wget curl
 
-#创建docker相关文件路径,下载配置文件
+#创建docker项目相关文件路径,下载所需配置文件
 mkdir /root/docker
 cd /root/docker
 wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdocker/wwwdocker.tar.gz
@@ -229,6 +229,10 @@ systemctl enable iptables.service
 systemctl start iptables.service
 #查看iptables配置端口
 iptables -L -n
+
+#添加系统不登陆用户(docker容器lrnp中的nginx和php运行用户,nginx和php在一个容器里使用的是nginx运行用户)
+useradd -M -s /sbin/nologin nginx
+#useradd -M -s /sbin/nologin PHP-FPM
 
 #查看docker服务
 docker-compose ps
