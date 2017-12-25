@@ -1,3 +1,7 @@
+#相关配置下载
+wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdocker/wwwdocker.tar.gz
+
+#################启动脚本服务
 #!/bin/bash
 #停止/清空无效的容器记录
 #docker stop $(docker ps -a -q)
@@ -19,7 +23,7 @@ docker run --name PHP7 \
 # 容器  服务： PHP7.1.12               
 #######################################
 
-#nginx配置
+################nginx配置
 server {
         listen             80;
         server_name crm8000.ooxx.com;
@@ -35,7 +39,7 @@ server {
        # nginx 中php解析设置
         location ~ .*\.php { 
                 root /tmp/html; #php容器项目目录,如果和nginx的root目录不对应，请在这里要添加php容器的项目目录
-                fastcgi_pass  127.0.0.1:9000;
+                fastcgi_pass  127.0.0.1:9191; #如 容器内PHP7服务端口为9191
                 fastcgi_index index.php;
                 include fastcgi.conf;
         }
