@@ -21,7 +21,7 @@ docker_compose_version=1.18.0
 sed -i s/=enforcing/=disabled/g /etc/selinux/config
 setenforce 0
 
-#安装必要工具
+#安装工具
 yum install -y zip unzip lrzsz wget curl
 
 #创建docker相关文件路径,下载配置文件
