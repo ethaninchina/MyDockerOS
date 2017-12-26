@@ -1,0 +1,13 @@
+version: '2'
+services:
+    github:
+            image: registry.cn-hangzhou.aliyuncs.com/webss/gitlab
+            volumes:
+                - /root/gitlab/etc:/etc/gitlab
+                - /root/gitlab/log:/var/log/gitlab:rw
+                - /root/gitlab/data:/var/opt/gitlab
+            restart: always
+            ports:
+                - 8090:80
+                - 8443:443
+            container_name: gitlab_cn
