@@ -10,7 +10,9 @@ docker rm registry.cn-hangzhou.aliyuncs.com/webss/gitlab
 - 然后重新拉一个新版本的镜像 (如下)
 ```shell
 docker pull registry.cn-hangzhou.aliyuncs.com/webss/gitlab
+```
 
+```shell
 cat > ~/docker-compose.yml << EOF
 version: '2'
 services:
