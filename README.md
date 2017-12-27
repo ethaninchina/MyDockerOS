@@ -5,5 +5,5 @@
 
 - docker安装lrnp7(openresty、redis、php7)+Mysql环境
 ```shell
-curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
+curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
 ```
