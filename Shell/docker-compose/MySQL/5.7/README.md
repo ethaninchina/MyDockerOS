@@ -19,7 +19,7 @@ The `Dockerfile` is very simple, just copied `replica.sh` to `/docker-entrypoint
 To build the image just:
 
 ```bash
-docker build -t twang2218/mysql:5.7-replica .
+docker build -t registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7-MS .
 ```
 
 *Replace `twang2218` with your docker username*
@@ -27,7 +27,7 @@ docker build -t twang2218/mysql:5.7-replica .
 Then push the image to the Docker Hub, so it can be used across cluster.
 
 ```bash
-docker push twang2218/mysql:5.7-replica
+docker push registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7-MS
 ```
 
 Then, let's use the new MySQL image with replication ability. To do that, I created a simple `docker-compose.yml` file:
@@ -36,7 +36,7 @@ Then, let's use the new MySQL image with replication ability. To do that, I crea
 version: '2'
 services:
     master:
-        image: twang2218/mysql:5.7-replica
+        image: registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7-MS
         restart: unless-stopped
         ports:
             - 3306:3306
@@ -46,7 +46,7 @@ services:
             - MYSQL_REPLICA_PASS=replica_Passw0rd
         command: ["mysqld", "--log-bin=mysql-bin", "--server-id=1"]
     slave:
-        image: twang2218/mysql:5.7-replica
+        image: registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7-MS
         restart: unless-stopped
         ports:
             - 3307:3306
