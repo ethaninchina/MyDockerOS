@@ -22,8 +22,6 @@ To build the image just:
 docker build -t registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7-MS .
 ```
 
-*Replace `twang2218` with your docker username*
-
 Then push the image to the Docker Hub, so it can be used across cluster.
 
 ```bash
