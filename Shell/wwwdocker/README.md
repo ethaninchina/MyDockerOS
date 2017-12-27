@@ -1,5 +1,6 @@
 - lrnp7 环境需要的 配置文件/相关文件夹 存放地址
 - openresty
 - php
+- redis
 - mysql
 - logs
