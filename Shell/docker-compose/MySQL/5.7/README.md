@@ -42,6 +42,8 @@ services:
             - MYSQL_ROOT_PASSWORD=master_passw0rd
             - MYSQL_REPLICA_USER=replica
             - MYSQL_REPLICA_PASS=replica_Passw0rd
+        hostname: mymaster1
+        container_name: mymaster1
         command: ["mysqld", "--log-bin=mysql-bin", "--server-id=1"]
     slave:
         image: registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7-MS
@@ -54,6 +56,8 @@ services:
             - MYSQL_REPLICA_PASS=replica_Passw0rd
             - MYSQL_MASTER_SERVER=master
             - MYSQL_MASTER_WAIT_TIME=10
+        hostname: myslave2
+        container_name: myslave2
         command: ["mysqld", "--log-bin=mysql-bin", "--server-id=2"]
 ```
 
