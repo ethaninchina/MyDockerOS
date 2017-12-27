@@ -1,6 +1,6 @@
 - dockerfile 配置文件在 docker分支
 
-https://github.com/station19/MyDockerOS/tree/docker
+      https://github.com/station19/MyDockerOS/tree/docker
 
 
 - docker安装lrnp7(nginx/openresty、redis、php7)+Mysql环境
