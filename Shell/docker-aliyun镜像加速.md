@@ -7,10 +7,12 @@ cat>/etc/docker/daemon.json <<EOF
 EOF
 ```
 
+
 - 重启docker服务生效
 ```shell
 systemctl restart docker.service
 ```
+
 
 - 登陆阿里云docker镜像服务
 ```shell
