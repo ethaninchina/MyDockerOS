@@ -1,0 +1,93 @@
+# Shadowsocks 客户端
+- 安装
+```shell
+pip install --upgrade pip
+pip install shadowsocks
+```
+- 配置
+```shell
+vi /etc/shadowsocks.json
+
+{
+  "server":"x.x.x.x",             #你的 ss 服务器 ip
+  "server_port":443,              #你的 ss 服务器端口
+  "local_address": "127.0.0.1",   #本地ip
+  "local_port":1080,              #本地端口
+  "password":"password",          #连接 ss 密码
+  "timeout":300,                  #等待超时
+  "method":"aes-256-cfb",         #加密方式
+  "workers": 1                    #工作线程数
+}
+```
+- 启动
+```shell
+/usr/bin/sslocal -c /etc/shadowsocks.json /dev/null &
+
+#开机启动
+echo "/usr/bin/sslocal -c /etc/shadowsocks.json /dev/null &" >>/etc/rc.local
+```
+
+- 测试
+```shell
+curl --socks5 127.0.0.1:1080 http://packages.cloud.google.com
+```
+- 出现以下结构说明正常，CN直接去curl是无法拿到数据的
+<html>
+  <head>
+    <title>Directory listing for /</title>
+  </head>
+  <body>
+    <h2>Index of /</h2>
+    <p></p>
+    <a href="/apt">apt</a><br />
+    <a href="/yuck">yuck</a><br />
+    <a href="/yum">yum</a><br />
+    <a href="/yum-legacy">yum-legacy</a><br />
+  </body>
+</html>
+
+# Privoxy是一款带过滤功能的代理服务器，针对HTTP、HTTPS协议
+
+- Shadowsocks 是一个 socket5 服务，我们需要使用 Privoxy 把流量转到 http／https 上
+```shell
+wget http://www.privoxy.org/sf-download-mirror/Sources/3.0.26%20%28stable%29/privoxy-3.0.26-stable-src.tar.gz
+tar -zxvf privoxy-3.0.26-stable-src.tar.gz
+cd privoxy-3.0.26-stable
+
+yum install autoconf -y
+
+autoheader && autoconf
+./configure
+make && make install
+```
+- 配置
+```shell
+vim /usr/local/etc/privoxy/config
+
+# 8118 是默认端口，不用改，下面会用到
+listen-address 127.0.0.1:8118   
+# 这里的端口写 shadowsocks 的本地端口（注意最后那个 . 不要漏了）
+forward-socks5t / 127.0.0.1:1080 .
+```
+- 启动
+````shell
+/usr/local/sbin/privoxy --user root /usr/local/etc/privoxy/config
+```
+- 配置 /etc/profile
+```shell
+vim /etc/profile
+
+export http_proxy=http://127.0.0.1:8118       #这里的端口和上面 privoxy 中的保持一致
+export https_proxy=http://127.0.0.1:8118
+
+#保存退出
+:wq
+
+#刷新/etc/profile
+source /etc/profile
+```
+
+- 测试成功 ^_^
+```shell 
+curl www.google.com
+```
