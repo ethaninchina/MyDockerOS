@@ -32,6 +32,7 @@ echo "/usr/bin/sslocal -c /etc/shadowsocks.json /dev/null &" >>/etc/rc.local
 curl --socks5 127.0.0.1:1080 http://packages.cloud.google.com
 ```
 - 出现以下结构说明正常，CN直接去curl是无法拿到数据的
+``` shell
 <html>
   <head>
     <title>Directory listing for /</title>
@@ -45,6 +46,7 @@ curl --socks5 127.0.0.1:1080 http://packages.cloud.google.com
     <a href="/yum-legacy">yum-legacy</a><br />
   </body>
 </html>
+```
 
 # Privoxy是一款带过滤功能的代理服务器，针对HTTP、HTTPS协议
 
