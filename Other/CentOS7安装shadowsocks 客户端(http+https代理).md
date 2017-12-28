@@ -92,4 +92,8 @@ source /etc/profile
 
 ```shell 
 curl www.google.com
+
+#yum 测试 安装K8S 
+yum install kubelet kubeadm kubectl -y
 ```
+如果不需要用代理了,需要把 /etc/profile 里的配置注释掉,不然会一直走代理流量。
