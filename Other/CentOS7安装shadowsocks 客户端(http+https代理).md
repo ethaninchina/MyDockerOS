@@ -76,20 +76,20 @@ forward-socks5t / 127.0.0.1:1080 .
 /usr/local/sbin/privoxy --user root /usr/local/etc/privoxy/config
 ```
 - 配置 /etc/profile
+
 ```shell
 vim /etc/profile
-
-export http_proxy=http://127.0.0.1:8118       #这里的端口和上面 privoxy 中的保持一致
+#这里的端口和上面 privoxy 中的保持一致
+export http_proxy=http://127.0.0.1:8118
 export https_proxy=http://127.0.0.1:8118
-
 #保存退出
-:wq
 
 #刷新/etc/profile
 source /etc/profile
 ```
 
-- 测试成功 ^_^
+- 测试成功
+
 ```shell 
 curl www.google.com
 ```
