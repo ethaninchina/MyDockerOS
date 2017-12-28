@@ -72,7 +72,7 @@ listen-address 127.0.0.1:8118
 forward-socks5t / 127.0.0.1:1080 .
 ```
 - 启动
-````shell
+```shell
 /usr/local/sbin/privoxy --user root /usr/local/etc/privoxy/config
 ```
 - 配置 /etc/profile
