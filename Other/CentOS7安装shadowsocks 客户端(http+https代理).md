@@ -1,6 +1,7 @@
 # Shadowsocks 客户端
 - 安装
 ```shell
+yum install python-pip  -y
 pip install --upgrade pip
 pip install shadowsocks
 ```
