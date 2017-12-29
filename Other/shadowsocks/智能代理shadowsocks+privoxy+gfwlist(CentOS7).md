@@ -1,11 +1,12 @@
-# Shadowsocks 客户端
-- 安装
+# 企业内部 部门局域网 科学上网 (国内、国外分流)
+
+- 安装翻墙神器 shadowsocks
 ```shell
 yum install python-pip  -y
 pip install --upgrade pip
 pip install shadowsocks
 ```
-- 配置
+- 配置shadowsocks
 ```shell
 vi /etc/shadowsocks.json
 
@@ -20,15 +21,15 @@ vi /etc/shadowsocks.json
   "workers": 1                    #工作线程数
 }
 ```
-- 启动
+- 启动shadowsocks
 ```shell
 /usr/bin/sslocal -c /etc/shadowsocks.json /dev/null &
 
-#开机启动
+#开机启动shadowsocks
 echo "/usr/bin/sslocal -c /etc/shadowsocks.json /dev/null &" >>/etc/rc.local
 ```
 
-- 测试
+- 测试shadowsocks socks5代理
 ```shell
 curl --socks5 127.0.0.1:1080 http://packages.cloud.google.com
 ```
@@ -49,7 +50,7 @@ curl --socks5 127.0.0.1:1080 http://packages.cloud.google.com
 </html>
 ```
 
-# Privoxy是一款带过滤功能的代理服务器，针对HTTP、HTTPS协议
+# Privoxy是一款带过滤功能的代理服务器，针对HTTP、HTTPS协议 等...
 
 - Shadowsocks 是一个 socket5 服务，我们需要使用 Privoxy 把流量转到 http／https 上
 ```shell
@@ -57,10 +58,10 @@ yum install privoxy -y
 #开机启动
 systemctl enable privoxy.service
 
-#查看
+#查看启动状态
 systemctl -l status privoxy.service
 ```
-- 配置
+- 配置privoxy
 ```shell
 vim /etc/privoxy/config
 #[root@ss privoxy]# grep -vE "^$|#" /etc/privoxy/config
@@ -74,7 +75,7 @@ enable-remote-toggle  0
 enable-remote-http-toggle  0
 enable-edit-actions 0
 enforce-blocks 0
-buffer-limit 4096
+buffer-limit 65535
 enable-proxy-authentication-forwarding 0
 forwarded-connect-retries  0
 accept-intercepted-requests 0
@@ -93,21 +94,22 @@ systemctl start privoxy.service
 ```shell
 curl -skL https://raw.github.com/zfl9/gfwlist2privoxy/master/gfwlist2privoxy -o gfwlist2privoxy
 
-#生成 gfwlist.action 文件
+#生成 gfwlist.action 文件 （127.0.0.1:1080 为socks5本地代理 IP:端口）
 bash gfwlist2privoxy '127.0.0.1:1080'
 
 #拷贝至 privoxy 配置目录
 cp -af gfwlist.action /etc/privoxy/
 
-#加载 gfwlist.action 文件
+#privoxy 加载 gfwlist.action 文件
 echo 'actionsfile gfwlist.action' >> /etc/privoxy/config
 
 #重新启动 privoxy.service 服务
 systemctl restart privoxy.service
+#查看privoxy启动服务
 systemctl -l status privoxy.service
 ```
 
-- 计入系统配置 /etc/profile
+- 加入系统配置 /etc/profile,使全局生效
 ```shell
 #privoxy 默认监听端口为 8118
 proxy="http://127.0.0.1:8118"
@@ -129,3 +131,4 @@ source /etc/profile
 curl -sL www.baidu.com
 curl -sL packages.cloud.google.com
 ```
+# 如果有DNS服务需求，可以结合安装 dnsmasq 或者其他dns服务,访问内网域名
