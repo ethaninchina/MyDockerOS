@@ -68,7 +68,7 @@ confdir /etc/privoxy
 logdir /var/log/privoxy
 filterfile default.filter
 logfile logfile
-listen-address  127.0.0.1:8118
+listen-address  0.0.0.0:8118
 toggle  1
 enable-remote-toggle  0
 enable-remote-http-toggle  0
@@ -85,8 +85,7 @@ tolerate-pipelining 1
 socket-timeout 300
 ```
 
-- 启动
-
+- 启动privoxy
 ```shell
 systemctl start privoxy.service
 ```
@@ -106,7 +105,7 @@ echo 'actionsfile gfwlist.action' >> /etc/privoxy/config
 #重新启动 privoxy.service 服务
 systemctl restart privoxy.service
 systemctl -l status privoxy.service
-
+```
 
 - 计入系统配置 /etc/profile
 ```shell
