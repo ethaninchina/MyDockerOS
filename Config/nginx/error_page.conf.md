@@ -1,0 +1,62 @@
+```bash
+error_page 403 = @403;
+error_page 404 = @404;
+error_page 500 = @500;
+error_page 502 = @502;
+error_page 503 = @503;
+error_page 504 = @504;
+
+location @403 {
+charset utf-8;
+default_type 'text/html';
+content_by_lua '
+ngx.status = 403
+ngx.say("Forbidden 403： 拒绝访问 ")
+';
+}
+
+location @404 {
+charset utf-8;
+default_type 'text/html';
+content_by_lua '
+ngx.status = 404
+ngx.say("Error 404： 您请求的网页路径不存在 ")
+';
+}
+
+location @500 {
+charset utf-8;
+default_type 'text/html';
+content_by_lua '
+ngx.status = 500
+ngx.say("Internal Server Error 500： 内部服务器错误 ")
+';
+}
+
+location @502 {
+charset utf-8;
+default_type 'text/html';
+content_by_lua '
+ngx.status = 502
+ngx.say("Bad Gateway 502： 错误网关、无效网关 ")
+';
+}
+
+location @503 {
+charset utf-8;
+default_type 'text/html';
+content_by_lua '
+ngx.status = 503
+ngx.say("Timeout 503： 服务器访问超时 ")
+';
+}
+
+location @504 {
+charset utf-8;
+default_type 'text/html';
+content_by_lua '
+ngx.status = 504
+ngx.say("Gateway timeout 504： 网关超时  ")
+';
+}
+```
