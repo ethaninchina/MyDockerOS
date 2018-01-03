@@ -27,7 +27,7 @@ yum install -y zip unzip lrzsz wget curl
 #创建docker项目相关文件路径,下载所需配置文件
 mkdir /root/docker
 cd /root/docker
-wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Shell/wwwdocker/wwwdocker.tar.gz
+wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/wwwdocker/wwwdocker.tar.gz
 tar zxvf wwwdocker.tar.gz
 #删除压缩包
 rm -fr /root/docker/wwwdocker.tar.gz
