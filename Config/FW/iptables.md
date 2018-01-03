@@ -1,7 +1,5 @@
 ```bash
-#sample configuration for iptables service
-#you can edit this manually or use system-config-firewall
-#please do not ask us to add additional ports/services to this default configuration
+#INPUT默认拒绝
 *filter
 :INPUT DROP [0:0]
 :FORWARD ACCEPT [0:0]
