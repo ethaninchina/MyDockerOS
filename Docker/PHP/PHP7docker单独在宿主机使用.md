@@ -1,6 +1,6 @@
 - 相关配置下载
 
-wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/wwwdocker/wwwdocker.tar.gz
+        wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/wwwdocker/wwwdocker.tar.gz
 
 - 启动脚本服务
 ```shell
