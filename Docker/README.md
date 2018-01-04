@@ -1,6 +1,6 @@
-### 存放docker相关服务
+### 安装部署 `docker` 服务
 
-- 安装 `docker` 服务
+- 安装 `docker`
 ```shell
 yum install epel-release -y
 yum update -y
@@ -34,5 +34,5 @@ systemctl restart docker.service
 ```shell
 docker login --username=ooxx registry.cn-hangzhou.aliyuncs.com
 
-docker push ...
+docker push php7
 ```
