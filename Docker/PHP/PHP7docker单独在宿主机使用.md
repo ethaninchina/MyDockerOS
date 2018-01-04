@@ -20,10 +20,9 @@ docker run --name PHP7 \
 -d registry.cn-hangzhou.aliyuncs.com/webss/php:7
 ```
 
-- 宿主机 服务： nginx 1.12 、 mysql 5.6 
-- docker容器服务： PHP7.1.12               
+- docker容器服务： PHP7.1.12 
+- 宿主机 服务： nginx 1.12 、 mysql 5.6              
 - nginx 配置如下：
-
 ```shell
 server {
         listen             80;
