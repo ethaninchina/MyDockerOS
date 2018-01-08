@@ -7,6 +7,7 @@ services:
                - mysql
                - php
             #nginx镜像的路径
+            #image: wuyuzai/mydockeros:openresty-alpine
             image: registry.cn-hangzhou.aliyuncs.com/webss/openresty:openresty-alpine
             #映射文件/文件夹到宿主机，持久化和方便管理
             volumes:
@@ -34,6 +35,7 @@ services:
             container_name: openresty
         php:
             #PHP7镜像的路径
+            image: wuyuzai/mydockeros:php7.1.12-alpine
             image: registry.cn-hangzhou.aliyuncs.com/webss/php:7.1.12-alpine
             #映射文件/文件夹到宿主机，持久化和方便管理
             volumes:
