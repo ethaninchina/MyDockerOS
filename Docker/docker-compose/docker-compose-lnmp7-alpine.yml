@@ -29,7 +29,6 @@ services:
             ports:
                 - 80:80
                 - 443:443
-                #- 6379:6379
             hostname: openresty
             #容器名称
             container_name: openresty
