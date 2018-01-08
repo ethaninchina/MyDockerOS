@@ -7,3 +7,6 @@
 ```shell
 curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
 ```
+
+- `Alpine Linux`版 `LNMP` + `shadowsocks`
+https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/docker-compose/docker-compose-lnmp7-alpine.yml
