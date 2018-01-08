@@ -33,7 +33,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && pecl install memcached \
     && pecl install xdebug \
     && pecl install mongodb \
-    && docker-php-ext-enable redis memcached xdebug mongodb \
+    && pecl install swoole \
+    && docker-php-ext-enable redis memcached xdebug mongodb swoole \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" >  /etc/timezone \
     && apk del .build-deps
