@@ -1,0 +1,111 @@
+version: '2'
+services:
+        #服务名称
+        openresty:
+            #依赖mysql服务，意味着在启动openresty之前先启动mysql,php服务容器
+            depends_on:
+               - mysql
+               - php
+            #nginx镜像的路径
+            image: registry.cn-hangzhou.aliyuncs.com/webss/openresty:openresty-alpine
+            #映射文件/文件夹到宿主机，持久化和方便管理
+            volumes:
+                - /root/docker/web:/usr/local/openresty/nginx/html
+                - /root/docker/logs/nginx_log:/usr/local/openresty/nginx/logs
+                - /root/docker/nginx-conf:/usr/local/openresty/nginx/conf
+            #openresty服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络
+            networks:
+                - webserver
+            #网络模式HOST(使用宿主机网络) 性能更优
+            #network_mode: host
+            ports:
+                - 80:80
+                - 443:443
+                #- 6379:6379
+            hostname: openresty
+            #容器名称
+            container_name: openresty
+        php:
+            #PHP7镜像的路径
+            image: registry.cn-hangzhou.aliyuncs.com/webss/php:7.1.12-alpine
+            #映射文件/文件夹到宿主机，持久化和方便管理
+            volumes:
+                - /root/docker/web:/usr/local/openresty/nginx/html
+                - /root/docker/logs/php_log:/tmp/phplogs
+                - /root/docker/php/php.ini:/usr/local/etc/php/php.ini
+                - /root/docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            #openresty服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络
+            networks:
+                - webserver
+            hostname: php7
+            #容器名称
+            container_name: php7
+        #服务名称
+        mysql:
+            image: docker.io/mysql:5.7
+            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
+            environment:
+                MYSQL_ROOT_PASSWORD: zz520ll
+            #映射文件路径
+            volumes:
+                - /root/docker/mysqld/config:/etc/mysql
+                - /root/docker/mysqld/mysqldata:/var/lib/mysql
+                - /root/docker/logs/mysql_log:/var/log/mysql
+            #mysql服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络                   
+            networks:
+                - webserver
+            #网络模式HOST 性能更优
+            #network_mode: host
+            #ports:
+                #- 3306:3306
+            hostname: mysql57
+            #容器名称
+            container_name: mysql57
+        #附加服务-ss科学上网
+        shadowsocksvv1:
+            image: docker.io/easypi/shadowsocks-libev
+            environment:
+                SERVER_ADDR: 0.0.0.0
+                PASSWORD: 666.ooxx.com
+                SERVER_PORT: 1443
+            restart: always
+            #docker网络
+            networks:
+                - shadowsocksvv1
+            #网络模式HOST(使用宿主机网络)性能更优
+            #network_mode: host
+            ports:
+                - 1443:1443
+            hostname: shadowsocksvv1
+            #容器名称
+            container_name: shadowsocksvv1
+#定义docker全局网络服务
+networks:
+        webserver:
+            driver: bridge
+        shadowsocksvv1:
+            driver: bridge
