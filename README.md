@@ -1,4 +1,4 @@
-#### dockerfile 配置文件在 docker分支
+### dockerfile 配置文件在 docker分支
 
     https://github.com/station19/MyDockerOS/tree/docker
 
@@ -9,7 +9,7 @@
     - Mysql
     - shadowsocks
     - php7
-        - 扩展包括
+        - 扩展如下：增加安装扩展redis,memcached,mongodb
 ```shell
 [PHP Modules]
 bcmath
