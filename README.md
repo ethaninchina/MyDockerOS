@@ -3,7 +3,7 @@
     https://github.com/station19/MyDockerOS/tree/docker
 
 ### 以下适合centos7 安装LNMP镜像服务 
-服务软件
+- 服务软件
     - openresty
     - redis
     - Mysql
