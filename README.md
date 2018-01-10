@@ -6,7 +6,7 @@
 - 服务软件
     - openresty
         - 支持 HTTP/2 协议 ( listen	443 ssl http2; )
-    - redis
+    - redis
     - Mysql
     - shadowsocks
     - php7
