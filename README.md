@@ -11,6 +11,7 @@
     - shadowsocks
     - php7
       - 扩展增加安装扩展redis、memcached、mongodb
+      
 ```shell
 [PHP Modules]
 bcmath
