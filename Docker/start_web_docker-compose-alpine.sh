@@ -45,6 +45,8 @@ echo -e "
 * hard nofile 102400
 " >>/etc/security/limits.conf
 echo "ulimit -SHn 102400" >>/etc/profile
+#即时生效
+source /etc/profile
 
 #安装docker
 yum install epel-release -y
