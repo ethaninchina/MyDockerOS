@@ -15,7 +15,7 @@ mysql_pass=123456
 #自定义ss server端口，ss密码
 ss_port=7879
 ss_pass=www.baidu.com
-#自定义docker-compose版本 （非CN 的IP归属地地址生效,CN 的IP地址无视）
+#自定义docker-compose版本
 docker_compose_version=1.18.0
 # ****** 自定义参数 end ******
 
