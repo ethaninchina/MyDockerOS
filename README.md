@@ -2,14 +2,14 @@
 
     https://github.com/station19/MyDockerOS/tree/docker
 
-### 以下适合centos7 安装LNMP镜像服务 
+### 推荐以下适合centos7 安装LNMP镜像服务 (基于Alpine Linux镜像制作)
 - 服务软件
     - openresty
     - redis
     - Mysql
     - shadowsocks
     - php7
-        - 扩展如下:增加安装扩展redis,memcached,mongodb
+          - 扩展如下:增加安装扩展redis,memcached,mongodb
 ```shell
 [PHP Modules]
 bcmath
