@@ -5,8 +5,8 @@
 ### 推荐以下适合centos7 安装LNMP镜像服务 (基于Alpine Linux镜像制作)
 - 服务软件
     - openresty
-        - 支持HTTP2
-    - redis
+        - 支持 HTTP/2 协议 ( listen	443 ssl http2; )
+    - redis
     - Mysql
     - shadowsocks
     - php7
