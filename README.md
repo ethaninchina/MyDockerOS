@@ -6,7 +6,7 @@
 - 服务软件
     - openresty
         - 支持HTTP2
-    - redis
+    - redis
     - Mysql
     - shadowsocks
     - php7
