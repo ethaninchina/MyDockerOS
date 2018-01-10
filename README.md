@@ -10,8 +10,8 @@
     - Mysql
     - shadowsocks
     - php7
-        - 扩展增加安装扩展redis、memcached、mongodb
-      
+        - 扩展增加安装扩展redis、memcached、mongodb、Xdebug、OPcache
+      
 ```shell
 [PHP Modules]
 bcmath
