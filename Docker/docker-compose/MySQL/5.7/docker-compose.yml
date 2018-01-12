@@ -1,0 +1,34 @@
+version: '2'
+services:
+#mysql服务
+        mysql:
+            image: docker.io/mysql:5.7
+            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
+            environment:
+                MYSQL_ROOT_PASSWORD: 123456
+            #映射文件路径
+            volumes:
+                - /root/docker/mysqld/config:/etc/mysql
+                - /root/docker/mysqld/mysqldata:/var/lib/mysql
+                - /root/docker/logs/mysql_log:/var/log/mysql
+            #mysql服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络                   
+            networks:
+                - webserver
+            #网络模式HOST 性能更优
+            #network_mode: host
+            ports:
+                - 3306:3306
+            hostname: mysql57
+            #容器名称
+            container_name: mysql57
+networks:
+        webserver:
+            driver: bridge
