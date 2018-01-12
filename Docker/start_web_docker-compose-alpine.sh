@@ -5,9 +5,6 @@ echo "非root用户无权限执行"
 exit 1
 fi
 
-#屏幕调试输出
-set -x
-
 #全局参数 
 # ****** 自定义参数 start ******
 #mysql密码
@@ -172,6 +169,6 @@ echo -e "
           
           *** 如iptables nat转发正常使用 请忽略 ****
  "
-
+ 
 #删除shell
 cd /root && rm $0
