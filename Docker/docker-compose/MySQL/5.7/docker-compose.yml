@@ -1,6 +1,6 @@
 version: '2'
 services:
-#mysql服务
+#mysql独立服务
         mysql:
             image: docker.io/mysql:5.7
             #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
@@ -24,6 +24,7 @@ services:
                 - webserver
             #网络模式HOST 性能更优
             #network_mode: host
+            #端口映射
             ports:
                 - 3306:3306
             hostname: mysql57
