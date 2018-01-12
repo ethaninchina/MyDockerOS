@@ -22,13 +22,9 @@ curl -L https://get.daocloud.io/docker/compose/releases/download/1.18.0/docker-c
 ```docker-compose pause web ```
 
 - 恢复 所有服务
-```
-docker-compose unpause
-```
+```docker-compose unpause```
 - 恢复 web服务的容器
-```
-docker-compose unpause web
-```
+```docker-compose unpause web```
 
 ### 配置镜像加速
 ```
