@@ -16,17 +16,19 @@ curl -L https://get.daocloud.io/docker/compose/releases/download/1.18.0/docker-c
 ```
 
 ### 暂停/恢复容器服务
-- 暂停所有服务
+- 暂停 所有服务
 ```docker-compose pause``` 
-- 暂停web服务的容器
+- 暂停 web服务的容器
 ```docker-compose pause web ```
 
-- 复容器服务
-恢复所有服务
-```docker-compose unpause```
-- 恢复web服务的容器
-```docker-compose unpause web```
-
+- 恢复 所有服务
+```
+docker-compose unpause
+```
+- 恢复 web服务的容器
+```
+docker-compose unpause web
+```
 
 ### 配置镜像加速
 ```
@@ -41,7 +43,6 @@ EOF
 ```
 systemctl restart docker.service
 ```
-
 
 ### push到阿里云镜像
 ```
