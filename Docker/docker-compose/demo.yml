@@ -1,0 +1,134 @@
+version: '2'
+services:
+#openresty服务
+        openresty:
+            #依赖mysql服务，意味着在启动openresty之前先启动mysql,php服务容器
+            depends_on:
+               - mysql
+               - php
+            #nginx镜像的路径
+            image: openresty_version
+            #映射文件/文件夹到宿主机，持久化和方便管理
+            volumes:
+                - /root/docker/web:/usr/local/openresty/nginx/html
+                - /root/docker/logs/nginx_log:/usr/local/openresty/nginx/logs
+                - /root/docker/nginx-conf:/usr/local/openresty/nginx/conf
+            #openresty服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络
+            networks:
+                - webserver
+            #网络模式HOST(使用宿主机网络) 性能更优
+            #network_mode: host
+            ports:
+                - 80:80
+                - 443:443
+            hostname: openresty
+            #容器名称
+            container_name: openresty
+#php服务
+        php:
+            #PHP7镜像的路径
+            image: php_version
+            #映射文件/文件夹到宿主机，持久化和方便管理
+            volumes:
+                - /root/docker/web:/usr/local/openresty/nginx/html
+                - /root/docker/logs/php_log:/tmp/phplogs
+                - /root/docker/php/php.ini:/usr/local/etc/php/php.ini
+                - /root/docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            #openresty服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络
+            networks:
+                - webserver
+            hostname: php7
+            #容器名称
+            container_name: php7
+#mysql服务
+        mysql:
+            image: mysql_version
+            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
+            environment:
+                MYSQL_ROOT_PASSWORD: mysql_pass
+            #映射文件路径
+            volumes:
+                - /root/docker/mysqld/config:/etc/mysql
+                - /root/docker/mysqld/mysqldata:/var/lib/mysql
+                - /root/docker/logs/mysql_log:/var/log/mysql
+            #mysql服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络                   
+            networks:
+                - webserver
+            #网络模式HOST 性能更优
+            #network_mode: host
+            #ports:
+                #- 3306:3306
+            hostname: mysql57
+            #容器名称
+            container_name: mysql57
+#redis服务
+        redis:
+            image: redis_version
+            volumes:
+                - /root/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+            #redis服务意外退出时自动重启
+            restart: always
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络                   
+            networks:
+                - webserver
+            #网络模式HOST 性能更优
+            #network_mode: host
+            #docker内网下使用容器名连接
+            #ports:
+                #- 6379:6379
+            hostname: redis
+            #容器名称
+            container_name: redis
+#shadowsocks附加服务
+        shadowsocks:
+            image: shadowsocks_version
+            environment:
+                SERVER_ADDR: 0.0.0.0
+                PASSWORD: ss_pass
+                SERVER_PORT: ss_port
+            restart: always
+            #docker网络
+            networks:
+                - shadowsocks
+            #网络模式HOST(使用宿主机网络)性能更优
+            #network_mode: host
+            ports:
+                - ss_port:ss_port
+            hostname: shadowsocks
+            #容器名称
+            container_name: shadowsocks
+#定义docker全局网络服务
+networks:
+        webserver:
+            driver: bridge
+        shadowsocks:
+            driver: bridge
