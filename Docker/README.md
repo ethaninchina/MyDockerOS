@@ -14,17 +14,22 @@ systemctl start docker.service
 ```
 curl -L https://get.daocloud.io/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
 ```
+### 强制重建容器 
+- 使用 --force-recreate 可以强制重建容器
+```
+docker-compose up -d --force-recreate
+``` 
 
 ### 暂停/恢复容器服务
 - 暂停 所有服务
 ```docker-compose pause``` 
-- 暂停 web服务的容器
-```docker-compose pause web ```
+- 暂停 php容器服务的容器
+```docker-compose pause php ```
 
 - 恢复 所有服务
 ```docker-compose unpause```
-- 恢复 web服务的容器
-```docker-compose unpause web```
+- 恢复 php容器服务的容器
+```docker-compose unpause php```
 
 ### 配置镜像加速
 ```
