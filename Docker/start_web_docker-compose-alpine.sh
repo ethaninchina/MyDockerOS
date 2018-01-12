@@ -115,7 +115,7 @@ yum install -y iptables
 yum update iptables -y
 yum install iptables-services -y
 
-#增加一处判定ssh端口脚本 ssh port start
+#增加一处判定ssh端口脚本 # ssh port start
 ssh_port=$(grep ^Port /etc/ssh/sshd_config|awk '{print $2}')
 if [ -z "$ssh_port" ]; then
         SSH_Port=22
@@ -126,9 +126,8 @@ for SSH_Port in $ssh_port
 do
         echo $SSH_Port 
 done
-fi
+fi 
 # ssh port end
-
 
 #设置iptables配置
 cat>/etc/sysconfig/iptables<<EOF
