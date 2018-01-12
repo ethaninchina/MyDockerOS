@@ -82,8 +82,7 @@ fi
 
 #下载、配置docker-compose.yml 文件
 wget -c "https://github.com/station19/MyDockerOS/raw/master/Docker/docker-compose/demo.yml" -O "/root/docker/docker-compose.yml"
-
-#修改变量值
+#修改上面获取的docker-compose.yml变量值
 sed -i s#ss_pass#$ss_pass#g /root/docker/docker-compose.yml
 sed -i s#ss_port#$ss_port#g /root/docker/docker-compose.yml
 sed -i s#openresty_version#$openresty_version#g /root/docker/docker-compose.yml
