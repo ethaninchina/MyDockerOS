@@ -19,14 +19,16 @@ docker pull registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7
 docker pull docker.io/mysql:5.7
 ```
 - openresty
-````
+```
 #aliyun
 docker pull registry.cn-hangzhou.aliyuncs.com/webss/openresty
 
 #docker.io
 docker pull wuyuzai/mydockeros:openresty
 ```
+
 - php7.1
+
 ```
 #aliyun
 docker pull registry.cn-hangzhou.aliyuncs.com/webss/php:7
