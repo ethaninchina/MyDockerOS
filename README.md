@@ -12,7 +12,7 @@
     - php7
         - 扩展增加安装扩展redis、memcached、mongodb、Xdebug、OPcache
       
-```shell
+```
 [PHP Modules]
 bcmath
 Core
@@ -64,13 +64,14 @@ zlib
 Xdebug
 Zend OPcache
 ```
-#### ① Centos7镜像制作
-- `Cenetos7`版 docker容器服务 `LNMP(openresty+php7+redis++Mysql)` + `shadowsocks`
-```shell
-curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
-```
-#### ② Alpine Linux镜像制作
+#### (推荐) Alpine Linux镜像制作
 - `Alpine Linux`版 docker容器服务 `LNMP(openresty+php7+redis++Mysql)` + `shadowsocks`
 ```shell
 curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose-alpine.sh && chmod +x start_web_docker-compose-alpine.sh && ./start_web_docker-compose-alpine.sh
+```
+
+#### Centos7镜像制作
+- `Cenetos7`版 docker容器服务 `LNMP(openresty+php7+redis++Mysql)` + `shadowsocks`
+```
+curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
 ```
