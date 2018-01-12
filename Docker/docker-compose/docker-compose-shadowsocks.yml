@@ -1,7 +1,8 @@
 version: '2'
 services:
         shadowsocks:
-            image: docker.io/easypi/shadowsocks-libev
+            #image: docker.io/easypi/shadowsocks-libev
+            image: registry.cn-hangzhou.aliyuncs.com/webss/ss-server
             #网络模式HOST
             #network_mode: host
             ports:
