@@ -52,7 +52,8 @@ services:
             container_name: mysql57
         #docker服务
         shadowsocks:
-            image: docker.io/easypi/shadowsocks-libev
+            #image: docker.io/easypi/shadowsocks-libev
+            image: registry.cn-hangzhou.aliyuncs.com/webss/ss-server
             environment:
                 #IP为0.0.0.0 或者eth0的IP
                 SERVER_ADDR: 0.0.0.0
