@@ -22,9 +22,11 @@ docker pull docker.io/mysql:5.7
 ```
 #aliyun
 docker pull registry.cn-hangzhou.aliyuncs.com/webss/openresty
+docker pull registry.cn-hangzhou.aliyuncs.com/webss/openresty:openresty-alpine
 
 #docker.io
 docker pull wuyuzai/mydockeros:openresty
+docker pull wuyuzai/mydockeros:openresty-alpine
 ```
 
 - php7.1
@@ -32,7 +34,9 @@ docker pull wuyuzai/mydockeros:openresty
 ```
 #aliyun
 docker pull registry.cn-hangzhou.aliyuncs.com/webss/php:7
+docker pull registry.cn-hangzhou.aliyuncs.com/webss/php:7.1.12-alpine	
 
 #docker.io
 docker pull wuyuzai/mydockeros:php7
+docker pull wuyuzai/mydockeros:php7.1.12-alpine
 ```
