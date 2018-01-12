@@ -101,7 +101,7 @@ chattr +i /root/docker/docker-compose.yml
 #日志写入权限,否则会导致mysql启动失败问题
 chmod 777 /root/docker/logs -R
 #下载目录框架cache目录写入权限
-chmod 777 docker/web/download/_h5ai/p*/cache
+chmod 777 /root/docker/web/download/_h5ai/p*/cache
 
 #首次启动docker-compose
 /usr/local/bin/docker-compose -f /root/docker/docker-compose.yml up -d
