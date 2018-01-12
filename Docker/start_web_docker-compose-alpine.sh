@@ -68,7 +68,7 @@ curl -L https://get.daocloud.io/docker/compose/releases/download/$docker_compose
     php_version="registry.cn-hangzhou.aliyuncs.com/webss/php:7.1.12-alpine"
     mysql_version="registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7"
     redis_version="registry.cn-hangzhou.aliyuncs.com/webss/redis:3.2.11-alpine"
-    shadowsocks_version="registry.cn-hangzhou.aliyuncs.com/webss/sslibev"
+    shadowsocks_version="registry.cn-hangzhou.aliyuncs.com/webss/ss-server"
 else
 #使用github安装docker-compose编排服务
 curl -L https://github.com/docker/compose/releases/download/$docker_compose_version/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
