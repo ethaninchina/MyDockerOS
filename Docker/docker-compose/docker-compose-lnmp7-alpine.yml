@@ -89,7 +89,8 @@ services:
             container_name: mysql57
         #附加服务-ss科学上网
         shadowsocksvv1:
-            image: docker.io/easypi/shadowsocks-libev
+            #image: docker.io/easypi/shadowsocks-libev
+            image: registry.cn-hangzhou.aliyuncs.com/webss/ss-server
             environment:
                 SERVER_ADDR: 0.0.0.0
                 PASSWORD: 666.ooxx.com
