@@ -16,6 +16,9 @@ from docopt import docopt
 import stations
 from prettytable import PrettyTable #使信息以好看的表格形式呈现出来
 from colorama import init,Fore   #这个可以设置颜色
+from requests.packages.urllib3.exceptions import InsecureRequestWarning #关闭https警告
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
 headers={
         'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'
         }
