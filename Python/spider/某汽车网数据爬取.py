@@ -50,7 +50,7 @@ G = Py_session.get('http://test.ooxx.com/mall/index.php?act=car_brand&op=index',
 print('get页面开始get数据：',G.status_code)
 ### 测试 登陆后获取内容
 soup = BeautifulSoup(G.content,"html.parser")  #文档对象
-#定义保存文件UTF-8编码到当前目录下的car.txt
+#定义保存文件UTF-8编码到当前目录下
 OutFile = open('./汽车品牌.txt','w+',encoding='utf8')
 OutFile2 = open('./配件品牌.txt','w+',encoding='utf8')
 
