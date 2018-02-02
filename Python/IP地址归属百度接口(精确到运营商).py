@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
 import requests
 import json
 import sys
@@ -26,9 +29,9 @@ threeresult = tworesult[0]
 
 #打印IP归属地
 print (threeresult['location'])
-###
 
 
+############### 测试 ###############
 [root@izuf6ai63g73sy058dl8gwz ~]# ./a.py 152.47.3.74
 美国
 [root@izuf6ai63g73sy058dl8gwz ~]# ./a.py 58.47.3.74
