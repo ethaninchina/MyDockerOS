@@ -1,0 +1,28 @@
+#默认启动端口8090
+docker run --net=host --name=confluence -d registry.cn-hangzhou.aliyuncs.com/webss/confluence:6.6
+
+#docker stop confluence
+#docker rm -f confluence
+
+
+ #查看
+#docker exec confluence ps -ef
+#docker exec confluence ls -la /opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.2.jar
+#docker exec confluence ls -la /opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java-5.1.45-bin.jar
+
+
+#复制破解 和mysql连接包 并给权限
+docker cp atlassian-extras-decoder-v2-3.2.jar confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/
+docker cp mysql-connector-java-5.1.45-bin.jar confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib
+docker exec confluence chown daemon.daemon /opt/atlassian/confluence/confluence/WEB-INF/lib/ -R
+
+#重启服务
+docker exec confluence /opt/atlassian/confluence/bin/shutdown.sh
+docker exec confluence /opt/atlassian/confluence/bin/startup.sh
+
+#利用算号器 (运行环境  java1.8+)
+confluence_keygen.jar
+
+Server ID 步骤中出现
+
+点击 .gen! 填入key即可

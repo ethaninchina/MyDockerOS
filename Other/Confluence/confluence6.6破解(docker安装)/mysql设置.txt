@@ -1,0 +1,19 @@
+###MySQL###增加配置
+[client]
+# Confluence使用
+default-character-set = utf8
+
+[mysqld]
+# Confluence使用
+default-storage-engine=INNODB
+character_set_server=utf8
+collation-server=utf8_bin
+transaction_isolation = READ-COMMITTED
+
+### 创建数据库使用
+
+#创建数据库必须指定utf8 创建库名为 confluence
+CREATE DATABASE confluence CHARACTER SET utf8 COLLATE utf8_bin;
+
+#创建授权用户
+GRANT ALL PRIVILEGES ON confluence.* TO 'confluence'@'localhost' IDENTIFIED BY 'confluence';

@@ -1,0 +1,9 @@
+#下载已放好 破解文件和mysql连接包的 docker镜像
+docker pull registry.cn-hangzhou.aliyuncs.com/webss/confluence:6.6
+
+#利用算号器   (运行环境  java1.8+)
+windows安装java1.8后 直接双击运行 confluence_keygen.jar
+
+Server ID 步骤中出现
+
+点击 .gen! 填入key即可
