@@ -44,6 +44,7 @@ RUN echo [supervisord] > /etc/supervisord.conf \
  EXPOSE 80 443 8080 6379
 CMD ["/usr/bin/supervisord"]
 
-#docker run -p 8080:8080 --name=nginx-tomcat8-redis32 --restart=always -d ntr-test2
+#docker run -p 8080:8080 -h "tomcat8" --name=nginx-tomcat8-redis32 --restart=always -d ntr-test2
 
-#docker run --net=host --name=nginx-tomcat8-redis32 --restart=always -d ntr-test2
+#连接宿主机mysql服务使用host网络
+#docker run --net=host -h "tomcat8" --name=nginx-tomcat8-redis32 --restart=always -d ntr-test2
