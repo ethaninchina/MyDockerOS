@@ -1,0 +1,100 @@
+```
+version: '2'
+services:
+#docker commit d6c7c82d2cb5 nginx-redis-tomcat7 保存新镜像
+#nginx服务
+        nginx:
+            #依赖mysql服务，意味着在启动nginx之前先启动mysql,tomcat服务容器
+            depends_on:
+               - mysql
+               - tomcat
+            #nginx镜像的路径
+            image: daocloud.io/library/nginx
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络
+            networks:
+                - webserver
+            #端口自定义
+            ports:
+                - 80:80
+                - 443:443
+            hostname: nginx
+            #容器名称
+            container_name: nginx
+#tomcat服务
+        tomcat:
+            image: daocloud.io/library/tomcat:8.5.16-jre8-alpine
+            #nginx服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络
+            networks:
+                - webserver
+            #端口自定义
+            ports:
+                - 8080:8080
+            hostname: tomcat
+            #容器名称
+            container_name: tomcat
+#mysql服务
+        mysql:
+            image: docker.io/mysql:5.7
+            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
+            environment:
+                MYSQL_ROOT_PASSWORD: 123456
+            #mysql服务意外退出时自动重启
+            restart: always
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络                   
+            networks:
+                - webserver
+            #端口自定义
+            ports:
+                - 3306:3306
+            hostname: mysql57
+            #容器名称
+            container_name: mysql57
+#redis服务
+        redis:
+            image: registry.cn-hangzhou.aliyuncs.com/webss/redis:3.2.11-alpine
+            # volumes:
+            #     - /root/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+            #redis服务意外退出时自动重启
+            restart: always
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            #docker网络                   
+            networks:
+                - webserver
+            #端口自定义
+            ports:
+                - 6379:6379
+            hostname: redis
+            #容器名称
+            container_name: redis
+#定义docker全局网络服务
+networks:
+        webserver:
+            driver: bridge
+        # shadowsocks:
+        #     driver: bridge
+```
