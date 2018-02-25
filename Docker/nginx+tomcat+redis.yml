@@ -1,4 +1,3 @@
-```
 version: '2'
 services:
 #docker commit d6c7c82d2cb5 nginx-redis-tomcat7 保存新镜像
@@ -97,4 +96,3 @@ networks:
             driver: bridge
         # shadowsocks:
         #     driver: bridge
-```
