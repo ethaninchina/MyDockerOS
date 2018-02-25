@@ -12,7 +12,7 @@ transaction_isolation = READ-COMMITTED
 
 ### 创建数据库使用
 
-#创建数据库必须指定utf8 创建库名为 confluence
+#创建数据库必须指定utf8,否则有可能提示utf8编码问题,库名为 confluence
 CREATE DATABASE confluence CHARACTER SET utf8 COLLATE utf8_bin;
 
 #创建授权用户
