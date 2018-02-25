@@ -12,3 +12,5 @@ Server ID 在安装步骤中出现,复制 到 授权码生成器中的 Server ID
 点击 .gen! 按钮生成key, 然后复制key
 
 在web安装页面 填入复制的key即可
+
+#### 如使用 docker-compose.yml 需修改docker-compose.yml 相关设置
