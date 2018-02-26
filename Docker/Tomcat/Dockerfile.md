@@ -1,3 +1,4 @@
+### nginx+tomcat8+java1.8+redis3.2
 ```
 FROM daocloud.io/library/centos:7
 MAINTAINER wyz test@test.com
