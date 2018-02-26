@@ -75,7 +75,12 @@ curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/sta
 ```
 curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
 ```
-### [java项目] Tomcat 相关服务 (nginx 、tomcat8、java8、redis3.2)
+### [java项目] Tomcat 相关服务 (镜像包含服务nginx 、tomcat8、java8、redis3.2)
 ```
 docker pull registry.cn-hangzhou.aliyuncs.com/webss/tomcat
+```
+- 启动镜像服务
+```
+#连接宿主机mysql服务使用host网络
+#docker run --net=host -h "tomcat8" --name=nginx-tomcat8-redis32 --restart=always -d jtnr-test
 ```
