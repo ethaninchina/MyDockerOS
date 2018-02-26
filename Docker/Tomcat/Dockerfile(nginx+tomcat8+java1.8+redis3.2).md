@@ -1,3 +1,4 @@
+```
 FROM daocloud.io/library/centos:7
 MAINTAINER wyz test@test.com
 #nginx+tomcat8+java1.8+redis3.2
@@ -48,3 +49,4 @@ CMD ["/usr/bin/supervisord"]
 
 #连接宿主机mysql服务使用host网络
 #docker run --net=host -h "tomcat8" --name=nginx-tomcat8-redis32 --restart=always -d ntr-test2
+```
