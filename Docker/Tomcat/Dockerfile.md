@@ -1,5 +1,9 @@
 ### nginx+tomcat8+java1.8+redis3.2
 ```
+docker pull registry.cn-hangzhou.aliyuncs.com/webss/tomcat
+```
+### Dockerfile 文件
+```
 FROM daocloud.io/library/centos:7
 MAINTAINER wyz test@test.com
 #nginx+tomcat8+java1.8+redis3.2
