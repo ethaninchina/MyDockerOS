@@ -75,3 +75,7 @@ curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/sta
 ```
 curl -O https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/start_web_docker-compose.sh && chmod +x start_web_docker-compose.sh && ./start_web_docker-compose.sh
 ```
+### [java项目] Tomcat 相关服务 (nginx 、tomcat8、java8、redis3.2)
+```
+docker pull registry.cn-hangzhou.aliyuncs.com/webss/tomcat
+```
