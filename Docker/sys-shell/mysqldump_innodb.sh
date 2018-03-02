@@ -8,12 +8,14 @@ SQL_DB_online=onlinedb
 #SQL_DB_dev=devdb
 
 
-# mysql备份导出速度快
+# mysql备份导出速度快 (排除表 --ignore-table)
 mysqldump -h $SQL_HOST -u$SQL_USER -p$SQL_PASSWD -P$SQL_PORT --opt \
 --default-character-set=utf8 \
 --max_allowed_packet=1073741824 \
 --net_buffer_length=16384 \
---hex-blob $SQL_DB_online | gzip > /MySQL_BAK/online.DB/liubei_online_`date +%F_%H%M%S`.sql.gz
+--ignore-table=$SQL_DB_online.webtest_log \
+--hex-blob \
+$SQL_DB_online | gzip > /MySQL_BAK/online.DB/onlinedb_`date +%F_%H%M%S`.sql.gz
 
 
 #sleep 3
