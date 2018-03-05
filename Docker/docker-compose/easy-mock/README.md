@@ -4,4 +4,6 @@
 2. 下载 `docker-compose.yml`和`default.json` 2个文件, 创建文件夹 `mkdir -p ./data/{db,redis} logs && chmod 777 ./logs`
 3. 启动：`docker-compose up -d`
 
-项目地址:  https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md
+web访问: http://localhost:7300
+
+### easy-mock项目地址:  `https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md`
