@@ -6,4 +6,5 @@
 
 web访问: http://localhost:7300
 
-### easy-mock项目地址:  `https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md`
+### easy-mock项目地址:  
+https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md
