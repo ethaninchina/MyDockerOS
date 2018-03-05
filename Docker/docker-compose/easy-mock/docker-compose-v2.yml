@@ -1,0 +1,35 @@
+version: "2"
+services:
+  mongodb:
+    image: mongo:3.4
+    volumes:
+        - ./data/db:/data/db    # 自定义数据库文件存放地址 ./data/db ，根据需要修改为本地地址
+    hostname: mongodb
+    networks:
+        - webserver
+  redis:
+    image: redis:4.0.6
+    command: redis-server --appendonly yes
+    volumes:
+        - ./data/redis:/data # redis #自定义数据文件存放地址 ./data/redis ，根据需要修改为本地地址
+    hostname: redis
+    networks:
+        - webserver
+  web:
+    image: easymock/easymock:1.5.1
+    command: /bin/bash -c "npm start"
+    depends_on:
+      - mongodb
+      - redis
+    ports:
+      - 7300:7300
+    volumes:
+      - ./logs:/home/easy-mock/easy-mock/logs   # 自定义日志地址 ./logs ，根据需要修改为本地地址
+      - ./default.json:/home/easy-mock/easy-mock/config/default.json   # 自定义配置文件./default.json
+    hostname: web
+    networks:
+        - webserver
+#定义docker全局网络服务
+networks:
+  webserver:
+    driver: bridge
