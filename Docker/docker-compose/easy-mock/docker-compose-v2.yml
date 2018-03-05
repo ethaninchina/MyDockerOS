@@ -7,6 +7,7 @@ services:
     hostname: mongodb
     networks:
         - webserver
+    container_name: mongodb
   redis:
     image: redis:4.0.6
     command: redis-server --appendonly yes
@@ -15,6 +16,7 @@ services:
     hostname: redis
     networks:
         - webserver
+    container_name: redis  
   web:
     image: easymock/easymock:1.5.1
     command: /bin/bash -c "npm start"
@@ -29,6 +31,7 @@ services:
     hostname: web
     networks:
         - webserver
+    container_name: web
 #定义docker全局网络服务
 networks:
   webserver:
