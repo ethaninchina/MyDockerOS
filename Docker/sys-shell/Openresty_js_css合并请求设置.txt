@@ -31,11 +31,9 @@ cd ~/openresty-1.13.6.1
 #安装
 make && make install
 
-
 echo "export PATH=$PATH:/opt/openresty/nginx/sbin" >>/etc/profile && source /etc/profile
 
-
-
+#下载openresty启动脚本
 curl -o /etc/init.d/nginx "https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/sys-shell/nginx"
 chmod +x /etc/init.d/nginx && nginx -t
 
@@ -46,7 +44,6 @@ useradd -M -s /sbin/nologin www_web
 useradd -M -s /sbin/nologin nginx
 
 # demo nginx config
-
 server {
     listen       80;
     server_name  www.ooxx.com;
@@ -73,7 +70,6 @@ curl http://www.ooxx.com/static/??js/ooxx.js,css/ooxx.css?ver=123
 ### >>>>>>>> 两个css合并
 curl http://www.ooxx.com/static/??css/ooxx.css,css/a.css
 
-
 ### >>>>>>>> js与css合并
 curl http://www.ooxx.com/static/??js/ooxx.js,css/ooxx.css
 
@@ -87,10 +83,6 @@ curl http://www.ooxx.com/static/??css/ooxx.css,css/a.css?123
 
 ### #css案例:
 <link rel="stylesheet" href="??foo1.css,foo2.css,subdir/foo3.css?v=2345" />
-
-
-
-
 
 
 ################### real server 权限 ###################
