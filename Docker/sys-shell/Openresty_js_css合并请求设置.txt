@@ -1,0 +1,104 @@
+cd ~/
+yum install pcre-devel openssl-devel gcc gcc-c++ curl
+
+wget https://openresty.org/download/openresty-1.13.6.1.tar.gz
+tar zxvf openresty-1.13.6.1.tar.gz
+
+wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz
+tar zxvf pcre-8.40.tar.gz
+
+wget https://github.com/alibaba/nginx-http-concat/archive/master.zip -O nginx-http-concat-master.zip
+unzip nginx-http-concat-master.zip
+
+cd ./pcre-8.40
+./configure
+make && make install
+
+
+#编译
+cd ~/openresty-1.13.6.1
+ ./configure --prefix=/opt/openresty \
+   --with-http_iconv_module \
+   --with-http_stub_status_module \
+   --with-http_gzip_static_module \
+   --with-luajit \
+   --with-stream \
+   --with-stream_ssl_module \
+   --with-http_v2_module \
+   --with-pcre=/root/pcre-8.40 \
+   --add-module=/root/nginx-http-concat-master
+
+#安装
+make && make install
+
+
+echo "export PATH=$PATH:/opt/openresty/nginx/sbin" >>/etc/profile && source /etc/profile
+
+
+
+curl -o /etc/init.d/nginx "https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/sys-shell/nginx"
+chmod +x /etc/init.d/nginx && nginx -t
+
+#安装nginx
+yum install redis -y
+
+useradd -M -s /sbin/nologin www_web 
+useradd -M -s /sbin/nologin nginx
+
+# demo nginx config
+
+server {
+    listen       80;
+    server_name  www.ooxx.com;
+    root /data/ooxx.com;
+    
+    location /cs-js/ {
+        concat on; #开启火关闭concat
+        concat_max_files 20; #允许合并的最大资源数目
+        concat_unique off; #是否只允许同类型文件(相同MIME文件)合并.例如，设置为off，那么js和css文件可以合并
+    }
+}
+
+####### demo curl url request tianjia 
+# 两个问号（??），需要合并的文件(a.js,b.js)
+curl http://localhost/js/??a.js,b.js
+
+
+### 合并前 css和js
+www.ooxx.com/static/css/ooxx.css
+www.ooxx.com/static/js/ooxx.js
+### 合并后 css和js
+curl http://www.ooxx.com/static/??js/ooxx.js,css/ooxx.css?ver=123
+
+### >>>>>>>> 两个css合并
+curl http://www.ooxx.com/static/??css/ooxx.css,css/a.css
+
+
+### >>>>>>>> js与css合并
+curl http://www.ooxx.com/static/??js/ooxx.js,css/ooxx.css
+
+### >>>>>>>>带版本号参数
+curl http://www.ooxx.com/static/??css/ooxx.css,css/a.css?123
+
+### 以上仅仅用了两个文件来测试，在具体应用中，大家可以使用多个，具体几个由你的nginx配置来控制. 在具体的环境中，都是以下方式来调用，以下方法摘自官方文档.
+#### js案例 ：
+<script src="??bar1.js,bar22.css,subdir/bar3.js?v=3245" />
+以上意思是将ba1.Js，bar22.css和subdir/bar3.js这三个请求合并为一个，并且版本号为3245.
+
+### #css案例:
+<link rel="stylesheet" href="??foo1.css,foo2.css,subdir/foo3.css?v=2345" />
+
+
+
+
+
+
+################### real server 权限 ###################
+
+chmod 777 /dataweb/{api2,apin,apis,liubei2}/data/{log,cache,session} -R
+
+chmod 777 /dataweb/notify/runtime /dataweb/notify/web/assets -R
+
+
+
+ 
