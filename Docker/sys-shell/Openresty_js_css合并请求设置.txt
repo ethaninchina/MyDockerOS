@@ -43,7 +43,11 @@ yum install redis -y
 useradd -M -s /sbin/nologin www_web 
 useradd -M -s /sbin/nologin nginx
 
-# demo nginx config
+###### demo nginx config
+
+# 编辑nginx/conf/mime.types
+application/javascript js; 修改为 application/x-javascript js;​
+
 server {
     listen       80;
     server_name  www.ooxx.com;
