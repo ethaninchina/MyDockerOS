@@ -83,14 +83,3 @@ curl http://www.ooxx.com/static/??css/ooxx.css,css/a.css?123
 
 ### #css案例:
 <link rel="stylesheet" href="??foo1.css,foo2.css,subdir/foo3.css?v=2345" />
-
-
-################### real server 权限 ###################
-
-chmod 777 /dataweb/{api2,apin,apis,liubei2}/data/{log,cache,session} -R
-
-chmod 777 /dataweb/notify/runtime /dataweb/notify/web/assets -R
-
-
-
- 
