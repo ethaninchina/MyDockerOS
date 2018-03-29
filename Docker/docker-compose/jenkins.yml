@@ -1,0 +1,24 @@
+version: '2'
+services:
+        jenkins:
+            image: daocloud.io/library/jenkins
+            restart: always
+            ulimits:
+                nproc: 10240
+                nofile:
+                    soft: 10240
+                    hard: 10240
+            #容器使用的网络
+            networks:
+                - jenkins_networks
+            ports:
+                - 80:8080
+                - 50000:50000
+            #容器内部hostname
+            hostname: jenkins
+            #容器名称
+            container_name: jenkins
+#定义docker全局网络服务
+networks:
+        jenkins_networks:
+            driver: bridge
