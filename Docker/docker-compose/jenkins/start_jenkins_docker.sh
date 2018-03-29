@@ -13,7 +13,7 @@ wget https://raw.githubusercontent.com/station19/MyDockerOS/master/Docker/docker
 #启动
 docker-compose up -d
 
-#下载最新版jenkins
+#下载最新版jenkins稳定版
 wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
 docker cp jenkins.war jenkins:/usr/share/jenkins/
 docker restart jenkins
