@@ -18,4 +18,5 @@ wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
 docker cp jenkins.war jenkins:/usr/share/jenkins/
 docker restart jenkins
 
-#docker commit $(docker ps|grep -v "CONTAINER ID"|awk '{print $1}') daocloud.io/library/jenkins
+#保存修改镜像
+#docker commit $(docker ps|grep -v "CONTAINER ID"|grep -w "jenkins"|awk '{print $1}') daocloud.io/library/jenkins
