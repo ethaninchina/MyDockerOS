@@ -25,7 +25,7 @@ systemctl start keepalived.service
 #ps -ef|grep keepalived
 ```
 
-### keepalived配置  /etc/keepalived/keepalived.conf 
+### keepalived配置  /etc/keepalived/keepalived.conf  , 此配置在关闭selinux和 iptables情况下进行
 ```
 ! Configuration File for keepalived
 
