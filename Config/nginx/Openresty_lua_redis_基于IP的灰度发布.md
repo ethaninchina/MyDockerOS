@@ -1,4 +1,5 @@
-```Openresty部分配置如下```
+###Openresty部分配置如下
+```
 upstream online { 
         server 127.0.0.1:8080;  #生产服务器
     }
@@ -53,9 +54,10 @@ upstream yfb {
             }
     }
 
+```
 
-
-``` lua配置文件 huidu.lua ```
+###lua配置文件 huidu.lua
+```
 #Lua脚本内容如下：
 local redis = require "resty.redis" 
 local cache = redis.new()
@@ -98,10 +100,11 @@ if not ok then
     ngx.say("failed to close:", err) 
     return 
 end
+```
 
-
-``` redis操作 ```
-#键入访问预发布访问的IP
+### redis操作
+```
+键入访问预发布访问的IP
 
 set 192.168.100.33 192.168.100.33
 set 172.168.10.58 172.168.10.58
@@ -110,3 +113,4 @@ set 172.168.10.58 172.168.10.58
 #删除预发布访的IP
 del 192.168.100.33
 del 172.168.10.58
+```
