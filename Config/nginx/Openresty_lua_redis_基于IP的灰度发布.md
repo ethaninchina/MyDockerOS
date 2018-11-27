@@ -1,4 +1,4 @@
-###Openresty部分配置如下
+### Openresty部分配置如下
 ```
 upstream online { 
         server 127.0.0.1:8080;  #生产服务器
@@ -56,7 +56,7 @@ upstream yfb {
 
 ```
 
-###lua配置文件 huidu.lua
+### lua配置文件 huidu.lua
 ```
 #Lua脚本内容如下：
 local redis = require "resty.redis" 
