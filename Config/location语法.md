@@ -16,17 +16,21 @@
 location = / {
  # 只匹配 / 查询。
 }
+
 location / {
  # 匹配任何查询，因为所有请求都以 / 开头。但是正则表达式规则和长的块规则将被优先和查询匹配。
 }
+
 location ^~ /images/ {
  # 匹配任何以 /images/ 开头的任何查询并且停止搜索。任何正则表达式将不会被测试。
 }
+
 location ~*.(gif|jpg|jpeg)$ {
  # 匹配任何以 gif、jpg 或 jpeg 结尾的请求。
 }
+
 location ~*.(gif|jpg|swf)$ {
-  valid_referers none blocked start.igrow.cn sta.igrow.cn;
+  valid_referers none blocked aa.abc.cn bb.abc.cn;
   if ($invalid_referer) {
     #防盗链
     rewrite ^/ http://$host/logo.png;
