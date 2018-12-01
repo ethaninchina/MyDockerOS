@@ -5,7 +5,7 @@ local redisIp = "127.0.0.1"
 local redisPort = "6379"
 local redisPasswd = "12345"
 local redisList = "__grayconfiguration"
--- 默认是走线上,关闭灰度
+-- 默认是走线上,不走灰度
 local isGray = false
 
 --获取headers
@@ -77,7 +77,7 @@ end
 for k, v in pairs(rdsid_list) do
     -- 如果值相等,说明redis中存在此值,就发布到灰度
     if id == v then
-        isGray = true
+        isGray = true  -- 当id变量匹配到rdsid_list列表内的值时,打开灰度,默认是关闭的
         break
     end
 end
@@ -86,9 +86,11 @@ end
 --关闭redis
 local ok, err = cache:close() 
 
+-- 判断灰度是开启还是关闭
 if isGray then
     ngx.exec("@gray_env")
 else
     ngx.exec("@product_env")
 end
+
 ```
