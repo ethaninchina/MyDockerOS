@@ -35,7 +35,7 @@ if id == nil then
     id = ngx.var.cookie_token
 end
 
- --token,sessionid 如果不为空 就发布到 灰度
+ --headers,cookie 中的值都为空,走线上
 if id == nil then
     ngx.exec("@product_env")
     return
