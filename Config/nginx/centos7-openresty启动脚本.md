@@ -17,6 +17,9 @@ PrivateTmp=true
 [Install]
 WantedBy=multi-user.target
 
+#保存退出
+
+
 
 #增加环境变量到系统环境
 echo 'export PATH=$PATH:/usr/local/openresty/nginx/sbin' >> /etc/profile
