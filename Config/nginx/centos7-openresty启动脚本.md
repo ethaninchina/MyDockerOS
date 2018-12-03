@@ -18,8 +18,15 @@ PrivateTmp=true
 WantedBy=multi-user.target
 
 
-#命令
+#增加环境变量到系统环境
+echo 'export PATH=$PATH:/usr/local/openresty/nginx/sbin' >> /etc/profile
+. /etc/profile
+
+
+#设置开机启动
 systemctl enable nginx.service
 
+#启动
 systemctl start nginx.service
+
 ```
