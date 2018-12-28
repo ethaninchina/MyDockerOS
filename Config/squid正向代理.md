@@ -1,6 +1,6 @@
 # 编辑配置
 vim /etc/squid/squid.conf
-
+```
 # 日志
 logformat combined client_ip:%>a local_ip:%la %tr %ui %un "%rm %ru HTTP/%rv" %Hs %<st "%{Referer}>h" "%{User-Agent}>h" %Ss:%Sh
 access_log /data/logs/access.log combined
@@ -43,16 +43,19 @@ visible_hostname squid.test.dev
 
 # 设置管理员邮箱
 cache_mgr squid_test@qq.com
-
+```
 
 
  
 
 # ####客户端linux机器上设置代理
+```
 echo "export http_proxy=http://110.125.120.130:9995" >> /etc/profile
 echo "export https_proxy=http://110.125.120.130:9995" >> /etc/profile
 echo "export http_proxy=http://112.130.53.192:9995" >> /etc/profile
 echo "export https_proxy=http://112.130.53.192:9995" >> /etc/profile
-
+```
 # ####客户端linux机器上网
+```
 cur baidu.com 就会通过代理服务器上网
+```
