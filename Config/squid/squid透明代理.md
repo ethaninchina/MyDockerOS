@@ -1,5 +1,5 @@
-#修改squid.conf配置文件，添加透明代理支持
-
+# 修改squid.conf配置文件，添加透明代理支持
+```
 vim /etc/squid/squid.conf
 
 #transparent为透明代理
@@ -39,21 +39,21 @@ visible_hostname squid.test.dev
 
 #设置管理员邮箱
 cache_mgr squid_test@qq.com
+```
 
 
-
-#####重启服务
+# ####重启服务
+```
 systemctl enable squid
 systemctl restart squid
 systemctl status squid
-
-service squid reload/restart
-
+```
  
-##### iptables 安装
+# #### iptables 安装
+```
 yum install -y iptables iptables-services 
 
-####关闭自带防火墙
+
 systemctl stop firewalld
 systemctl disable firewalld
 systemctl mask firewalld
@@ -71,8 +71,8 @@ iptables -t nat -I PREROUTING -i eth0 -s 192.168.1.0/24 -p tcp --dport 443 -j RE
 
 service iptables save
 systemctl restart iptables.service
+```
 
-##### 修改客户端IP地址
+# #### 修改客户端IP地址
 将默认网关设置为squid 服务器的内网ip地址 192.168.1.251
-
-GATEWAY=192.168.1.251
+如: GATEWAY=192.168.1.251
