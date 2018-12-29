@@ -52,14 +52,18 @@ vrrp_instance VI_221 {
     state MASTER #主为master 备机为 BACKUP
     interface eth0 #绑定网络物理接口eth0
     virtual_router_id 51 #主备ID需要一样
-    mcast_src_ip 172.168.10.221 # 本机 IP 地址
+    #mcast_src_ip 172.168.10.221 # 本机 IP 地址 (组播)
+    unicast_src_ip 172.168.10.221  #本机内网地址 
+    unicast_peer {
+        172.168.10.222  #对端设备(backup服务器)的 IP 地址，例如：172.168.10.222 
+    }
+
     priority 100 #节点优先级，值范围 0-254，MASTER 要比 BACKUP 高
     advert_int 1 #组播信息发送间隔，两个节点设置必须一样，默认 1s
     authentication {  #认证模块,主备一样
         auth_type PASS
-        auth_pass 4008 #密码最好是数字,不超过8位,不然有可能出现双VIP问题
+        auth_pass 4009 #密码最好是数字,不超过8位,不然有可能出现双VIP问题
     }
-
 
     track_script { #脚本执行模块
         chk_nginx
@@ -91,7 +95,11 @@ vrrp_instance VI_221 {
     state BACKUP
     interface eth0
     virtual_router_id 51
-    mcast_src_ip 172.168.10.222
+   #mcast_src_ip 172.168.10.222 (组播)
+    unicast_src_ip 172.168.10.222  #本机内网地址 
+    unicast_peer {
+        172.168.10.221  #对端设备(MASTER服务器)的 IP 地址，例如：172.168.10.221
+    }
     priority 90
     advert_int 1
     authentication {
