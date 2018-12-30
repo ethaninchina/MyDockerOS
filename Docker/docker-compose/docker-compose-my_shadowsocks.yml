@@ -1,0 +1,55 @@
+```
+version: '2'
+services:
+        shadowsocks:
+            image: docker.io/easypi/shadowsocks-libev
+            environment:
+                SERVER_ADDR: 0.0.0.0
+                PASSWORD: www.80uncle.com5
+                SERVER_PORT: 51443
+            restart: always
+            networks:
+                - ss_network
+            #网络模式HOST(使用宿主机网络)性能更优
+            #network_mode: host
+            ports:
+                - 51443:51443
+            hostname: shadowsocks
+            #容器名称
+            container_name: shadowsocks
+        shadowsocksv1:
+            image: docker.io/easypi/shadowsocks-libev
+            environment:
+                SERVER_ADDR: 0.0.0.0
+                PASSWORD: www.80uncle.com5
+                SERVER_PORT: 20445
+            restart: always
+            networks:
+                - ss_network
+            #网络模式HOST(使用宿主机网络)性能更优
+            #network_mode: host
+            ports:
+                - 20445:20445
+            hostname: shadowsocksv1
+            #容器名称
+            container_name: shadowsocksv1
+        shadowsocksv2:
+            image: docker.io/easypi/shadowsocks-libev
+            environment:
+                SERVER_ADDR: 0.0.0.0
+                PASSWORD: www.80uncle.com5
+                SERVER_PORT: 20443
+            restart: always
+            networks:
+                - ss_network
+            #网络模式HOST(使用宿主机网络)性能更优
+            #network_mode: host
+            ports:
+                - 20443:20443
+            hostname: shadowsocksv2
+            #容器名称
+            container_name: shadowsocksv2
+networks:
+        ss_network:
+            driver: bridge
+```
