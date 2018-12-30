@@ -1,4 +1,3 @@
-```
 version: '2'
 services:
         shadowsocks:
@@ -52,4 +51,3 @@ services:
 networks:
         ss_network:
             driver: bridge
-```
