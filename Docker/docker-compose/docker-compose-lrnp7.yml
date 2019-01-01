@@ -1,16 +1,17 @@
 version: '2'
-    #定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql
+#定义服务lrnp(openresty1.13+redis3.2.9+php7.1.12) 和 mysql(mysql5.7) + shadowsocks服务
 services:
         #服务名称
         lrnp:
-            #依赖mysql服务，意味着在启动openresty+php7之前先启动mysql服务容器
+            #依赖mysql服务，意味着在启动lrnp之前先启动mysql服务容器
             depends_on:
-                - mysql
+               - mysql
             #nginx镜像的路径
             #image: docker.io/wuyuzai/mydockeros:lrnp
             #aliyun镜像地址
             image: registry.cn-hangzhou.aliyuncs.com/webss/lrnp
-            #这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
+            #映射文件/文件夹到宿主机，持久化和方便管理
+            # volumes格式, 本地文件地址:容器内文件地址
             volumes:
                 - /root/docker/web:/opt/openresty/nginx/html
                 - /root/docker/logs/nginx_log:/opt/openresty/nginx/logs
@@ -20,14 +21,23 @@ services:
                 - /root/docker/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
                 - /root/docker/redis/redis.conf:/etc/redis.conf
                 - /root/docker/logs/redis_log:/tmp/redislogs
-            #nginx意外退出时自动重启
+            #openresty服务意外退出时自动重启
             restart: always
-            #网络模式HOST
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            networks:
+                - webserver
+            #网络模式HOST(使用宿主机网络) 性能更优
             #network_mode: host
             ports:
                 - 80:80
                 - 443:443
-                - 6379:6379
+                #- 6379:6379
+            hostname: lrnp7
             #容器名称
             container_name: lrnp7   
         #服务名称
@@ -35,18 +45,32 @@ services:
             #image: docker.io/mysql:5.7
             #阿里云镜像地址
             image: registry.cn-hangzhou.aliyuncs.com/webss/mysql:5.7
-            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。这里为13246。
+            #设置MYSQL_ROOT_PASSWORD环境变量，这里是设置mysql的root密码。
             environment:
-                MYSQL_ROOT_PASSWORD: 123456
+                MYSQL_ROOT_PASSWORD: zz520ll
             #映射文件路径
             volumes:
                 - /root/docker/mysqld/config:/etc/mysql
                 - /root/docker/mysqld/mysqldata:/var/lib/mysql
                 - /root/docker/logs/mysql_log:/var/log/mysql
+            #mysql服务意外退出时自动重启
             restart: always
-            #网络模式HOST
+            #docker中ulimit设置
+            ulimits:
+                nproc: 102400
+                nofile:
+                    soft: 102400
+                    hard: 102400
+            networks:
+                - webserver
+            #网络模式HOST 性能更优
             #network_mode: host
-            ports:
-                - 3306:3306
+            #ports:
+                #- 3306:3306
+            hostname: mysql57
             #容器名称
             container_name: mysql57
+#定义docker全局网络服务
+networks:
+        webserver:
+            driver: bridge
