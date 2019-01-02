@@ -48,14 +48,12 @@ cache_mgr squid_test@qq.com
 
  
 
-# ####客户端linux机器上设置代理
+##### 客户端linux机器上设置代理
 ```
-echo "export http_proxy=http://110.125.120.130:9995" >> /etc/profile
-echo "export https_proxy=http://110.125.120.130:9995" >> /etc/profile
 echo "export http_proxy=http://112.130.53.192:9995" >> /etc/profile
 echo "export https_proxy=http://112.130.53.192:9995" >> /etc/profile
 ```
-# ####客户端linux机器上网
+##### 客户端linux机器上网
 ```
 cur baidu.com 就会通过代理服务器上网
 ```
