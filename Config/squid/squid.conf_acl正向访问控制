@@ -13,7 +13,7 @@ acl webfile dstdomain  "/etc/squid/web.txt" #文件存放网站
 acl weburl urlpath_regex -i \.png$ \.jpg$ \.js$ \.css$ \.gif$   #匹配后缀名
 acl webdns dstdom_regex [-i] \.org \.gov.cn#匹配后缀网站
 
-acl Safe_ports port 2224   # 测试端口
+acl Safe_ports port 1234   # 测试端口
 #acl Safe_ports port 65530-65535 # 连续端口
 #acl worktime time SMTWHFA 7:40-12:00 13:00-21:30   #时间
 
