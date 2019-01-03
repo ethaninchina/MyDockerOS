@@ -71,7 +71,14 @@ visible_hostname squid.test.dev
 cache_mgr squid_test@china.cns
 
 #默认情况下，Squid 会添加很多和客户信息相关的 HTTP 头，如 X-Forwarded-For 这类。如果想要做到高度匿名，需要将这些头去掉。在 squid.conf 里面添加如下的配置：
-forwarded_for off
+#以下是高匿的设置
+forwarded_for delete
+request_header_access Via deny all
+request_header_access X-Forwarded-For deny all
+
+或者
+
+forwarded_for delete
 request_header_access Allow allow all
 request_header_access Authorization allow all
 request_header_access WWW-Authenticate allow all
