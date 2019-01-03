@@ -38,11 +38,21 @@ cache_swap_low 90
 # 定义dump的目录
 #coredump_dir /data/backup/squid
 
+#默认情况下，Squid 会把主机相关的信息发送出去，并显示在错误页面。加上下面两句去掉这些信息：
+httpd_suppress_version_string on
+
 # 设置squid服务器主机名
 visible_hostname squid.test.dev 
 
 # 设置管理员邮箱
 cache_mgr squid_test@qq.com
+
+#默认情况下，Squid 会添加很多和客户信息相关的 HTTP 头，如 X-Forwarded-For 这类。如果想要做到高度匿名，需要将这些头去掉。在 squid.conf 里面添加如下的配置：
+#以下是高匿的设置
+forwarded_for delete
+request_header_access Via deny all
+request_header_access X-Forwarded-For deny all
+
 ```
 
 
