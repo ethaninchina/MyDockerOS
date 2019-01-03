@@ -1,0 +1,91 @@
+#<<<用户分类 >>>
+acl localhost src 10.186.45.51/32 127.0.0.1/32  #服务器本地IP
+acl client_net src 58.60.106.20/32 #客户端IP
+
+
+# <<<行为分类>>>
+acl manager proto cache_object
+acl purge method PURGE  #PURGE是它让管理员能强制删除缓存对象,squid默认拒绝PURGE请求,仅允许从本地主机访问purge
+
+
+acl yseweb dstdomain .baidu.com .163.com    #目的网站
+acl webfile dstdomain  "/etc/squid/web.txt" #文件存放网站
+acl weburl urlpath_regex -i \.png$ \.jpg$ \.js$ \.css$ \.gif$   #匹配后缀名
+acl webdns dstdom_regex [-i] \.org \.gov.cn#匹配后缀网站
+
+acl Safe_ports port 2224   # 测试端口
+#acl Safe_ports port 65530-65535 # 连续端口
+#acl worktime time SMTWHFA 7:40-12:00 13:00-21:30   #时间
+
+
+#<<<规则生效>>>
+http_access allow purge localhost
+http_access deny purge
+http_access allow manager localhost
+http_access deny manager
+#用户IP访问 (单独允许所有)
+#http_access allow client_net
+
+#域名,端口
+http_access allow yseweb #允许访问的网站
+#http_access allow webfile #存放域名文件
+http_access allow webdns #域名org等匹配
+http_access allow weburl #weburl
+http_access allow Safe_ports #端口
+http_access deny all
+
+
+
+#-------------------- 常规配置 --------------------
+#监听端口
+http_port 16000
+
+#访问日志
+logformat combined client_ip:%>a local_ip:%la %tr %ui %un "%rm %ru HTTP/%rv" %Hs %<st "%{Referer}>h" "%{User-Agent}>h" %Ss:%Sh
+access_log /data/logs/squid_access.log combined
+#缓存日志
+cache_log /data/logs/squid_cache.log
+
+###安全认证/账户,密码
+#选择的认证方式为basic
+auth_param basic program /usr/lib64/squid/basic_ncsa_auth /etc/squid/squid_user.txt
+#认证程序的进程数
+auth_param basic children 5
+#授权时间 5小时重新认证
+#auth_param basic credentialsttl 5 hours
+acl auth_user proxy_auth REQUIRED
+http_access allow auth_user
+
+
+#缓存使用内存大小
+cache_mem 4000 MB
+#超过50M的不存入硬盘
+maximum_object_size 50 MB
+#设置squid磁盘缓存最小文件
+minimum_object_size 0 KB
+#设置squid内存缓存最大文件，超过4M的文件不保存到内存
+maximum_object_size_in_memory 4096 KB
+#缓存存放目录4000MB ,一级目录,二级目录
+cache_dir ufs /data/cache/squid 4000 16 256
+#日志清理(log轮循 60天, cache目录使用量大于95%时，开始清理旧的cache, cache目录清理到90%时停止)
+logfile_rotate 60
+cache_swap_high 95
+cache_swap_low 90
+#定义dump的目录
+coredump_dir /data/backup/squid
+
+
+#默认情况下，Squid 会把主机相关的信息发送出去，并显示在错误页面。加上下面两句去掉这些信息：
+httpd_suppress_version_string on
+
+#设置squid服务器主机名
+visible_hostname squid.test.dev
+
+#设置管理员邮箱
+cache_mgr squid_test@china.cns
+
+#默认情况下，Squid 会添加很多和客户信息相关的 HTTP 头，如 X-Forwarded-For 这类。如果想要做到高度匿名，需要将这些头去掉。在 squid.conf 里面添加如下的配置：
+#以下是高匿的设置(禁止获取 forwarded参数)
+forwarded_for delete
+request_header_access Via deny all
+request_header_access X-Forwarded-For deny all
