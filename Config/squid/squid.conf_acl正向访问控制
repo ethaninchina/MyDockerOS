@@ -1,40 +1,46 @@
 #<<<用户分类 >>>
+acl all src 0.0.0.0/0.0.0.0  #定义所有IP
 acl localhost src 10.186.45.51/32 127.0.0.1/32  #服务器本地IP
 acl client_net src 58.60.106.20/32 #客户端IP
-
 
 # <<<行为分类>>>
 acl manager proto cache_object
 acl purge method PURGE  #PURGE是它让管理员能强制删除缓存对象,squid默认拒绝PURGE请求,仅允许从本地主机访问purge
 
+acl ConnLimit maxconn 30  #限制每个IP最大允许30个连接，防止攻击
 
-acl yseweb dstdomain .baidu.com .163.com    #目的网站
-acl webfile dstdomain  "/etc/squid/web.txt" #文件存放网站
-acl weburl urlpath_regex -i \.png$ \.jpg$ \.js$ \.css$ \.gif$   #匹配后缀名
-acl webdns dstdom_regex [-i] \.org \.gov.cn#匹配后缀网站
-
-acl Safe_ports port 1234   # 测试端口
+#acl bad_download urlpath_regex -i \.exe \.apk    #禁止下载 (正则表达式中的路径)
+acl bad_web dstdomain .360.com .baidu.com    #目的网站(目的域:服务器所属的域 )
+acl bad_web_file dstdomain  "/etc/squid/web.txt"     #文件存放网站
+acl bad_site dstdom_regex -i \.org \.gov.cn kafan csdn        #匹配目的网站后缀,关键字域名网站(针对域名)
+acl bad_string url_regex -i sex t66y ipip IPDAService    #正则表达式(字符串部分,关键字)
+   
+# 端口策略
+acl Safe_ports port 2224   # 允许通过proxy访问2224测试端口
+acl Safe_ports port 2223
 #acl Safe_ports port 65530-65535 # 连续端口
+#acl CONNECT method CONNECT  #请求方法以CONNECT
 #acl worktime time SMTWHFA 7:40-12:00 13:00-21:30   #时间
-
 
 #<<<规则生效>>>
 http_access allow purge localhost
 http_access deny purge
 http_access allow manager localhost
 http_access deny manager
-#用户IP访问 (单独允许所有)
+#用户IP访问 (单独允许所有)---优先级高
 #http_access allow client_net
 
-#域名,端口
-http_access allow yseweb #允许访问的网站
-#http_access allow webfile #存放域名文件
-http_access allow webdns #域名org等匹配
-http_access allow weburl #weburl
-http_access allow Safe_ports #端口
-http_access deny all
+#优先禁止策略 限制访问连接数
+http_access deny ConnLimit
 
+http_access deny bad_web
+http_access deny bad_web_file
+http_access deny bad_site
+http_access deny bad_string
+#http_access deny bad_download all
 
+http_access allow Safe_ports all
+http_access allow all
 
 #-------------------- 常规配置 --------------------
 #监听端口
@@ -74,6 +80,11 @@ cache_swap_low 90
 #定义dump的目录
 coredump_dir /data/backup/squid
 
+#squid建立连接后,可以将该连接保持多长时间120分钟,默认1天
+client_lifetime 120 minute
+
+#禁止非http的标分准请求，防止攻击
+request_entities off
 
 #默认情况下，Squid 会把主机相关的信息发送出去，并显示在错误页面。加上下面两句去掉这些信息：
 httpd_suppress_version_string on
