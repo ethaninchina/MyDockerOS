@@ -1,5 +1,5 @@
 # 前置机 nginx 或者客户端 :
-## 增加header
+## 一、增加header
 ##### server1: 老机器
 ```
 add_header pda-sr pda-old; 
@@ -9,7 +9,7 @@ add_header pda-sr pda-old;
 add_header pda-sr pda-new;
 ```
 
-## 代理层nginx  根据header 转发
+## 二、代理层nginx  根据header 转发
 ```
 server {
         listen       17008;
@@ -34,7 +34,7 @@ server {
 
 ```
 
-# 测试
+# 三、测试
 ```
 [root@myos vhost]# curl --head -s -H "pda-sr:pda-new" http://localhost:17008 |grep -E "HTTP\/|http-pda-sr"
 HTTP/1.1 200 OK
