@@ -10,6 +10,7 @@ add_header pda-sr pda-new;
 ```
 
 ## 二、代理层nginx  根据header 转发
+#### server3: proxy机器
 ```
 server {
         listen       17008;
