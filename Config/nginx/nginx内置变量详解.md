@@ -1,10 +1,12 @@
+# client(客户) -----> ngin1 (入口) -----> nginx2(中间层代理) ----> tomcat (程序)
+
 ```
 # $request_time
 接受用户请求的第一个字节到发送完响应数据的时间，即包括接收请求数据时间、程序响应时间、输出响应数据时间。
 (请求处理时间; 从客户机读取第一个字节到向客户机发送最后一个字节后写入日志所花费的时间)
 
 ngin1----->nginx2---->tomcat
-nginx 到 tomcat 所用的请求处理所有的时间   为 request_time 时间
+nginx 到 tomcat 所用的请求处理(包含经过nginx2)所有的时间   为 request_time 时间
 
 例如 : request_time 为30s
 
