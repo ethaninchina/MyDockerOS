@@ -19,16 +19,16 @@ server {
         #add_header http-pda-sr $http_pda_sr; #显示header信息时打开 (供测时查看header信息)
 
         location / {
-# 判断header 
+                # 判断header 
                 if ($http_pda_sr = "pda-old") {
                     proxy_pass http://www.baidu.com;
-                    }
+                        }
 
-# 判断header
+                # 判断header
                     if ($http_pda_sr = "pda-new") {
                     proxy_pass http://www.163.com;
-                    }
-        }
+                        }
+                }
 
 }
 
