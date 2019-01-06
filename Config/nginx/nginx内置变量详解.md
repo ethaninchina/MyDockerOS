@@ -1,3 +1,4 @@
+```
 $args                    #请求中的参数; 值如 ?foo=123&bar=blahblah
 $query_string            #同 $args
 $arg_NAME                #GET请求中NAME的值
@@ -58,3 +59,4 @@ $sent_http_keep_alive
 $sent_http_last_modified
 $sent_http_location
 $sent_http_transfer_encoding
+```
