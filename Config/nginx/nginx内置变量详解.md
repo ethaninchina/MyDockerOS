@@ -1,4 +1,4 @@
-# client(客户) -----> ngin1 (入口) -----> nginx2(中间层代理) ----> tomcat (程序)
+##### client(客户) -----> ngin1 (入口) -----> nginx2(中间层代理) ----> tomcat (程序)
 
 ```
 # $request_time
