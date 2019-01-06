@@ -14,6 +14,9 @@ add_header pda-sr pda-new;
 server {
         listen       17008;
         #underscores_in_headers on;  #开启header的下划线支持 (日过header中有下划线需要开启此项,尽量不要用下划线)
+        
+        charset utf-8;
+        #add_header http-pda-sr $http_pda_sr; #显示header信息时打开 (供测时查看header信息)
 
         location / {
 # 判断header 
@@ -33,7 +36,12 @@ server {
 
 # 测试
 ```
-curl --head -H "pda-sr:pda-new" http://localhost:17008
+[root@myos vhost]# curl --head -s -H "pda-sr:pda-new" http://localhost:17008 |grep -E "HTTP\/|http-pda-sr"
+HTTP/1.1 200 OK
+http-pda-sr: pda-new
 
-curl --head -H "pda-sr:pda-old" http://localhost:17008
+[root@myos vhost]# curl --head -s -H "pda-sr:pda-old" http://localhost:17008 |grep -E "HTTP\/|http-pda-sr"
+HTTP/1.1 200 OK
+http-pda-sr: pda-old
+
 ```
