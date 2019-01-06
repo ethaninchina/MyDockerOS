@@ -20,6 +20,11 @@ server {
         #add_header http-pda-sr $http_pda_sr; #显示header信息时打开 (供测时查看header信息)
 
         location / {
+		# header 为空 ,禁止访问 (安全访问)
+                if ($http_pda_sr = "") {
+                        return 403;
+                        }
+
                 # 判断header 
                 if ($http_pda_sr = "pda-old") {
                     proxy_pass http://www.baidu.com;
