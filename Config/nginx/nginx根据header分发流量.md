@@ -6,7 +6,7 @@ add_header pda-sr pda-old;
 ```
 #### server2: 新机器
 ```
-add_header pda-sr pda-new
+add_header pda-sr pda-new;
 ```
 
 ## 代理层nginx  根据header 转发
