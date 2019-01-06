@@ -86,4 +86,10 @@ $sent_http_keep_alive
 $sent_http_last_modified
 $sent_http_location
 $sent_http_transfer_encoding
+
+$upstream_status   #upstream状态，成功是200
+$upstream_addr  #后台upstream的地址，即真正提供服务的主机地址
+$upstream_response_time    #请求过程中，upstream响应时间
+
+
 ```
