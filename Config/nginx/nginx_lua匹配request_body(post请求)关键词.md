@@ -62,9 +62,9 @@
                                 ngx.var.dyna_upstream="PDA-IMAGE";
                             else
                                 ngx.var.dyna_upstream ="MY-DEFAULT";
-			                      end
-			                  else
-			                      ngx.var.dyna_upstream ="MY-DEFAULT";
+			    end
+			else
+			    ngx.var.dyna_upstream ="MY-DEFAULT";
                         end ';
                 }
     }
