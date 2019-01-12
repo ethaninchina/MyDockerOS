@@ -27,7 +27,7 @@
                             }
 
             location /MyService.asmx {
-                    default_type 'text/plain';
+                    #default_type 'text/plain';
                     set $dyna_upstream ""; #设置upstream路由变量
                     proxy_set_header Host $host;
                     proxy_set_header X-Real-IP $remote_addr;
