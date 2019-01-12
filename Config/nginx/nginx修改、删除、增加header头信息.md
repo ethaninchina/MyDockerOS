@@ -82,6 +82,46 @@ Foo: bar
 Baz: bah
 X-Error: status=404
 ```
+##### 测试
+```
+more_set_headers 'FX-Powered-By-gg: Golang.Google';
+more_set_headers 'FX-Powered-By-bd: lua.baidu';
+more_set_headers 'FX-Powered-By-qq: yiyuyan.qq';
+
+[root@VM_45_51_centos vhost]# curl -I http://10.10.13.158:3000
+HTTP/1.1 200 OK
+Server: openresty
+Date: Sat, 12 Jan 2019 07:16:33 GMT
+Content-Type: text/html
+Content-Length: 1
+Connection: keep-alive
+Last-Modified: Tue, 17 May 2016 15:08:27 GMT
+Accept-Ranges: bytes
+ETag: "f15046f74db0d11:0"
+X-Powered-By: ASP.NET
+FX-Powered-By-gg: Golang.Google
+FX-Powered-By-bd: lua.baidu
+FX-Powered-By-qq: yiyuyan.qq
+```
+
+##### 匹配所有 清除
+```
+more_clear_headers 'FX-Powered-By-*';
+
+[root@VM_45_51_centos vhost]# curl -I http://10.10.13.158:3000
+HTTP/1.1 200 OK
+Server: openresty
+Date: Sat, 12 Jan 2019 07:18:36 GMT
+Content-Type: text/html
+Content-Length: 1
+Connection: keep-alive
+Last-Modified: Tue, 17 May 2016 15:08:27 GMT
+Accept-Ranges: bytes
+ETag: "f15046f74db0d11:0"
+X-Powered-By: ASP.NET
+Foo: bar
+Baz: bah
+```
 
 
 
