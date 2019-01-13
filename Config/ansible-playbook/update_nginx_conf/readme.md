@@ -1,5 +1,15 @@
 # 使用ansible-playbook 更新后端nginx配置
 
+nginx_conf/ 目录为nginx配置存放 目录
+
+file/ 目录为项目存放目录
+
+vars_nginx.yml 为变量设置配置
+
+update_nginx_conf.yml 为主配置
+
+
+
 ##### 测试/不生效
 ```
 ansible-playbook -C ../update_nginx_conf.yml
