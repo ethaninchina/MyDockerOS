@@ -12,13 +12,13 @@ install_nginx.yml 为主配置
 
 ##### 测试/不生效
 ```
-ansible-playbook -C ../install_nginx.yml
+ansible-playbook -C ../install_openresty.yml
 ```
 
 
 ##### 正式使用/生效
 ```
-ansible-playbook ../install_nginx.yml
+ansible-playbook ../install_openresty.yml
 ```
 
 ##### hosts 为ansible 的hosts组
