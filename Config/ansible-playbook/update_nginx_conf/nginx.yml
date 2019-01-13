@@ -1,0 +1,11 @@
+nginx_port: "80"
+server_name: "localhost"
+root_dir: "html"
+
+upstream01name: "Default"
+upstream01server: "server 114.114.114.114:1111;\n
+server 114.114.114.114:2222;"
+
+upstream02name: "My-Proxy"
+upstream02server: "server 115.115.115.115:1111;\n
+server 115.115.115.115:2222;"
