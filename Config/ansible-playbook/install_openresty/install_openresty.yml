@@ -1,0 +1,51 @@
+---
+- hosts: rs
+  remote_user: root
+  vars_files:
+    - /root/ansible-playbook/install_openresty/vars_nginx.yml
+  tasks:
+  - name: "install yum-utils"
+    yum: name=yum-utils state=latest
+
+  - name: "add openresty repo"
+    shell: yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo
+
+  # - name: "installing oepnssl pcre gcc"
+  #   yum: name={{ item }} state=latest
+  #   with_items:
+  #       - wget
+  #       - pcre-devel
+  #       - gcc
+  #       - openssl-deve
+  #       - curl
+
+  - name: "useradd nginx"
+    shell: useradd -s /sbin/nologin nginx
+
+  - name: "install openresty"
+    yum: name=openresty state=latest
+
+  - name: "mkdir vhost"
+    file: path=/usr/local/openresty/nginx/conf/vhost/ state=directory owner=root group=root mode=0755 
+ 
+  - name: "copy index.html"
+    template: src=/root/ansible-playbook/install_openresty/file/index.html dest=/usr/local/openresty/nginx/html
+
+  - name: "copy nginx.conf"
+    template: src=/root/ansible-playbook/install_openresty/nginx_conf/nginx.conf dest=/usr/local/openresty/nginx/conf/
+
+  - name: "copy vhost.conf"
+    template: src=/root/ansible-playbook/install_openresty/nginx_conf/vhost.conf dest=/usr/local/openresty/nginx/conf/vhost/
+    notify:
+        - check openresty
+        - starting openresty
+  handlers:  
+  - name: "check openresty"
+    shell: openresty -t
+  - name: "starting openresty"
+    service:
+        name: openresty
+        state: restarted
+        enabled: true
+
+
