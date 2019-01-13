@@ -1,0 +1,44 @@
+---
+- hosts: webserver
+  remote_user: root
+  vars_files:
+    - /root/ansible-playbook/vars_nginx.yml
+  tasks:
+  #拷贝项目,web目录同步
+  - name: "rsync web file"
+    synchronize: 
+      mode: push #推送push,拉取pull
+      delete: yes
+      recursive: yes #递归
+      # rsync_opts:
+      #   - "--exclude=789.txt"   #排除
+      #   - "--exclude=987.txt"
+      src: /root/ansible-playbook/file/  #源目录路径
+      dest: /usr/local/openresty/nginx/html/  #目标机器目录路径
+
+  #拷贝nginx.conf主配置
+  # - name: "copy nginx.conf"
+  #   synchronize: 
+  #     mode: push 
+  #     delete: yes 
+  #     src: /root/ansible-playbook/nginx_conf/nginx.conf 
+  #     dest: /usr/local/openresty/nginx/conf/
+
+  #拷贝nginx虚拟主机配置 (template模块支持 vars_nginx.yml 里设置的变量 )
+  - name: "copy vhost/.conf"
+    template: 
+      src: /root/ansible-playbook/nginx_conf/vhost/aproxy.conf 
+      dest: /usr/local/openresty/nginx/conf/vhost/
+    notify: #vhost.conf配置文件有改变才会做相应的检查
+        - check openresty #检测配置
+        - reload openresty #重载配置
+  handlers:  
+  - name: "check openresty"
+    shell: openresty -t
+
+  - name: "reload openresty"
+    service:
+        name: openresty
+        state: reloaded
+
+
