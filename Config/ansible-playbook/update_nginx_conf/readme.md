@@ -1,4 +1,4 @@
-# 使用ansible-playbook 更新后端nginx配置
+# 使用ansible-playbook 更新后端nginx配置 和项目
 
 nginx_conf/ 目录为nginx配置存放 目录
 
