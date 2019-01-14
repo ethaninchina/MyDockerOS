@@ -5,8 +5,11 @@ nginx_conf/ 目录为nginx配置存放 目录
 file/ 目录为项目存放目录
 
 vars_nginx.yml 为变量设置配置
+-- hosts 为ansible 的hosts组 ,remote_user 为远程执行的user
 
 update_nginx_conf.yml 为主配置
+
+
 
 
 
