@@ -1,5 +1,5 @@
 # 使用ansible-playbook 安装nginx(openresty)配置 
-#####(rsync模块需要所有机器上都要安装 rsync,只安装即可, yum install rsync -y)
+##### (rsync模块需要所有机器上都要安装 rsync,只安装即可, yum install rsync -y)
 
 nginx_conf/ 目录为nginx配置存放 目录
 
