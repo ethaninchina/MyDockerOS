@@ -79,7 +79,7 @@ fi
 cat>/etc/sysctl.conf<<EOF
 #############系统优化参数#############
 #系统所有进程一共可以打开的文件数量 
-fs.file-max = 10240000
+fs.file-max = 100001
 #关闭ipv6
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
