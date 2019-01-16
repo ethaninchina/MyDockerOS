@@ -43,11 +43,13 @@ systemctl stop firewalld
 systemctl disable firewalld
 
 #判断ulimit是否设置OK
-if [ $(ulimit -n) -lt "100000" ];then 
-# ulimit 设置
+limitnum=$(ulimit -a|grep 'max user processes'|awk '{print $NF}')
+if [ $(limitnum) -lt "100000" ];then 
+
 #关闭selinux
 setenforce 0
 sed -i "s/^SELINUX\=enforcing/SELINUX\=disabled/g" /etc/selinux/config
+
 #set ulimit
 cat>/etc/security/limits.conf<<EOF
 * soft nofile 100001
