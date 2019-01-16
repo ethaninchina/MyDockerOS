@@ -1,7 +1,11 @@
 #!/bin/bash
-#判断是否为root用户
+# 1)安装 keepalived
+# 2)安装 openresty
+# 3)安装 keepalived + openresty
+#过滤交互时输入出现 ^H
 stty erase '^H'
 
+#判断是否为root用户
 if [ "$(id -u)" != "0" ]
 then
     echo "need root"
@@ -9,19 +13,19 @@ then
 fi
 
 
-################ keepalived set ###################
-### 安装 keepalived 主备需要设置此处,否则无需更改
+#################### keepalived set ####################
+### 如果需要安装 keepalived 主备,则需要设置此处,否则无需更改
 #本机IP地址
 unicast_src_ip="101.186.45.51"
-#对端IP地址
+#对端IP地址(主备的另一台机器IP地址)
 unicast_peer="101.186.45.52"
 #VIP地址
 vip="101.186.45.53"
-#角色
+#角色 (MASTER/BACKUP)
 Master_Backip="MASTER"
 #优先级(MASTER: 100 , BACKUP: 90)
 priority="100"
-################ keepalived end ###################
+#################### keepalived end ####################
 
 
 #开始执行...
