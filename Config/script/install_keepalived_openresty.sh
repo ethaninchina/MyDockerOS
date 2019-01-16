@@ -142,7 +142,8 @@ net.ipv4.tcp_fin_timeout = 60
 net.ipv4.tcp_keepalive_time = 1800
 #允许系统打开的端口范围
 net.ipv4.ip_local_port_range = 1024    65000
-EOF 
+EOF
+
 
 #openresty 安装
 function openresty() {
