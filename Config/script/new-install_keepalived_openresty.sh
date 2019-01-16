@@ -13,7 +13,7 @@ then
 fi
 
 
-#################### keepalived set ####################
+#################### keepalived variable set ####################
 ### 如果需要安装 keepalived 主备,则需要设置此处,否则无需更改
 #本机IP地址
 unicast_src_ip="101.186.45.51"
