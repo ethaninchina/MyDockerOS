@@ -25,7 +25,7 @@ echo '1) install keepalved
 3) install openresty + keepalved
 '
 read -t 60 -p "Please input number: "  number
-#提示“请输入姓名”并等待30秒，把用户的输入保存入变量name中
+#提示“请输入姓名”并等待60秒，把用户的输入保存入变量number中
 
 if [ $number == "1" ];then
     echo "开始执行 installing keepalved"
