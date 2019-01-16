@@ -52,6 +52,12 @@ fi
 systemctl stop firewalld
 systemctl disable firewalld
 
+#set ntpdate
+yum install ntpdate -y
+ntpdate ntp1.aliyun.com
+clock -w
+echo "0 0 * * * ntpdate ntp1.aliyun.com" >> /var/spool/cron/root
+
 #判断ulimit是否设置OK [max user processes 的值如果小于 100000 重新设置参数]
 limitnum=$(ulimit -a|grep 'max user processes'|awk '{print $NF}')
 if [ ${limitnum} -lt "100000" ];then 
