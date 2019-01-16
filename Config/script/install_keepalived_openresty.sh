@@ -11,6 +11,7 @@ fi
 
 ################ start ###################
 ### 安装 keepalived 主备需要设置此处,否则无需更改
+# priority (MASTER: 100 , BACKUP: 90)
 unicast_src_ip="101.186.45.51"
 unicast_peer="101.186.45.52"
 vip="101.186.45.53"
