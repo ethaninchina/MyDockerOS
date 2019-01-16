@@ -42,9 +42,9 @@ fi
 systemctl stop firewalld
 systemctl disable firewalld
 
-#判断ulimit是否设置OK
+#判断ulimit是否设置OK [max user processes 的值如果小于 100000 重新设置参数]
 limitnum=$(ulimit -a|grep 'max user processes'|awk '{print $NF}')
-if [ $(limitnum) -lt "100000" ];then 
+if [ ${limitnum} -lt "100000" ];then 
 
 #关闭selinux
 setenforce 0
