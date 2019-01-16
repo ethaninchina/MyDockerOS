@@ -9,9 +9,8 @@ then
 fi
 
 
-################ start ###################
+################ keepalived set ###################
 ### 安装 keepalived 主备需要设置此处,否则无需更改
-# priority (MASTER: 100 , BACKUP: 90)
 #本机IP地址
 unicast_src_ip="101.186.45.51"
 #对端IP地址
@@ -20,9 +19,9 @@ unicast_peer="101.186.45.52"
 vip="101.186.45.53"
 #角色
 Master_Backip="MASTER"
-#优先级
+#优先级(MASTER: 100 , BACKUP: 90)
 priority="100"
-################ end ###################
+################ keepalived end ###################
 
 
 #开始执行...
