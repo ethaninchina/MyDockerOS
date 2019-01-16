@@ -355,7 +355,7 @@ case "$number" in
 		openresty
 		;;
 	3)
-        keepalived
+        	keepalived
 		openresty
 		;;
 esac
