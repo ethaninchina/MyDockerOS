@@ -43,9 +43,10 @@ systemctl stop firewalld
 systemctl disable firewalld
 
 #判断ulimit是否设置OK
-if [ $(ulimit -n) -lt "655350" ];then 
+if [ $(ulimit -n) -lt "100000" ];then 
 # ulimit 设置
 #关闭selinux
+setenforce 0
 sed -i "s/^SELINUX\=enforcing/SELINUX\=disabled/g" /etc/selinux/config
 #set ulimit
 cat>/etc/security/limits.conf<<EOF
@@ -62,8 +63,12 @@ EOF
 
 sed -i '/^#DefaultLimitNOFILE=/aDefaultLimitNOFILE=100001' /etc/systemd/system.conf 
 sed -i '/^#DefaultLimitNPROC=/aDefaultLimitNPROC=100001' /etc/systemd/system.conf 
-echo "重新登录确认参数是否生效,否则重启生效"
+echo "重新登录确认ulimit参数是否生效,否则重启生效...."
 fi
+
+#内核优化 sysctl.conf
+#curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/sysctl.conf"
+
 
 #openresty 安装
 function openresty() {
