@@ -193,7 +193,7 @@ http {
                       'upstream_response_time: "\$upstream_response_time" ';
 
     access_log  /data/logs/access.log  json;
-    error_log  /data/logs/error.log debug;
+    error_log  /data/logs/error.log;
 
     sendfile        on;
     tcp_nopush      on;
