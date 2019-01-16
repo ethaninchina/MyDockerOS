@@ -81,24 +81,24 @@ cat>/etc/sysctl.conf<<EOF
 #系统所有进程一共可以打开的文件数量 
 fs.file-max = 10240000
 #关闭ipv6
-#net.ipv6.conf.all.disable_ipv6 = 1
-#net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
 # 避免放大攻击
 net.ipv4.icmp_echo_ignore_broadcasts = 1
 # 开启恶意icmp错误消息保护
 net.ipv4.icmp_ignore_bogus_error_responses = 1
 #开启路由转发
-net.ipv4.ip_forward = 1
-net.ipv4.conf.all.send_redirects = 1
-net.ipv4.conf.default.send_redirects = 1
+net.ipv4.ip_forward = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
 #开启反向路径过滤
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.conf.default.rp_filter = 1
 #处理无源路由的包
 net.ipv4.conf.all.accept_source_route = 0
 net.ipv4.conf.default.accept_source_route = 0
-#关闭sysrq功能
-kernel.sysrq = 0
+#开启sysrq功能
+kernel.sysrq = 1
 #core文件名中添加pid作为扩展名
 kernel.core_uses_pid = 1
 # 开启SYN洪水攻击保护
