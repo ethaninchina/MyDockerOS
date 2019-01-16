@@ -15,6 +15,7 @@ unicast_src_ip="101.186.45.51"
 unicast_peer="101.186.45.52"
 vip="101.186.45.53"
 Master_Backip="MASTER"
+priority="100"
 ################ end ###################
 
 
@@ -156,6 +157,7 @@ systemctl status openresty
 
 function keepalived() {
 yum install keepalived -y
+
 cat > /etc/keepalived/nginx_check.sh<<EOF
 #!/bin/bash
 counter=$(ps -C nginx --no-heading|wc -l)
@@ -177,8 +179,11 @@ chmod +x /etc/keepalived/nginx_check.sh
 # unicast_peer="10.186.45.52"
 # vip="10.186.45.53"
 # Master_Backip="MASTER"
+# priority="100"
+
 interface=$(ifconfig|awk '{print $1}'|sed -n 1p|cut -d : -f 1)
 hostname=$(hostname)
+
 # set keepalived.conf
 cat >/etc/keepalived/keepalived.conf <<EOF
 ! Configuration File for keepalived
@@ -203,7 +208,7 @@ vrrp_instance VI_53 {
     unicast_peer {
         $unicast_peer
     }
-    priority 100
+    priority $priority
     advert_int 1
     authentication {
         auth_type PASS
