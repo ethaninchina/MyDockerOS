@@ -17,7 +17,7 @@ server {
         #underscores_in_headers on;  #开启header的下划线支持 (日过header中有下划线需要开启此项,尽量不要用下划线)
         
         charset utf-8;
-        #add_header http-pda-sr $http_pda_sr; #显示header信息时打开 (供测时查看header信息)
+        #add_header pda-sr pda-new;	 #显示header信息时打开 (供测时查看header信息)
 
         location / {
 		# header 为空 ,禁止访问 (安全访问)
