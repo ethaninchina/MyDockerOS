@@ -57,6 +57,12 @@ export HISTTIMEFORMAT
 '>>/etc/bashrc
 . /etc/bashrc
 
+#set ntpdate
+yum install ntpdate -y
+ntpdate ntp1.aliyun.com
+clock -w
+echo "0 0 * * * ntpdate ntp1.aliyun.com" >> /var/spool/cron/root
+
 #判断ulimit是否设置OK [max user processes 的值如果小于 100000 重新设置参数]
 limitnum=$(ulimit -a|grep 'max user processes'|awk '{print $NF}')
 if [ ${limitnum} -lt "100000" ];then 
@@ -228,7 +234,23 @@ include /usr/local/openresty/nginx/conf/vhost/*.conf;
 }
 EOF
 
+# mkdir vhost 
 mkdir /usr/local/openresty/nginx/conf/vhost/
+
+#set nginx_status.conf
+cat>/usr/local/openresty/nginx/conf/vhost/nginx_status.conf<<EOF
+server {
+    listen 8099;
+     
+  location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+	}
+}
+EOF
+
 
 systemctl enable openresty
 systemctl start openresty
