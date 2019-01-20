@@ -52,6 +52,15 @@ fi
 systemctl stop firewalld
 systemctl disable firewalld
 
+# set history show time
+echo '
+HISTFILESIZE=4000
+HISTSIZE=4000
+HISTTIMEFORMAT="%F %T "
+export HISTTIMEFORMAT
+'>>/etc/bashrc
+. /etc/bashrc
+
 #set ntpdate
 yum install ntpdate -y
 ntpdate ntp1.aliyun.com
