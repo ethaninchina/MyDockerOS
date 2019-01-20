@@ -48,6 +48,15 @@ fi
 systemctl stop firewalld
 systemctl disable firewalld
 
+#set history show time
+echo '
+HISTFILESIZE=4000
+HISTSIZE=4000
+HISTTIMEFORMAT="%F %T "
+export HISTTIMEFORMAT
+'>>/etc/bashrc
+. /etc/bashrc
+
 #判断ulimit是否设置OK [max user processes 的值如果小于 100000 重新设置参数]
 limitnum=$(ulimit -a|grep 'max user processes'|awk '{print $NF}')
 if [ ${limitnum} -lt "100000" ];then 
@@ -187,7 +196,7 @@ http {
                       'method: \$request_method '
                       'status: "\$status" '
                       'upstatus:"\$upstream_status" '
-		              'post_data: "\$request_body" '
+		      'post_data: "\$request_body" '
                       'upaddr: "\$upstream_addr" '
                       'request_time: "\$request_time" '
                       'upstream_response_time: "\$upstream_response_time" ';
@@ -272,7 +281,7 @@ vrrp_script chk_nginx {
     rise 2
 }
 
-vrrp_instance VI_53 {
+vrrp_instance VI_50 {
     state $Master_Backip
     interface $interface
     virtual_router_id 30
@@ -311,7 +320,7 @@ case "$number" in
 		openresty
 		;;
 	3)
-        keepalived
+        	keepalived
 		openresty
 		;;
 esac
