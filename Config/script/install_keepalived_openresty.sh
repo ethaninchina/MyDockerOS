@@ -255,13 +255,6 @@ EOF
 
 chmod +x /etc/keepalived/nginx_check.sh
 
-# set IP/interface/MASTER/BACKUP
-# unicast_src_ip="10.186.45.51"
-# unicast_peer="10.186.45.52"
-# vip="10.186.45.53"
-# Master_Backip="MASTER"
-# priority="100"
-
 interface=$(ifconfig|awk '{print $1}'|sed -n 1p|cut -d : -f 1)
 hostname=$(hostname)
 
