@@ -163,6 +163,7 @@ net.ipv4.tcp_keepalive_time = 1800
 net.ipv4.ip_local_port_range = 1024    65000
 EOF
 
+sysctl -p
 
 #openresty 安装
 function openresty() {
