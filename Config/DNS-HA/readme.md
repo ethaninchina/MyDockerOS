@@ -1,4 +1,4 @@
-### 企业级 内网域名域名解析(主备) 配置
+### 企业级 DNS 内网域名解析(主备) 配置
 ##### 主机: 10.0.0.111
 ##### 备机: 10.0.0.113
 
@@ -76,6 +76,43 @@ zone "my-niubi.com" IN {
         notify yes;
 };
 ```
+##### 配置要解析的 内网域名  (主机配置即可,备机无需配置)
+###### myapi.com.zone
+```
+vim /var/named/myapi.com.zone
+
+$TTL 1D
+@       		IN SOA  myapi.com. admin.myapi.com. (
+                                        32	; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+@       		IN NS   	dns1.myapi.com.
+dns1    		IN A    	10.0.0.111
+www   			IN A 		10.0.0.109
+api   			IN A 		10.0.0.110
+```
+###### my-niubi.com.zone
+```
+vim /var/named/my-niubi.com.zone
+
+$TTL 1D
+@       		IN SOA  my-niubi.com. admin.my-niubi.com. (
+                                        18	; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+@       		IN NS   	dns1.my-niubi.com.
+dns1    		IN A    	10.0.0.111
+;----------------------web server-------------------
+www	    		IN A    	10.0.0.109
+api	    		IN A    	10.0.0.110
+;----------------------down file server-------------------
+download		IN A    	10.0.0.77
+```
+
 
 ####################################################
 ###############  备机: 10.0.0.113  #################
@@ -137,5 +174,6 @@ zone "my-niubi.com" IN {
 	allow-update { none;};
 };
 ```
+
 
 
