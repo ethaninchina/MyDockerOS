@@ -135,6 +135,12 @@ options {
 	dnssec-validation yes;
 	dnssec-lookaside auto;
 
+	# forwarders {       	 	//即访问非内网域名时将解析转发到这几个DNS地址(分别为114的DNS、google的DNS)上进行解析 
+    #           114.114.114.114; //注意这里转发的是DNS地址，没有指定DNS转发域名。
+    #           8.8.8.8;
+    #           8.8.4.4;
+    #        };
+
 	/* Path to ISC DLV key */
 	bindkeys-file "/etc/named.iscdlv.key";
 
