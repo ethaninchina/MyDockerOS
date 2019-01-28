@@ -167,6 +167,8 @@ include "/etc/named.root.key";
 ```
 #####  ##### 从机: 10.0.0.113  ##### 
 ```
+[yunwei@dns02 ~]$ sudo cat /etc/named.rfc1912.zones
+
 zone "myapi.com" IN {
 	type slave;
 	masters {10.0.0.111;}; // 主机地址
