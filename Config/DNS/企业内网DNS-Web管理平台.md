@@ -109,9 +109,10 @@ cd /usr/local/bind/etc/
 dig -t NS .  >named.ca
 ```
 ##### 6, 下载web文件
+```
 git clone https://github.com/station19/Bind-Web-1.git
 cd Bind-Web
-
+```
 ##### 7, 配置数据库，导入sql 文件
 ```
 mysql -uroot -p   #登录数据库
