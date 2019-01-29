@@ -1,4 +1,4 @@
-### Bind-DLZ + Flask + Mysql DNS管理平台
+### Bind-DLZ + Django + Mysql DNS管理平台
 ##### 系统环境:CentOS Linux release 7.4.1708 (Core)
 
 ###### 1,安装mysql 5.6
