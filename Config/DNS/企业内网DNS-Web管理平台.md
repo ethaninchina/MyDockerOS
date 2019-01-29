@@ -120,24 +120,35 @@ mysql> source /root/Bind-Web/named.sql;             #注意路径，这里我放
 就两张表，一个dns用到的表，一个用户管理表
 ```
 
-##### 8, 安装python相关环境
-```
-wget https://bootstrap.pypa.io/get-pip.py
-python get-pip.py
-
-yum install python-devel -y
-pip install -r requirement.txt
-```
-##### 9, 设置数据库
+##### 8, 设置数据库
 ```
 vim /root/Bind-Web/config.py
 db_host = 'localhost'
 db_name = 'named'
 db_user = 'root'
 db_passwd = '123456'
+```
+##### 9, 安装python相关环境
+```
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
 
+yum install python-devel -y
+pip install -r requirement.txt
+
+python run.py
 ```
 
+###### 启动 bind 
+
+```
+mkdir  /var/run/named/ && chown  named:named -R /var/run/named 
+cd /root/Bind-Web/bind 启动脚本 配置文件  数据库文件
+cp bind /etc/init.d/bind 
+chmod +x /etc/init.d/bind
+/etc/init.d/bind  start            #监控日志，查看启动状态
+chkconfig  --add bind            #加入开机启动
+```
 
 
 
