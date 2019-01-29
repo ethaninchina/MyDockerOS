@@ -1,7 +1,7 @@
 ### Bind-DLZ + Django + Mysql DNS管理平台
 ##### 系统环境:CentOS Linux release 7.4.1708 (Core)
 
-###### 1,安装mysql 5.6
+###### 1,安装mysql 5.6 (如果数据库在其他机器上 则只需要执行 yum install mysql-devel -y )
 ```
 wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
 rpm-ivh mysql-community-release-el7-5.noarch.rpm
