@@ -144,8 +144,7 @@ python run.py
 
 ```
 mkdir  /var/run/named/ && chown  named:named -R /var/run/named 
-cd /root/Bind-Web/bind 启动脚本 配置文件  数据库文件
-cp bind /etc/init.d/bind 
+cd /root/Bind-Web/bind /etc/init.d/bind 
 chmod +x /etc/init.d/bind
 /etc/init.d/bind  start            #监控日志，查看启动状态
 chkconfig  --add bind            #加入开机启动
