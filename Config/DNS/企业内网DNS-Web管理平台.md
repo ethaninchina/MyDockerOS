@@ -131,9 +131,11 @@ db_passwd = '123456'
 ```
 ##### 9, 安装python相关环境
 ```
+cd 
 wget https://bootstrap.pypa.io/get-pip.py
 python get-pip.py
 
+cd /root/Bind-Web/
 yum install python-devel -y
 pip install -r requirement.txt
 
