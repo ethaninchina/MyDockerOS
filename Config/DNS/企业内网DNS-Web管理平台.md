@@ -14,6 +14,7 @@ character-set-server=utf8
 ```
 
 ```
+systemctl enable mysql
 systemctl start mysql
 systemctl status mysql
 
@@ -58,7 +59,7 @@ chown  -R named:named /usr/local/bind/
 ```
 	options {
 			directory       "/usr/local/bind/";
-			version         "bind-9.9.9";
+			version         "bind-9.9.5";
 			listen-on port 53 { any; };
 			allow-query-cache { any; };
 			listen-on-v6 port 53 { any; };
@@ -118,6 +119,28 @@ mysql> CREATE DATABASE  named   CHARACTER SET utf8 COLLATE utf8_general_ci;
 mysql> source /root/Bind-Web/named.sql;             #注意路径，这里我放在当前目录
 就两张表，一个dns用到的表，一个用户管理表
 ```
+
+##### 8, 安装python相关环境
+```
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
+
 yum install python-devel -y
+pip install -r requirement.txt
+```
+##### 9, 设置数据库
+```
+vim /root/Bind-Web/config.py
+db_host = 'localhost'
+db_name = 'named'
+db_user = 'root'
+db_passwd = '123456'
+
+```
+
+
+
+
+
 
 
