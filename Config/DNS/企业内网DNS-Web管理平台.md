@@ -46,7 +46,7 @@ Grant all privileges on *.* to 'root'@'localhost' identified by '123456' with gr
 ##### 3, 环境变量配置
 ```
 cat>>/etc/profile<<EOF 
-export PATH=$PATH:/usr/local/bind/bin:/usr/local/bind/sbin
+export PATH=\$PATH:/usr/local/bind/bin:/usr/local/bind/sbin
 EOF
 
 source  /etc/profile  #重新加载一下环境变量
