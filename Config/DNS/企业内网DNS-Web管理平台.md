@@ -56,5 +56,5 @@ useradd  -s  /sbin/nologin  named
 chown  -R named:named /usr/local/bind/
 ```
 
-#### 剩余步骤,移步到 https://github.com/station19/Bind-Web
+#### 剩余步骤,移步到 https://github.com/station19/Bind-Web-Django
 
