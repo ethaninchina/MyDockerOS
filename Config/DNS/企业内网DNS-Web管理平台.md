@@ -25,7 +25,7 @@ Grant all privileges on *.* to 'root'@'localhost' identified by '123456' with gr
 
 ##### 2, 安装 bind-9.9.5
 ```
-wget http://distfiles.macports.org/bind9/bind-9.9.5.tar.gz
+ wget http://distfiles.macports.org/bind9/bind-9.9.5.tar.gz
  tar -zxvf  bind-9.9.5.tar.gz
  cd bind-9.9.5
  
@@ -41,7 +41,7 @@ wget http://distfiles.macports.org/bind9/bind-9.9.5.tar.gz
  make install           #源码编译安装完成
  
  # 如果提示 not found  libmysqlclient,执行下面命令
- ln -s /usr/lib64/mysql/  .so /usr/lib/libmysqlclient.so
+ # ln -s /usr/lib64/mysql/libmysqlclient.so /usr/lib/libmysqlclient.so
 ```
 ##### 3, 环境变量配置
 ```
