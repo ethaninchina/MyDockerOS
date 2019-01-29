@@ -152,6 +152,8 @@ chmod +x /etc/init.d/bind
 chkconfig  --add bind            #加入开机启动
 ```
 
+##### web管理界面
+http://ip:5000 访问WEB 界面 , 登录账户 eagle , 密码 123456   << web界面域名管理内容不能为空 >>
 
 
 
