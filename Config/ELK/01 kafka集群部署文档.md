@@ -2,6 +2,7 @@
 官网地址：http://kafka.apache.org<br>
 学习地址：http://orchome.com/kafka/index<br>
 下载地址：http://kafka.apache.org/downloads.html<br>
+kafka运维手册: https://www.jianshu.com/p/d74bcbc102a9<br>
 ```shell
 wegt http://mirrors.hust.edu.cn/apache/kafka/1.1.1/kafka_2.11-1.1.1.tgz
 tar -zxvf kafka_2.11-1.1.1.tgz
