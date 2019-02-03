@@ -108,6 +108,15 @@ systemctl status etcd
 ae5f0a864e4bd403: name=etcd2 peerURLs=http://10.0.0.108:2380 clientURLs=http://10.0.0.108:2379,http://10.0.0.108:4001 isLeader=true
 bf273b606bebc955: name=etcd1 peerURLs=http://10.0.0.101:2380 clientURLs=http://10.0.0.101:2379,http://10.0.0.101:4001 isLeader=false
 ```
+##### 查看集群健康状态 (etcdctl cluster-health)
+```
+[root@lvs2 ~]# etcdctl cluster-health 
+member 2ba4256c28888332 is healthy: got healthy result from http://10.0.0.109:2379
+member ae5f0a864e4bd403 is healthy: got healthy result from http://10.0.0.108:2379
+member bf273b606bebc955 is healthy: got healthy result from http://10.0.0.101:2379
+cluster is healthy
+
+```
 
 ```
 #设置key (集群中任何一台机器上执行,数据即同步集群)
