@@ -109,6 +109,22 @@ ae5f0a864e4bd403: name=etcd2 peerURLs=http://10.0.0.108:2380 clientURLs=http://1
 bf273b606bebc955: name=etcd1 peerURLs=http://10.0.0.101:2380 clientURLs=http://10.0.0.101:2379,http://10.0.0.101:4001 isLeader=false
 ```
 
+```
+#设置key (集群中任何一台机器上执行,数据即同步集群)
+etcdctl set /nginx/servername 666.com
+etcdctl set /nginx/upstream/server1 10.0.0.111
+etcdctl set /nginx/upstream/server2 10.0.0.113
+
+#查看key (集群中任何一台机器上执行,数据即同步集群)
+etcdctl get /nginx/servername
+etcdctl get /nginx/upstream/server1
+etcdctl get /nginx/upstream/server2
+
+#删除key (集群中任何一台机器上执行,数据即同步集群)
+etcdctl rm /nginx/servername 
+etcdctl rm /nginx/upstream/server1
+etcdctl rm /nginx/upstream/server2
+```
 
 #### 2, 在安装nginx的机器  安装confd
 ##### nginx端安装 confd , nginx 
@@ -169,23 +185,6 @@ server {
 EOF
 ```
 
-```
-#删除key
- 
-etcdctl rm /nginx/servername 
-etcdctl rm /nginx/upstream/server1
-etcdctl rm /nginx/upstream/server2
- 
-#设置key
-etcdctl set /nginx/servername 666.com
-etcdctl set /nginx/upstream/server1 10.0.0.111
-etcdctl set /nginx/upstream/server2 10.0.0.113
-
-#查看key
-etcdctl get /nginx/servername
-etcdctl get /nginx/upstream/server1
-etcdctl get /nginx/upstream/server2
-```
 
 ###### confd启动 (监听etcd的三个节点)
 ```
