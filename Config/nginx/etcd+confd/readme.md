@@ -1,4 +1,5 @@
 
+## etcd+confd 动态管理 nginx upstream 集群
 #### 1, etcd启动 (集群)
 ###### 三台机器跑etcd集群
 ```
