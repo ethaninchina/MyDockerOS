@@ -20,7 +20,7 @@ yum install etcd -y
 mkdir /etcd_data && chown etcd.etcd /etcd_data/
 ```
 
-##### etcd1 执行
+##### etcd1 执行 (10.0.0.101)
 ```
 cat>/etc/etcd/etcd.conf<<EOF
 # [member]
@@ -45,7 +45,7 @@ ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
 ETCD_ADVERTISE_CLIENT_URLS="http://10.0.0.101:2379,http://10.0.0.101:4001"
 EOF
 ```
-##### etcd2 执行
+##### etcd2 执行 (10.0.0.108)
 ```
 cat>/etc/etcd/etcd.conf<<EOF
 # [member]
@@ -70,7 +70,7 @@ ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
 ETCD_ADVERTISE_CLIENT_URLS="http://10.0.0.108:2379,http://10.0.0.108:4001"
 EOF
 ```
-##### etcd3 执行
+##### etcd3 执行 (10.0.0.109)
 ```
 cat>/etc/etcd/etcd.conf<<EOF
 # [member]
