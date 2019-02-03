@@ -112,6 +112,14 @@ bf273b606bebc955: name=etcd1 peerURLs=http://10.0.0.101:2380 clientURLs=http://1
 
 #### 2, 在安装nginx的机器  安装confd
 ##### nginx端安装 confd , nginx 
+###### 安装nginx
+```
+yum install yum-utils -y
+curl -o /etc/yum.repos.d/nginx.repo https://raw.githubusercontent.com/station19/MyDockerOS/master/repo/nginx.repo
+yum-config-manager --enable nginx-mainline
+yum install nginx -y
+```
+###### 安装confd
 ```
 curl -o confd "https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64"
 chmod +x confd
@@ -182,10 +190,33 @@ etcdctl get /nginx/upstream/server2
 ###### confd启动 (监听etcd的三个节点)
 ```
 confd -watch -backend etcd -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379
-```
-###### 或者设置 10秒更新检查一次 (监听etcd的三个节点)
-```
+
+# 或者设置 10秒更新检查一次 (监听etcd的三个节点)
 confd -interval=10 -backend etcd -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379 
+```
+
+###### nginx机器查看效果 
+```
+[root@nginx vhost]# cat /etc/nginx/vhost/test.conf 
+upstream 666.com {
+
+server 10.0.0.111;
+
+server 10.0.0.113;
+
+}
+
+server {
+    server_name         666.com;
+    location / {
+        proxy_pass        http://666.com;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_redirect    off;
+    }
+} 
 ```
 
  
