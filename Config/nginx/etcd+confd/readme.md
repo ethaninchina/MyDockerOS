@@ -12,7 +12,7 @@
 yum install etcd -y
 mkdir /etcd_data && chown etcd.etcd /etcd_data/
 ```
-##### ###若使用v3版本api的 etcd (可不用,看需求)
+##### ###若使用v3版本api的 etcd (推荐使用v3 ,可使用web管理 etcd集群key  [项目地址 https://github.com/shiguanghuxian/etcd-manage])
 ```
 # echo "export ETCDCTL_API=3" >> /etc/profile && . /etc/profile
 
@@ -20,21 +20,20 @@ mkdir /etcd_data && chown etcd.etcd /etcd_data/
 
 v3 api的 使用方法
 
-#删除key
-etcdctl del /nginx/servername 
-etcdctl del /nginx/upstream/server1
-etcdctl del /nginx/upstream/server2
-
 #设置key
 etcdctl put /nginx/servername abc.com
-etcdctl put /nginx/upstream/server1 10.0.0.111
-etcdctl put /nginx/upstream/server2 10.0.0.113
+etcdctl put /nginx/upstream/server1 "10.0.0.111 weight=1 max_fails=3 fail_timeout=10s"
+etcdctl put /nginx/upstream/server2 "10.0.0.113 weight=1 max_fails=3 fail_timeout=10s"
 
 #查看key
 etcdctl get /nginx/servername
 etcdctl get /nginx/upstream/server1
 etcdctl get /nginx/upstream/server2
 
+#删除key
+etcdctl del /nginx/servername 
+etcdctl del /nginx/upstream/server1
+etcdctl del /nginx/upstream/server2
 ```
 
 
@@ -136,23 +135,6 @@ cluster is healthy
 
 ```
 
-```
-#设置key (集群中任何一台机器上执行,数据即同步集群)
-etcdctl set /nginx/servername 666.com
-etcdctl set /nginx/upstream/server1 10.0.0.111
-etcdctl set /nginx/upstream/server2 10.0.0.113
-
-#查看key (集群中任何一台机器上执行,数据即同步集群)
-etcdctl get /nginx/servername
-etcdctl get /nginx/upstream/server1
-etcdctl get /nginx/upstream/server2
-
-#删除key (集群中任何一台机器上执行,数据即同步集群)
-etcdctl rm /nginx/servername 
-etcdctl rm /nginx/upstream/server1
-etcdctl rm /nginx/upstream/server2
-```
-
 #### 2, 在安装nginx的机器  安装confd
 ##### nginx端安装 confd , nginx 
 ###### 安装nginx
@@ -215,10 +197,15 @@ EOF
 
 ###### confd启动 (监听etcd的三个节点)
 ```
-confd -watch -backend etcd -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379
+#confd -watch -backend etcd -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379
+v3 api 方法
+confd -watch -backend etcdv3 -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379
 
 # 或者设置 10秒更新检查一次 (监听etcd的三个节点)
-confd -interval=10 -backend etcd -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379 
+#confd -interval=10 -backend etcd -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379 
+v3 api 方法
+confd -interval=10 -backend etcdv3 -node http://10.0.0.101:2379 -node http://10.0.0.108:2379 -node http://10.0.0.109:2379 
+
 ```
 
 ###### nginx机器查看效果 
@@ -226,9 +213,9 @@ confd -interval=10 -backend etcd -node http://10.0.0.101:2379 -node http://10.0.
 [root@nginx vhost]# cat /etc/nginx/vhost/test.conf 
 upstream 666.com {
 
-server 10.0.0.111;
+server 10.0.0.111 weight=1 max_fails=3 fail_timeout=10s;
 
-server 10.0.0.113;
+server 10.0.0.113 weight=1 max_fails=3 fail_timeout=10s;
 
 }
 
