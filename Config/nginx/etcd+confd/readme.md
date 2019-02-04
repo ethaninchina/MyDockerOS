@@ -12,7 +12,7 @@
 yum install etcd -y
 mkdir /etcd_data && chown etcd.etcd /etcd_data/
 ```
-##### 若使用v3版本api的 etcd (可不用,看需求)
+##### ###若使用v3版本api的 etcd (可不用,看需求)
 ```
 # echo "export ETCDCTL_API=3" >> /etc/profile && . /etc/profile
 
