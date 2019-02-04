@@ -14,11 +14,11 @@ mkdir /etcd_data && chown etcd.etcd /etcd_data/
 ```
 ##### ###若使用v3版本api的 etcd (推荐使用v3 ,可使用web管理 etcd集群key  [项目地址 https://github.com/shiguanghuxian/etcd-manage])
 ```
-# echo "export ETCDCTL_API=3" >> /etc/profile && . /etc/profile
-
 #使用v3版本api功能可以使用web界面管理etcd (项目地址 https://github.com/shiguanghuxian/etcd-manage), web使用显示 key等 ,在 SERVER 栏里 修复目录 ,即可 
-
 v3 api的 使用方法
+
+
+echo "export ETCDCTL_API=3" >> /etc/profile && . /etc/profile
 
 #设置key
 etcdctl put /nginx/servername abc.com
