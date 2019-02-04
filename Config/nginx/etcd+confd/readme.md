@@ -12,10 +12,31 @@
 yum install etcd -y
 mkdir /etcd_data && chown etcd.etcd /etcd_data/
 ```
-##### 若使用v3版本的 etcd,
+##### 若使用v3版本api的 etcd (可不用,看需求)
 ```
 # echo "export ETCDCTL_API=3" >> /etc/profile && . /etc/profile
+
+#使用v3版本api功能可以使用web界面管理etcd (项目地址 https://github.com/shiguanghuxian/etcd-manage), web使用显示 key等 ,在 SERVER 栏里 修复目录 ,即可 
+
+v3 api的 使用方法
+
+#删除key
+etcdctl del /nginx/servername 
+etcdctl del /nginx/upstream/server1
+etcdctl del /nginx/upstream/server2
+
+#设置key
+etcdctl put /nginx/servername abc.com
+etcdctl put /nginx/upstream/server1 10.0.0.111
+etcdctl put /nginx/upstream/server2 10.0.0.113
+
+#查看key
+etcdctl get /nginx/servername
+etcdctl get /nginx/upstream/server1
+etcdctl get /nginx/upstream/server2
+
 ```
+
 
 ##### etcd1 执行 (10.0.0.101)
 ```
