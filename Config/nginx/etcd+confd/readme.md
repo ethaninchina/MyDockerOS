@@ -9,16 +9,12 @@
 ```
 ##### 安装 etcd (版本)
 ```
-[root@data confd]# etcd -version
-etcd Version: 3.1.4
-Git SHA: 41e52eb
-Go Version: go1.7.5
-Go OS/Arch: linux/amd64
-
-```
-```
 yum install etcd -y
 mkdir /etcd_data && chown etcd.etcd /etcd_data/
+```
+##### 若使用v3版本的 etcd
+```
+echo "export ETCDCTL_API=3" >> /etc/profile && . /etc/profile
 ```
 
 ##### etcd1 执行 (10.0.0.101)
