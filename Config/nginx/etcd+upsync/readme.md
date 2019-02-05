@@ -7,7 +7,7 @@ cd /usr/local/src/
 ```
 ##### 下载模块
 ```
-下载 nginx_upstream_check_module (健康检查)
+#下载 nginx_upstream_check_module (健康检查)
 git clone https://github.com/xiaokai-wang/nginx_upstream_check_module.git
 
 #下载 nginx-upsync-module (动态upstream管理)
