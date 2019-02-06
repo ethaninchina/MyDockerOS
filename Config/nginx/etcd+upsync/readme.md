@@ -46,7 +46,9 @@ upstream test {
     upsync 127.0.0.1:2379/v2/keys/upstreams/test upsync_timeout=6m upsync_interval=500ms upsync_type=etcd strong_dependency=off;
     #upsync 将更新的upstream配置dump到配置文件(但 不会 reload/restart)
     upsync_dump_path /usr/local/openresty/nginx/conf/servers/servers_test.conf; 
-# 健康检查 间隔1s 超时3秒
+    #引入upstream的配置文件
+    include /usr/local/openresty/nginx/conf/servers/servers_test.conf;
+    # 健康检查 间隔1s 超时3秒
     check interval=1000 rise=2 fall=2 timeout=1000 type=http default_down=false; #超时1秒
     check_http_send "HEAD / HTTP/1.0\r\n\r\n";
     check_http_expect_alive http_2xx http_3xx;
@@ -57,6 +59,8 @@ upstream pda {
     server localhost:8005 ;
     upsync 0.0.0.0:2379/v2/keys/upstreams/pda upsync_timeout=6m upsync_interval=500ms upsync_type=etcd strong_dependency=off;
     upsync_dump_path /usr/local/openresty/nginx/conf/servers/servers_pda.conf;
+    
+        include /usr/local/openresty/nginx/conf/servers/servers_pda.conf;
 
         check interval=1000 rise=2 fall=2 timeout=3000 type=http default_down=false;
         check_http_send "HEAD / HTTP/1.0\r\n\r\n";
