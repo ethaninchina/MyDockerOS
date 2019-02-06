@@ -27,7 +27,7 @@ patch -p1 < ../nginx_upstream_check_module/check_1.12.1+.patch
 #y
 
 #开始编译
-./configure --prefix=/usr/local/openresty --add-module=../nginx-upsync-module-2.1.0 --add-module=../nginx_upstream_check_module --with-pcre-jit --with-stream_ssl_preread_module --with-http_v2_module --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --with-http_stub_status_module --with-http_realip_module --with-http_addition_module --with-http_auth_request_module --with-http_secure_link_module --with-http_random_index_module --with-http_gzip_static_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-threads --with-stream --with-stream_ssl_module --with-http_ssl_module 
+./configure --prefix=/usr/local/openresty --add-module=../nginx-upsync-module-2.1.0 --add-module=../nginx_upstream_check_module --with-pcre-jit --with-stream_ssl_preread_module --with-http_v2_module --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --with-http_stub_status_module --with-http_realip_module --with-http_addition_module --with-http_auth_request_module --with-http_secure_link_module --with-http_random_index_module --with-http_gzip_static_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-threads --with-stream --with-stream_ssl_module --with-http_ssl_module --with-http_iconv_module
 
 make && make install
 
