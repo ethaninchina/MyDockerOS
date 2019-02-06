@@ -96,3 +96,15 @@ curl -X DELETE http://127.0.0.1:2379/v2/keys/upstreams/test/127.0.0.1:888
 curl -X DELETE http://127.0.0.1:2379/v2/keys/upstreams/test/127.0.0.1:999
 ```
 
+```
+#查看 etcd中的 key/value
+curl 139.199.187.148:2379/v2/keys/upstreams/test
+
+#查看 upsync 的upstream
+#所有的upstream
+curl http://127.0.0.1/upstream_list
+# upstream为 test的
+curl http://127.0.0.1/upstream_list?test
+```
+
+
