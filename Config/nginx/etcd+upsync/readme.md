@@ -46,7 +46,7 @@ upstream test {
     #upsync 将更新的upstream配置dump到配置文件(但 不会 reload/restart)
     upsync_dump_path /usr/local/openresty/nginx/conf/servers/servers_test.conf; 
 # 健康检查 间隔1s 超时3秒
-    check interval=1000 rise=2 fall=2 timeout=3000 type=http default_down=false;
+    check interval=1000 rise=2 fall=2 timeout=10000 type=http default_down=false; #超时10秒
     check_http_send "HEAD / HTTP/1.0\r\n\r\n";
     check_http_expect_alive http_2xx http_3xx;
 }
