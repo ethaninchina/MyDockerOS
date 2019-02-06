@@ -39,6 +39,7 @@ vim /usr/local/openresty/nginx/conf/nginx.conf
 .......
 http {
 # upsync 管理upstream (upstream test  对于 upsync中的在 etcd的key: /upstreams/test 来区分不同的 upstream名)
+##### 测试 upstream 为 test
 upstream test {
     server localhost:12345 ;#无用配置,只是为了启动nginx时候不报错
     #当strong_dependency打开时，每次nginx启动或重新加载时，nginx都会从consul/etcd中提取服务器。
@@ -51,6 +52,19 @@ upstream test {
     check_http_expect_alive http_2xx http_3xx;
 }
 
+##### 测试 upstream 为 pda
+upstream pda {
+    server localhost:8005 ;
+    upsync 0.0.0.0:2379/v2/keys/upstreams/pda upsync_timeout=6m upsync_interval=500ms upsync_type=etcd strong_dependency=off;
+    upsync_dump_path /usr/local/openresty/nginx/conf/servers/servers_pda.conf;
+
+        check interval=1000 rise=2 fall=2 timeout=10000 type=http default_down=false;
+        check_http_send "HEAD / HTTP/1.0\r\n\r\n";
+        check_http_expect_alive http_2xx http_3xx;
+
+
+}
+
 #全局 upsync管理upstream
 server {
     listen       80;
@@ -59,16 +73,20 @@ server {
     location /upstream_list {
         upstream_show;
     }
-    #upstream 健康监测
-    location /up_status {
-        check_status;
-        access_log   off;
-        }
 
-    #location /proxy_test {
-    #   proxy_pass http://test;
-    #}
- }
+            location /status {
+                check_status;
+                access_log   off;
+           }
+        # upstream test #
+        location /proxy_test {
+            proxy_pass http://test;
+        }
+        # upstream pda #
+        location /proxy_pda {
+            proxy_pass http://pda;
+        }
+    }
 }
 
 
