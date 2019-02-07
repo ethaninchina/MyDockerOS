@@ -1,12 +1,11 @@
-confd 配置参考 https://github.com/station19/MyDockerOS/blob/master/Config/nginx/etcd%2Bconfd/readme.md
+##### 利用confd+etcd管理 haproxy 配置(服务注册)
+confd +eetcd 配置参考 https://github.com/station19/MyDockerOS/blob/master/Config/nginx/etcd%2Bconfd/readme.md
 
+##### conf.d
 ```
 mkdir -p /etc/confd/{conf.d,templates}
-```
-##### conf.d 
-```
-vim /etc/confd/conf.d/haproxy.toml
 
+vim /etc/confd/conf.d/haproxy.toml
 [template]
 #模板文件，基于它进行修改
 src = "haproxy.cfg.tmpl"
