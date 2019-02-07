@@ -94,7 +94,7 @@ server {
 }
 
 
-#定义一个 servers_test.conf 默认
+#定义一个 servers_test.conf 默认 (做测试,观察配置文件是否更新)
 cat>/usr/local/openresty/nginx/conf/servers/servers_test.conf<<EOF
 server 127.0.0.1:8001 weight=1 max_fails=2 fail_timeout=10s;
 server 127.0.0.1:8002 weight=1 max_fails=2 fail_timeout=10s;
