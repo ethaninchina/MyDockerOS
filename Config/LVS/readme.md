@@ -12,7 +12,7 @@ realserver:
 10.0.0.110
 10.0.0.111
 ```
-###### keepalived master 设置
+1, keepalived master 设置
 ```
 ! Configuration File for keepalived 
 global_defs { 
@@ -101,7 +101,7 @@ virtual_server  10.0.0.201 80 {
     }   
 } 
 ```
-###### keepalived backup 设置
+2, keepalived backup 设置
 ```
 ! Configuration File for keepalived 
 global_defs { 
@@ -190,7 +190,7 @@ virtual_server  10.0.0.201 80 {
     }   
 } 
 ```
-启动keepalived
+3,启动keepalived
 ```
 systemctl enable keepalived
 systemctl start keepalived
@@ -199,6 +199,7 @@ systemctl status keepalived
 
 
 #### ###### realserver 设置 ######
+4, realserver 设置vip绑定脚本
 vim /etc/init.d/lvs
 ```
 #!/bin/sh
@@ -274,10 +275,12 @@ case "$1" in
 esac
 exit 0
 ```
-启动脚本
+启动脚本,并设置开机启动
 ```
 service lvs start
 chkconfig lvs on
+
+chkconfig --list |grep lvs
 ```
 ##### lvs 端查看并发量
 ```
