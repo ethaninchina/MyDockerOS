@@ -38,6 +38,7 @@ vrrp_instance NginxCluster {
    } 
     virtual_ipaddress { 
     	10.0.0.200
+	10.0.0.201
     } 
 } 
 virtual_server  10.0.0.200 80 { 
@@ -68,6 +69,35 @@ virtual_server  10.0.0.200 80 {
         } 
     } 
 }
+#设置虚拟ip 10.0.0.201
+virtual_server  10.0.0.201 80 {
+    delay_loop 3 #健康检查时间间隔
+    lb_algo wrr  #算法
+    lb_kind DR  #转发规则
+    #persistence_timeout 60
+    protocol TCP 
+    nat_mask 255.255.255.0
+    real_server 10.0.0.110 80 {
+        weight 10　 
+        inhibit_on_failure
+        TCP_CHECK { 
+            connect_timeout 3
+            nb_get_retry 3  
+            delay_before_retry 3
+            connect_port 80 
+        }   
+    }   
+    real_server 10.0.0.111 80 {  #指定real server的真实IP地址和端口
+        weight 10
+        inhibit_on_failure
+        TCP_CHECK { 
+            connect_timeout 3  #超时时间
+            nb_get_retry 3 #重试次数
+            delay_before_retry 3 #重试间隔
+            connect_port 80 #监测端口 
+        }   
+    }   
+} 
 ```
 ###### keepalived backup 设置
 ```
@@ -97,6 +127,7 @@ vrrp_instance NginxCluster {
 } 
     virtual_ipaddress { 
         10.0.0.200
+	10.0.0.201
     } 
 } 
 virtual_server  10.0.0.200 80 { 
@@ -127,6 +158,35 @@ virtual_server  10.0.0.200 80 {
         } 
     } 
 }
+#设置虚拟ip 10.0.0.201
+virtual_server  10.0.0.201 80 {
+    delay_loop 3 #健康检查时间间隔
+    lb_algo wrr  #算法
+    lb_kind DR  #转发规则
+    #persistence_timeout 60
+    protocol TCP 
+    nat_mask 255.255.255.0
+    real_server 10.0.0.110 80 {
+        weight 10　 
+        inhibit_on_failure
+        TCP_CHECK { 
+            connect_timeout 3
+            nb_get_retry 3  
+            delay_before_retry 3
+            connect_port 80 
+        }   
+    }   
+    real_server 10.0.0.111 80 {  #指定real server的真实IP地址和端口
+        weight 10
+        inhibit_on_failure
+        TCP_CHECK { 
+            connect_timeout 3  #超时时间
+            nb_get_retry 3 #重试次数
+            delay_before_retry 3 #重试间隔
+            connect_port 80 #监测端口 
+        }   
+    }   
+} 
 ```
 启动keepalived
 ```
@@ -155,7 +215,7 @@ vim /etc/init.d/lvs
 
 #有多个虚拟IP，以空格分隔
 
-SNS_VIP="10.0.0.200"
+SNS_VIP="10.0.0.200 10.0.0.201"
 
 . /etc/rc.d/init.d/functions
 
@@ -216,6 +276,28 @@ exit 0
 ```
 service lvs start
 chkconfig lvs on
+```
+##### lvs 端查看并发量
+```
 
+操作步骤详细到命令行级别
+查看LVS的连接情况:  ipvsadm -L -n
+查看LVS的吞吐量情况:  ipvsadm -L -n --rate
+查看LVS的统计信息:  ipvsadm -L -n --stats
+实时查看LVS连接状态变化:  watch ipvsadm ipvsadm -L -n
+```
+
+```
+[root@lvs1 keepalived]# ipvsadm -L -n
+IP Virtual Server version 1.2.1 (size=4096)
+Prot LocalAddress:Port Scheduler Flags
+  -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
+TCP  10.0.0.200:80 wrr
+  -> 10.0.0.110:80                Route   10     206        6267      
+  -> 10.0.0.111:80                Route   10     209        6265      
+TCP  10.0.0.201:80 wrr
+  -> 10.0.0.110:80                Route   10     226        3906      
+  -> 10.0.0.111:80                Route   10     237        3894      
+[root@lvs2 keepalived]# 
 ```
 
