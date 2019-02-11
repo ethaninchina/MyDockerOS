@@ -1,0 +1,221 @@
+##### lvs+keepalived
+```
+VIP: 10.0.0.200
+
+lvs:
+10.0.0.101
+10.0.0.108
+
+realserver:
+10.0.0.110
+10.0.0.111
+```
+###### master
+```
+! Configuration File for keepalived 
+global_defs { 
+    router_id lvs_clu_1 
+} 
+virrp_sync_group Prox { 
+    group { 
+        NginxCluster 
+    } 
+} 
+vrrp_instance NginxCluster { 
+    state MASTER 
+    interface ens33 
+    lvs_sync_daemon_interface ens33 
+    unicast_src_ip 10.0.0.101
+    unicast_peer {
+        10.0.0.108  #对端设备(backup服务器)的 IP 地址，例如：172.168.10.222 
+    }
+    virtual_router_id 50 
+    priority 100 
+    advert_int 1 
+    authentication { 
+        auth_type PASS 
+        auth_pass 4008 
+   } 
+    virtual_ipaddress { 
+    	10.0.0.200
+    } 
+} 
+virtual_server  10.0.0.200 80 { 
+    delay_loop 3 #健康检查时间间隔 
+    lb_algo wrr  #算法
+    lb_kind DR  #转发规则
+    #persistence_timeout 60 #保持长连接,连接保持，意思就是在这个一定时间内会讲来自同一用户（根据ip来判断的）访问到同一个real server。
+    protocol TCP 
+    nat_mask 255.255.255.0
+    real_server 10.0.0.110 80 { 
+        weight 10　 
+	      inhibit_on_failure 
+        TCP_CHECK { 
+            connect_timeout 3 
+            nb_get_retry 3 
+            delay_before_retry 3 
+            connect_port 80 
+        } 
+    } 
+    real_server 10.0.0.111 80 {  #指定real server的真实IP地址和端口
+        weight 10
+	      inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
+        TCP_CHECK { 
+            connect_timeout 3  #超时时间
+            nb_get_retry 3 #重试次数
+            delay_before_retry 3 #重试间隔 
+            connect_port 80 #监测端口
+        } 
+    } 
+}
+```
+###### backup
+```
+! Configuration File for keepalived 
+global_defs { 
+    router_id lvs_clu_2 
+} 
+virrp_sync_group Prox { 
+    group { 
+        NginxCluster 
+    } 
+} 
+vrrp_instance NginxCluster { 
+    state BACKUP 
+    interface ens33 
+    lvs_sync_daemon_interface ens33 
+    unicast_src_ip 10.0.0.108
+    unicast_peer {
+        10.0.0.101  #对端设备(backup服务器)的 IP 地址，例如：172.168.10.222    
+    }
+    virtual_router_id 50 
+    priority 80 
+    advert_int 1 
+    authentication { 
+        auth_type PASS 
+        auth_pass 4008 
+} 
+    virtual_ipaddress { 
+        10.0.0.200
+    } 
+} 
+virtual_server  10.0.0.200 80 { 
+    delay_loop 3 #健康检查时间间隔 
+    lb_algo wrr  #算法
+    lb_kind DR  #转发规则
+    #persistence_timeout 60 #连接保持，意思就是在这个一定时间内会讲来自同一用户（根据ip来判断的）访问到同一个real server。
+    protocol TCP 
+    nat_mask 255.255.255.0
+    real_server 10.0.0.110 80 { 
+        weight 10
+        inhibit_on_failure
+        TCP_CHECK { 
+            connect_timeout 3 
+            nb_get_retry 3 
+            delay_before_retry 3 
+            connect_port 80 
+        } 
+    } 
+    real_server 10.0.0.111 80 {  #指定real server的真实IP地址和端口
+        weight 10
+        inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
+        TCP_CHECK { 
+            connect_timeout 3  #超时时间
+            nb_get_retry 3 #重试次数
+            delay_before_retry 3 #重试间隔 
+            connect_port 80 #监测端口
+        } 
+    } 
+}
+```
+启动keepalived
+```
+systemctl enable keepalived
+systemctl start keepalived
+systemctl status keepalived
+```
+
+
+#### ###### realserver 设置 ######
+vim /etc/init.d/lvs
+```
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: lvs_realserver
+# Default-Start:  3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: LVS real_server service scripts
+# Description: LVS real_server start and stop controller
+### END INIT INFO
+#  Copyright 2013 lxcong
+#
+#  chkconfig: - 20 80
+#
+#  Author:  xxxx@xxxx
+
+#有多个虚拟IP，以空格分隔
+
+SNS_VIP="10.0.0.200"
+
+. /etc/rc.d/init.d/functions
+
+if [[ -z "$SNS_VIP"  ]];then
+    echo 'Please set vips in '$0' with SNS_VIP!'
+fi 
+
+start(){
+num=0
+for loop in $SNS_VIP
+do
+    /sbin/ifconfig lo:$num $loop netmask 255.255.255.255 broadcast $loop
+    /sbin/route add -host $loop dev lo:$num
+    ((num++))
+done
+echo "1" >/proc/sys/net/ipv4/conf/lo/arp_ignore
+echo "2" >/proc/sys/net/ipv4/conf/lo/arp_announce
+echo "1" >/proc/sys/net/ipv4/conf/all/arp_ignore
+echo "2" >/proc/sys/net/ipv4/conf/all/arp_announce
+sysctl -e -p >/dev/null 2>&1
+} 
+
+stop(){
+num=0
+for loop in $WEB_VIP
+do
+    /sbin/ifconfig lo:$num down
+    /sbin/route del -host $loop >/dev/null 2>&1
+    ((num++))
+done
+echo "0" >/proc/sys/net/ipv4/conf/lo/arp_ignore
+echo "0" >/proc/sys/net/ipv4/conf/lo/arp_announce
+echo "0" >/proc/sys/net/ipv4/conf/all/arp_ignore
+echo "0" >/proc/sys/net/ipv4/conf/all/arp_announce
+sysctl -e -p >/dev/null 2>&1
+} 
+
+case "$1" in
+    start)
+        start
+        echo "RealServer Start OK"
+        ;;
+    stop)
+        stop
+        echo "RealServer Stoped"
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+         echo "Usage: $0 {start|stop|restart}"
+         exit 1
+esac
+exit 0
+```
+启动脚本
+```
+service lvs start
+chkconfig lvs on
+
+```
+
