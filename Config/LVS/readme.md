@@ -10,7 +10,7 @@ realserver:
 10.0.0.110
 10.0.0.111
 ```
-###### master
+###### keepalived master 设置
 ```
 ! Configuration File for keepalived 
 global_defs { 
@@ -69,7 +69,7 @@ virtual_server  10.0.0.200 80 {
     } 
 }
 ```
-###### backup
+###### keepalived backup 设置
 ```
 ! Configuration File for keepalived 
 global_defs { 
