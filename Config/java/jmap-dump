@@ -1,0 +1,44 @@
+```
+#!/bin/bash
+service_name=$1
+port=$2
+service_path=/app/jar/${service_name}.jar
+dump_file=/app/logs/jvmdump/${service_name}.jvm.dump.`date +%Y%m%d%H%M%S`
+
+if [ `whoami` != "app" ]; then
+        echo "only app user can run !!!"
+        exit 1
+fi
+
+if [ ! -d "/app/logs/jvmdump" ]; then
+	mkdir -p /app/logs/jvmdump
+        if [ $? -ne 0 ];then
+                echo "/app/jvmdump 目录创建失败"
+                exit 1
+	fi
+fi
+
+service_pid=`ps -ef | grep -v grep | grep "$service_path" | grep "$port"|awk '{print $2}'`
+if [ ! -n "${service_pid}" ]; then
+	echo "${service_name} 未运行或者不存在"
+	exit 1
+fi
+
+echo "JVM导出中。。。"
+echo "jmap -dump:file=${dump_file} ${service_pid}"
+
+jmap -dump:file=${dump_file} ${service_pid}
+
+if [ $? -ne 0 ];then
+        echo "JVM导出失败"
+        exit 1
+fi
+
+echo "dump 文件压缩中。。。"
+gzip ${dump_file}
+ls ${dump_file}.gz
+chmod 666 ${dump_file}.gz
+
+echo "${service_name} JVM 导出结束！"
+
+```
