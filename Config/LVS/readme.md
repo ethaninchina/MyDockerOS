@@ -62,9 +62,9 @@ virtual_server  10.0.0.200 80 {
         weight 10　 
 	      inhibit_on_failure 
         TCP_CHECK { 
-            connect_timeout 3 
-            nb_get_retry 3 
-            delay_before_retry 3 
+            connect_timeout 1 
+            nb_get_retry 2 
+            delay_before_retry 1 
             connect_port 80 
         } 
     } 
@@ -72,9 +72,9 @@ virtual_server  10.0.0.200 80 {
         weight 10
 	      inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
         TCP_CHECK { 
-            connect_timeout 3  #超时时间
-            nb_get_retry 3 #重试次数
-            delay_before_retry 3 #重试间隔 
+            connect_timeout 1  #超时时间
+            nb_get_retry 2 #重试次数
+            delay_before_retry 1 #重试间隔 
             connect_port 80 #监测端口
         } 
     } 
