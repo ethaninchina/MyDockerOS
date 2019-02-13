@@ -14,7 +14,7 @@
 
 #有多个虚拟IP，以空格分隔
 
-SNS_VIP="10.0.0.200 10.0.0.201"
+SNS_VIP="10.0.0.200"
 
 . /etc/rc.d/init.d/functions
 
