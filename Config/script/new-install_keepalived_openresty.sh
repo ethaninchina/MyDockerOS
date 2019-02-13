@@ -94,6 +94,7 @@ echo "重新登录确认ulimit参数是否生效,否则重启生效...."
 fi
 
 #内核优化 sysctl.conf
+cp -fr /etc/sysctl.conf /etc/sysctl.conf.old
 #curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/sysctl.conf"
 cat>/etc/sysctl.conf<<EOF
 #############系统优化参数#############
