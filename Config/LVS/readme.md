@@ -1,4 +1,12 @@
 LVS(DR)+keepalived
+##### 安装ipvsadm
+```
+yum install ipvsadm -y
+cp /etc/sysctl.conf /etc/sysctl.conf.old 
+curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/lvs_sysctl.conf"
+sysctl -p
+```
+
 ```
 VIP: 
 10.0.0.200
