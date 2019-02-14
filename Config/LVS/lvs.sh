@@ -55,11 +55,11 @@ sysctl -e -p >/dev/null 2>&1
 case "$1" in
     start)
         start
-        echo "RealServer Start OK"
+        echo -e "\033[31m VIP 已启动 \033[0m"
         ;;
     stop)
         stop
-        echo "RealServer Stoped"
+        echo -e "\033[31m VIP 已停止 \033[0m"
         ;;
     restart)
         stop
