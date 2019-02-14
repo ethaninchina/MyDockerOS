@@ -39,7 +39,7 @@ sysctl -e -p >/dev/null 2>&1
 
 stop(){
 num=0
-for loop in $WEB_VIP
+for loop in $SNS_VIP
 do
     /sbin/ifconfig lo:$num down
     /sbin/route del -host $loop >/dev/null 2>&1
