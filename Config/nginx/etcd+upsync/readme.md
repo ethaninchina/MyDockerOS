@@ -1,9 +1,8 @@
 ```
+cd /usr/local/src/
 yum install epel-re* -y
 yum install git wget lrzsz patch -y
 yum install gcc gcc-c++ automake pcre pcre-devel zlip zlib-devel openssl openssl-devel -y
-
-cd /usr/local/src/
 ```
 ##### 下载模块
 ```
