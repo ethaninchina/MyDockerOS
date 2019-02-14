@@ -370,6 +370,9 @@ systemctl enable keepalived
 systemctl start keepalived
 systemctl status keepalived
 sleep 5
+echo -e "\033[31m
+	查看看LVS配置信息  
+\033[0m"
 ipvsadm -L -n
 }
 
