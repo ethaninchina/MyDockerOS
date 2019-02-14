@@ -54,6 +54,7 @@ else
     exit 1
 fi
 
+function sytem() {
 #关闭防火墙
 systemctl stop firewalld
 systemctl disable firewalld
@@ -103,6 +104,7 @@ ulimit -a
 echo -e "\033[41;37m 重新确认ulimit参数是否生效,否则重启生效.... \033[0m"
 sleep 5
 fi
+}
 
 #openresty 安装
 function openresty() {
@@ -376,13 +378,16 @@ systemctl status keepalived
 
 case "$number" in
 	1)
-		openresty
-		;;
+	sytem
+	openresty
+	;;
 	2)
+	sytem
         openresty
-		ng_keepalived
-		;;
+	ng_keepalived
+	;;
 	3)
+	sytem
         LVS_keepalived
 
         echo -e "\033[41;37m
