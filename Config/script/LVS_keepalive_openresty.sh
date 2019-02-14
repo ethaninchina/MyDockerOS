@@ -375,7 +375,7 @@ ipvsadm -L -n
 
 
 function echo_realserver {
-        echo -e "\033[41;37m
+        echo -e "\033[31m
         LVS_keepalived安装成功后,请在 realserver机器,按照顺序1-6依次执行/修改 ...
 
         1) curl -o /etc/init.d/lvs https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/LVS/lvs.sh 
