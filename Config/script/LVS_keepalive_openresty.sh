@@ -369,27 +369,12 @@ EOF
 systemctl enable keepalived
 systemctl start keepalived
 systemctl status keepalived
+sleep 5
+ipvsadm -L -n
 }
 
 
-# 1)安装 Openresty
-# 2)安装 keepalived + Openresty
-# 3)安装 keepalived + LVS
-
-case "$number" in
-	1)
-	sytem
-	openresty
-	;;
-	2)
-	sytem
-        openresty
-	ng_keepalived
-	;;
-	3)
-	sytem
-        LVS_keepalived
-
+function echo_realserver {
         echo -e "\033[41;37m
         LVS_keepalived安装成功后,请在 realserver机器,按照顺序1-6依次执行/修改 ...
 
@@ -399,7 +384,25 @@ case "$number" in
         4) chkconfig --list |grep lvs
         5) 修改 脚本内的 SNS_VIP 地址 
         6) 启动脚本: service lvs start \033[0m"
+}
 
-        ipvsadm -L -n
-		;;
+# 1)安装 Openresty
+# 2)安装 keepalived + Openresty
+# 3)安装 keepalived + LVS
+
+case "$number" in
+	1)
+	sytem #设置系统参数
+	openresty #安装openresty
+	;;
+	2)
+	sytem #设置系统参数
+        openresty #安装openresty
+	ng_keepalived #安装ng检测脚本+keepalived 
+	;;
+	3)
+	sytem #设置系统参数
+        LVS_keepalived #安装LVS+keepalived
+	echo_realserver #输出realserver设置信息
+	;;
 esac
