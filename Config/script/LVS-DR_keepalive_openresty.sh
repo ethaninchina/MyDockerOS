@@ -345,7 +345,7 @@ virtual_server  $vip $vs_port {
     nat_mask 255.255.255.0
     real_server $rs1 $vs_port { 
         weight 10　 
-	      inhibit_on_failure 
+	inhibit_on_failure 
         TCP_CHECK { 
             connect_timeout 1 
             nb_get_retry 2 
@@ -355,7 +355,7 @@ virtual_server  $vip $vs_port {
     } 
     real_server $rs2 $vs_port {  #指定real server的真实IP地址和端口
         weight 10
-	      inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
+	inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
         TCP_CHECK { 
             connect_timeout 1  #超时时间
             nb_get_retry 2 #重试次数
@@ -369,11 +369,6 @@ EOF
 systemctl enable keepalived
 systemctl start keepalived
 systemctl status keepalived
-sleep 5
-echo -e "\033[31m
-	查看看LVS配置信息  
-\033[0m"
-ipvsadm -L -n
 }
 
 
