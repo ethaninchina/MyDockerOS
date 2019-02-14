@@ -2,20 +2,12 @@
 # 1)安装 Openresty
 # 2)安装 keepalived + Openresty
 # 3)安装 keepalived + LVS
-
 #过滤交互时输入出现 ^H
 stty erase '^H'
 
-#判断是否为root用户
-if [ "$(id -u)" != "0" ]
-then
-    echo "need root"
-    exit
-fi
 
-
-#################### keepalived+openresty set ####################
-### 如果需要安装 keepalived 主备,则需要设置此处,否则无需更改
+#################### keepalived+openresty 只设置这里 ####################
+# 如果需要安装 keepalived 主备,则需要设置此处,否则无需更改
 #本机IP地址
 unicast_src_ip="10.0.0.113"
 #对端IP地址(主备的另一台机器IP地址)
@@ -26,15 +18,20 @@ vip="10.0.0.222"
 Master_Backip="MASTER"
 #优先级(MASTER: 100 , BACKUP: 90)
 priority="100"
-############ keepalived+LVS set ### 不安装LVS则不需要配置以下项####
-#vip port 和 realserver port, realserver ip
+############ keepalived+LVS 设置上面和这里 ### 不安装LVS则不需要配置以下项####
+#设置 vip port 和 realserver port 相同, 设置 realserver ip 
 vs_port="80"
 rs1="101.186.45.60"
 rs2="101.186.45.61"
 #################### keepalived end #############################
 
+#判断是否为root用户
+if [ "$(id -u)" != "0" ]
+then
+    echo "need root"
+    exit
+fi
 
-#echo -e "\033[41;37m 红底白字 \033[0m"
 #开始执行...
 echo '1) install Openresty
 2) install keepalved + Openresty
@@ -45,11 +42,13 @@ read -t 60 -p "Please input number: "  number
 
 if [ $number == "1" ];then
     echo -e "\033[41;37m 开始执行 installing Openresty \033[0m"
+    sleep 3
 elif [ $number == "2" ];then
     echo -e "\033[41;37m 开始执行 installing keepalved + Openresty \033[0m"
-
+    sleep 3
 elif [ $number == "3" ];then
      echo -e "\033[41;37m 开始执行 installing keepalved + LVS \033[0m"
+     sleep 3
 else 
     echo -e "\033[41;37m 输入错误,请重新执行脚本 \033[0m"
     exit 1
@@ -100,85 +99,18 @@ EOF
 sed -i '/^#DefaultLimitNOFILE=/aDefaultLimitNOFILE=100001' /etc/systemd/system.conf 
 sed -i '/^#DefaultLimitNPROC=/aDefaultLimitNPROC=100001' /etc/systemd/system.conf 
 
-echo -e "\033[41;37m 重新登录确认ulimit参数是否生效,否则重启生效.... \033[0m"
+ulimit -a
+echo -e "\033[41;37m 重新确认ulimit参数是否生效,否则重启生效.... \033[0m"
 sleep 5
-
 fi
-
-#内核优化 sysctl.conf
-cp -fr /etc/sysctl.conf /etc/sysctl.conf.old
-#curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/sysctl.conf"
-cat>/etc/sysctl.conf<<EOF
-#############系统优化参数#############
-#系统所有进程一共可以打开的文件数量 
-fs.file-max = 100001
-#关闭ipv6
-net.ipv6.conf.all.disable_ipv6 = 0
-net.ipv6.conf.default.disable_ipv6 = 0
-# 避免放大攻击
-net.ipv4.icmp_echo_ignore_broadcasts = 1
-# 开启恶意icmp错误消息保护
-net.ipv4.icmp_ignore_bogus_error_responses = 1
-#开启路由转发
-net.ipv4.ip_forward = 1
-net.ipv4.conf.all.send_redirects = 1
-net.ipv4.conf.default.send_redirects = 1
-#开启反向路径过滤
-net.ipv4.conf.all.rp_filter = 1
-net.ipv4.conf.default.rp_filter = 1
-#处理无源路由的包
-net.ipv4.conf.all.accept_source_route = 0
-net.ipv4.conf.default.accept_source_route = 0
-#开启sysrq功能
-kernel.sysrq = 1
-#core文件名中添加pid作为扩展名
-kernel.core_uses_pid = 1
-#是否开启SYN洪水攻击保护
-net.ipv4.tcp_syncookies = 0
-#默认128，最大限制65535，用于设置系统同时发起的TCP连接数，数值较小时，无法应付高并发情形，导致连接超时、重传等问题
-net.core.somaxconn = 65535
-#修改消息队列长度
-kernel.msgmnb = 65535
-kernel.msgmax = 65535
-#设置最大内存共享段大小bytes
-kernel.shmmax = 68719476736
-kernel.shmall = 4294967296
-#timewait的数量，默认180000
-net.ipv4.tcp_max_tw_buckets = 6000
-net.ipv4.tcp_sack = 1
-net.ipv4.tcp_window_scaling = 1
-net.ipv4.tcp_rmem = 4096  87380   4194304
-net.ipv4.tcp_wmem = 4096  16384   4194304
-net.core.wmem_default = 8388608
-net.core.rmem_default = 8388608
-net.core.rmem_max = 16777216
-net.core.wmem_max = 16777216
-#每个网络接口接收数据包的速率比内核处理这些包的速率快时，允许送到队列的数据包的最大数目
-net.core.netdev_max_backlog = 262144
-#限制仅仅是为了防止简单的DoS 攻击
-net.ipv4.tcp_max_orphans = 3276800
-#未收到客户端确认信息的连接请求的最大值
-net.ipv4.tcp_max_syn_backlog = 262144
-net.ipv4.tcp_timestamps = 0
-#内核放弃建立连接之前发送SYNACK 包的数量
-net.ipv4.tcp_synack_retries = 1
-#内核放弃建立连接之前发送SYN 包的数量
-net.ipv4.tcp_syn_retries = 1
-#启用timewait 快速回收
-net.ipv4.tcp_tw_recycle = 0
-#开启重用。允许将TIME-WAIT sockets 重新用于新的TCP 连接
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_mem = 94500000 915000000 927000000
-net.ipv4.tcp_fin_timeout = 60
-#当keepalive 起用的时候，TCP 发送keepalive 消息的频度。缺省是2 小时
-net.ipv4.tcp_keepalive_time = 1800
-#允许系统打开的端口范围
-net.ipv4.ip_local_port_range = 1024    65000
-EOF
-sysctl -p
 
 #openresty 安装
 function openresty() {
+#内核优化 sysctl.conf
+cp -fr /etc/sysctl.conf /etc/sysctl.conf.old
+curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/sysctl.conf"
+sysctl -p
+
 useradd -s /sbin/nologin nginx
 
 # install openresty
@@ -293,8 +225,13 @@ systemctl start openresty
 systemctl status openresty
 }
 
-#keepalived 安装
+#keepalived(nginx)安装
 function ng_keepalived() {
+#内核优化 sysctl.conf
+cp -fr /etc/sysctl.conf /etc/sysctl.conf.old
+curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/sysctl.conf"
+sysctl -p
+
 yum install keepalived -y
 
 cat > /etc/keepalived/nginx_check.sh<<EOF
@@ -356,13 +293,14 @@ systemctl start keepalived
 systemctl status keepalived
 }
 
-#keepalived + LVS set
+#keepalived(LVS)安装
 function LVS_keepalived() {
-yum install ipvsadm -y
-yum install keepalived -y
 cp /etc/sysctl.conf /etc/sysctl.conf.old 
 curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/lvs_sysctl.conf"
 sysctl -p
+
+yum install ipvsadm -y
+yum install keepalived -y
 
 interface=$(ifconfig|awk '{print $1}'|sed -n 1p|cut -d : -f 1)
 hostname=$(hostname)
