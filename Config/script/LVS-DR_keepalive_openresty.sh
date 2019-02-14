@@ -1,7 +1,7 @@
 #!/bin/bash
 # 1)安装 Openresty
 # 2)安装 keepalived + Openresty
-# 3)安装 keepalived + LVS
+# 3)安装 keepalived + LVS(DR)
 #过滤交互时输入出现 ^H
 stty erase '^H'
 
@@ -18,7 +18,7 @@ vip="10.0.0.222"
 Master_Backip="MASTER"
 #优先级(MASTER: 100 , BACKUP: 90)
 priority="100"
-############ keepalived+LVS 设置上面和这里 ### 不安装LVS则不需要配置以下项####
+############ keepalived+LVS(DR) 设置上面和这里 ### 不安装LVS则不需要配置以下项####
 #设置 vip port 和 realserver port 相同, 设置 realserver ip 
 vs_port="80"
 rs1="101.186.45.60"
@@ -35,7 +35,7 @@ fi
 #开始执行...
 echo '1) install Openresty
 2) install keepalved + Openresty
-3) install keepalved + LVS
+3) install keepalved + LVS(DR)
 '
 read -t 60 -p "Please input number: "  number
 #提示“请输入姓名”并等待60秒，把用户的输入保存入变量number中
@@ -47,7 +47,7 @@ elif [ $number == "2" ];then
     echo -e "\033[41;37m 开始执行 installing keepalved + Openresty \033[0m"
     sleep 3
 elif [ $number == "3" ];then
-     echo -e "\033[41;37m 开始执行 installing keepalved + LVS \033[0m"
+     echo -e "\033[41;37m 开始执行 installing keepalved + LVS(DR) \033[0m"
      sleep 3
 else 
     echo -e "\033[41;37m 输入错误,请重新执行脚本 \033[0m"
@@ -295,7 +295,7 @@ systemctl start keepalived
 systemctl status keepalived
 }
 
-#keepalived(LVS)安装
+#keepalived(LVS-DR)安装
 function LVS_keepalived() {
 cp /etc/sysctl.conf /etc/sysctl.conf.old 
 curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/lvs_sysctl.conf"
@@ -376,19 +376,19 @@ ipvsadm -L -n
 
 function echo_realserver {
         echo -e "\033[31m
-        LVS_keepalived安装成功后,请在 realserver机器,按照顺序1-6依次执行/修改 ...
+        LVS(DR) + keepalived 已安装完毕,请在 realserver机器,按照顺序1-6依次执行/修改 ...
 
         1) curl -o /etc/init.d/lvs https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/LVS/lvs.sh 
         2) chmod +x /etc/init.d/lvs
         3) chkconfig lvs on
         4) chkconfig --list |grep lvs
-        5) 修改 脚本内的 SNS_VIP 地址 
+        5) 修改 脚本/etc/init.d/lvs 内的 SNS_VIP 地址 
         6) 启动脚本: service lvs start \033[0m"
 }
 
 # 1)安装 Openresty
 # 2)安装 keepalived + Openresty
-# 3)安装 keepalived + LVS
+# 3)安装 keepalived + LVS(DR)
 
 case "$number" in
 	1)
@@ -398,11 +398,11 @@ case "$number" in
 	2)
 	sytem #设置系统参数
         openresty #安装openresty
-	ng_keepalived #安装ng检测脚本+keepalived 
+	ng_keepalived #安装nginx检测脚本 和 keepalived 
 	;;
 	3)
 	sytem #设置系统参数
-        LVS_keepalived #安装LVS+keepalived
+        LVS_keepalived #安装LVS(DR)+keepalived
 	echo_realserver #输出realserver设置信息
 	;;
 esac
