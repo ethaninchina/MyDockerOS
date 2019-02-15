@@ -36,20 +36,21 @@ echo '1) install Openresty
 2) install keepalved + Openresty
 3) install keepalved + LVS(DR)
 '
-#交互输入(#提示“请输入姓名”并等待60秒，把用户的输入保存入变量number中)
-read -t 60 -p "Please input number: "  number
 echo -e "\033[31m
   请已经确认 是否需要设置脚本里的 keepalived的信息..然后继续执行脚本内容
 \033[0m"
-if [ $number == "1" ];then
+
+#交互输入(#提示“请输入姓名”并等待60秒，把用户的输入保存入变量number中)
+read -t 60 -p "Please input number: "  number
+if [ "$number" = "1" ];then
     echo -e "\033[41;37m 开始执行 installing Openresty \033[0m"
-    sleep 3
-elif [ $number == "2" ];then
+    sleep 1
+elif [ "$number" = "2" ];then
     echo -e "\033[41;37m 开始执行 installing keepalved + Openresty \033[0m"
-    sleep 3
-elif [ $number == "3" ];then
+    sleep 1
+elif [ "$number" = "3" ];then
      echo -e "\033[41;37m 开始执行 installing keepalved + LVS(DR) \033[0m"
-     sleep 3
+     sleep 1
 else 
     echo -e "\033[41;37m 输入错误,请重新执行脚本 \033[0m"
     exit 1
