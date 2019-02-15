@@ -6,7 +6,7 @@
 # Short-Description: LVS real_server service scripts
 # Description: LVS real_server start and stop controller
 ### END INIT INFO
-#  Copyright 2013 lxcong
+#  Copyright ooxx 2019
 #
 #  chkconfig: - 20 80
 #
