@@ -32,7 +32,8 @@ then
 fi
 
 #开始执行...
-echo '1) install Openresty
+echo '
+1) install Openresty
 2) install keepalved + Openresty
 3) install keepalved + LVS(DR)
 '
