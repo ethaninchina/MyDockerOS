@@ -218,7 +218,7 @@ vim /etc/init.d/lvs
 # Short-Description: LVS real_server service scripts
 # Description: LVS real_server start and stop controller
 ### END INIT INFO
-#  Copyright 2013 lxcong
+#  Copyright 2019 ooxx
 #
 #  chkconfig: - 20 80
 #
