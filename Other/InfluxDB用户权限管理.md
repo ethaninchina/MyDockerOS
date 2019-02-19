@@ -74,7 +74,7 @@ shardGroupDuration shardGroup的存储时间, shardGroup是InfluxDB的一个基�
 replicaN 全称是REPLICATION, 副本个数
 default 是否是默认策略
 ```
-#####新建策略
+##### 新建策略
 ```
 CREATE RETENTION POLICY "2_hours" ON "telegraf" DURATION 2h REPLICATION 1 DEFAULT
 ```
@@ -82,7 +82,7 @@ CREATE RETENTION POLICY "2_hours" ON "telegraf" DURATION 2h REPLICATION 1 DEFAUL
 
 因为名为default的策略不再是默认策略, 因此, 在查询使用default策略的表时要显示的加上策略名"defalut"
 
-#####修改策略
+##### 修改策略
 ALTER RETENTION POLICY "autogen" ON "telegraf" DURATION 365d REPLICATION 1 DEFAULT
 ##### 在telegraf库修改策略 DEFAULT 为4小时
 
