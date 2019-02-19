@@ -229,6 +229,14 @@ server {
         proxy_redirect    off;
     }
 } 
+
+ 
+ 
+ 
+ 
+#查看 etcd中的 key/value
+curl http://10.0.0.101:2379/v2/keys/nginx/servername
+
 ```
 
  
