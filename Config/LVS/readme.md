@@ -12,7 +12,7 @@ realserver:
 10.0.0.110
 10.0.0.111
 ```
-##### 安装ipvsadm
+##### 安装(LVS)ipvsadm
 ```
 yum install ipvsadm -y
 cp /etc/sysctl.conf /etc/sysctl.conf.old 
