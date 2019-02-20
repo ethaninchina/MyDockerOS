@@ -52,6 +52,7 @@ vrrp_instance NginxCluster {
 	10.0.0.201
     } 
 } 
+#虚拟ip 10.0.0.200 绑定的server
 virtual_server  10.0.0.200 80 { 
     delay_loop 3 #健康检查时间间隔 
     lb_algo wrr  #算法
@@ -80,7 +81,7 @@ virtual_server  10.0.0.200 80 {
         } 
     } 
 }
-#设置虚拟ip 10.0.0.201
+#虚拟ip 10.0.0.201 绑定的server
 virtual_server  10.0.0.201 80 {
     delay_loop 3 #健康检查时间间隔
     lb_algo wrr  #算法
