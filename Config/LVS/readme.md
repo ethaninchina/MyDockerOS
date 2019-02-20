@@ -1,12 +1,4 @@
 LVS(DR)+keepalived
-##### 安装ipvsadm
-```
-yum install ipvsadm -y
-cp /etc/sysctl.conf /etc/sysctl.conf.old 
-curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/lvs_sysctl.conf"
-sysctl -p
-```
-
 ```
 VIP: 
 10.0.0.200
@@ -20,6 +12,15 @@ realserver:
 10.0.0.110
 10.0.0.111
 ```
+##### 安装ipvsadm
+```
+yum install ipvsadm -y
+cp /etc/sysctl.conf /etc/sysctl.conf.old 
+curl -o /etc/sysctl.conf "https://raw.githubusercontent.com/station19/MyDockerOS/master/Config/sysctem/lvs_sysctl.conf"
+sysctl -p
+```
+
+
 1, keepalived master 设置
 ```
 ! Configuration File for keepalived 
