@@ -130,72 +130,49 @@ LBOTELUJAMXDMIXNTZMB
 haproxy 负载 
 <br>
 ```
-#全局配置
 global
-        #日志输出配置，所有日志都记录在本机，通过local0输出
-        log 127.0.0.1 local0 info
-        #最大连接数
-        maxconn 4096
-        #改变当前的工作目录
-        chroot /apps/svr/haproxy
-        #以指定的UID运行haproxy进程
-        uid 99
-        #以指定的GID运行haproxy进程
-        gid 99
-        #以守护进程方式运行haproxy #debug #quiet
-        daemon
-        #debug
-        #当前进程pid文件
-        pidfile /apps/svr/haproxy/haproxy.pid
+    log     127.0.0.1  local0 info
+    log     127.0.0.1  local1 notice
+    daemon
+    maxconn 4096
 
-#默认配置
 defaults
-        #应用全局的日志配置
-        log global
-        #默认的模式mode{tcp|http|health}
-        #tcp是4层，http是7层，health只返回OK
-        mode tcp
-        #日志类别tcplog
-        option tcplog
-        #不记录健康检查日志信息
-        option dontlognull
-        #3次失败则认为服务不可用
-        retries 3
-        #每个进程可用的最大连接数
-        maxconn 2000
-        #连接超时
-        timeout connect 5s
-        #客户端超时
-        timeout client 120s
-        #服务端超时
-        timeout server 120s
+    log     global
+    mode    tcp
+    option  tcplog
+    option  dontlognull
+    retries 3
+    option  abortonclose
+    maxconn 4096
+    timeout connect  5000ms
+    timeout client  3000ms
+    timeout server  3000ms
+    balance roundrobin
 
-        maxconn 2000
-        #连接超时
-        timeout connect 5s
-        #客户端超时
-        timeout client 120s
-        #服务端超时
-        timeout server 120s
+#haproxy监听status页面
+listen rabbitmq_status
+    bind    0.0.0.0:8100
+    mode    http
+    option  httplog
+    stats   refresh  5s
+    stats   uri  /stats
+    stats   realm   Haproxy
+    stats   auth  admin:admin
 
-#绑定配置
+#rabbitmq管理界面
+listen rabbitmq_admin
+    bind    0.0.0.0:8102
+    server  node1 node1:15672
+    server  node2 node2:15672
+    server  node3 node2:15672
+
+#rabbitmq集群负载
 listen rabbitmq_cluster
-        bind 0.0.0.0:5672
-        #配置TCP模式
-        mode tcp
-        #加权轮询
-        balance roundrobin
-        #RabbitMQ集群节点配置,其中ip1~ip7为RabbitMQ集群节点ip地址
-        server  node1  node1:5672 check inter 5000 rise 2 fall 3 weight 1
-        server  node2  node2:5672 check inter 5000 rise 2 fall 3 weight 1
-        server  node3  node3:5672 check inter 5000 rise 2 fall 3 weight 1
-
-#haproxy监控页面地址
-listen monitor
-        bind 0.0.0.0:8100
-        mode http
-        option httplog
-        stats enable
-        stats uri /stats
-        stats refresh 5s
+    bind    0.0.0.0:8101
+    mode    tcp
+    option  tcplog
+    balance roundrobin
+    server node1 node1:5672 check inter 2000 weight 1 rise 2 fall 3
+    server node2 node2:5672 check inter 2000 weight 1 rise 2 fall 3
+    server node3 node2:5672 check inter 2000 weight 1 rise 2 fall 3
 ```
