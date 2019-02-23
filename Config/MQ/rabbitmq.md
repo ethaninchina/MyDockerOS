@@ -127,9 +127,8 @@ LBOTELUJAMXDMIXNTZMB
 试一下容错,关掉node3上的实例
 [root@node3 ~]# rabbitmqctl stop
 ```
+haproxy 负载 
 <br>
-<br>
-########## haproxy 负载 
 ```
 #全局配置
 global
