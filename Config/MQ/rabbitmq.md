@@ -123,10 +123,12 @@ LBOTELUJAMXDMIXNTZMB
 将node1服务器中的.erlang.cookie文件，拷贝到node2/node3服务器上：
 [root@node1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@node2:/var/lib/rabbitmq
 [root@node1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@node3:/var/lib/rabbitmq
+[root@node1 ~]# systemctl restart rabbitmq-server
 ```
 在node2上
 <br>
 ```
+[root@node3 ~]# systemctl restart rabbitmq-server
 [root@node2 ~]# rabbitmqctl stop_app
 [root@node2 ~]# rabbitmqctl reset 
 [root@node2 ~]# rabbitmqctl join_cluster rabbit@node1
@@ -136,6 +138,7 @@ LBOTELUJAMXDMIXNTZMB
 在node3上
 <br>
 ```
+[root@node3 ~]# systemctl restart rabbitmq-server
 [root@node3 ~]# rabbitmqctl stop_app
 [root@node3 ~]# rabbitmqctl reset 
 [root@node3 ~]# rabbitmqctl join_cluster rabbit@node1
