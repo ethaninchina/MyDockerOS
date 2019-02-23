@@ -129,8 +129,8 @@ LBOTELUJAMXDMIXNTZMB
 ```
 <br>
 <br>
-```
 ########## haproxy 负载 
+```
 #全局配置
 global
         #日志输出配置，所有日志都记录在本机，通过local0输出
