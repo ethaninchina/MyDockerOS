@@ -212,3 +212,60 @@ listen rabbitmq_cluster
     server node2 node2:5672 check inter 2000 weight 1 rise 2 fall 3
     server node3 node2:5672 check inter 2000 weight 1 rise 2 fall 3
 ```
+centos下haproxy日志的配置
+<br>
+```
+涉及到的配置文件如下
+ 
+ 1)  /etc/haproxy/haproxy.conf  //这个是haproxy程序的主配置文件，具体路径可以随意指定,主要是下面这句话
+   
+    log         localhost   local0
+ 
+ 2)  /etc/rsyslog.conf           //这个配置文件不用动，默认会有下面的设置，会读取 /etc/rsyslog.d/*.conf目录                                 //下的配置文件
+    $IncludeConfig /etc/rsyslog.d/*.conf
+ 
+ 3)  /etc/rsyslog.d/haproxy.conf //这个文件是需要我们手动创建的，内容如下：
+ cat /etc/rsyslog.d/haproxy.conf
+ $ModLoad imudp
+ $UDPServerRun 514 
+ $template Haproxy,"%rawmsg% \n"
+ local0.=info -/var/log/haproxy.log;Haproxy
+ local0.notice -/var/log/haproxy-status.log;Haproxy
+ ### keep logs in localhost ##
+ local0.* ~ 
+ 
+ 4)  /etc/sysconfig/rsyslog 内容如下
+ # Options for rsyslogd
+ # Syslogd options are deprecated since rsyslog v3.
+ # If you want to use them, switch to compatibility mode 2 by "-c 2"
+ # See rsyslogd(8) for more details
+ SYSLOGD_OPTIONS="-c 2 -r -m 0"
+ 
+ 备注:
+ #-c 2 使用兼容模式，默认是 -c 5
+ #-r 开启远程日志
+ #-m 0 标记时间戳。单位是分钟，为0时，表示禁用该功能
+ 
+ 好了，日志配置主要就是涉及到这几个文件了。
+
+ 
+ 另外，再重启下rsyslog和haproxy服务就可以了
+ #centos 6: 
+ /etc/init.d/rsyslog restart
+ 
+ #centos 7: 
+ systemctl restart rsyslog
+ 
+ killlall -9 haproxy && haproxy -f /etc/haproxy/haproxy.conf
+ 
+ 
+ 最后，最重要的一点，一定要把iptables udp 514端口开起来
+ 
+ iptables -I INPUT -m udp -p udp --dport 514 -j ACCEPT
+ 
+ 否则有可能会报一堆错误，类似下面这样子：
+ 
+ sendto logger #0 failed: operation not permitted (errno=1)
+ ```
+
+
