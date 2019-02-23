@@ -127,7 +127,14 @@ LBOTELUJAMXDMIXNTZMB
 试一下容错,关掉node3上的实例
 [root@node3 ~]# rabbitmqctl stop
 ```
-haproxy 负载 
+haproxy 负载 安装
+```
+yum install haproxy -y
+systemctl enable haproxy
+systemctl start haproxy
+systemctl status haproxy
+```
+配置 vim /etc/haproxy/haproxy.cfg
 <br>
 ```
 global
