@@ -17,14 +17,14 @@ node1,node2,node3上执行修改hosts
 <br>
 ```
 [root@node1 ~] cat /etc/hosts
-10.124.5.171    node1
-10.124.5.172    node2
-10.124.5.173    node3
+10.10.5.171    node1
+10.10.5.172    node2
+10.10.5.173    node3
 
 [root@node2 ~] cat /etc/hosts
-10.124.5.171    node1
-10.124.5.172    node2
-10.124.5.173    node3
+10.10.5.171    node1
+10.10.5.172    node2
+10.10.5.173    node3
 
 [root@node3 ~] cat /etc/hosts
 10.124.5.171    node1
