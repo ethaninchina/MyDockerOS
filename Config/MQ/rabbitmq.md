@@ -156,24 +156,24 @@ defaults
 
 #haproxy监听status页面
 listen rabbitmq_status
-    bind    0.0.0.0:8100
+    bind    0.0.0.0:80
     mode    http
     option  httplog
     stats   refresh  5s
-    stats   uri  /stats
+    stats   uri  /mq_stats
     stats   realm   Haproxy
     stats   auth  admin:admin
 
 #rabbitmq管理界面
 listen rabbitmq_admin
-    bind    0.0.0.0:8102
+    bind    0.0.0.0:15672
     server  node1 node1:15672
     server  node2 node2:15672
     server  node3 node2:15672
 
 #rabbitmq集群负载
 listen rabbitmq_cluster
-    bind    0.0.0.0:8101
+    bind    0.0.0.0:5672
     mode    tcp
     option  tcplog
     balance roundrobin
