@@ -125,12 +125,18 @@ LBOTELUJAMXDMIXNTZMB
 试一下容错,关掉node3上的实例
 [root@node3 ~]# rabbitmqctl stop
 ```
-haproxy 负载 安装
+haproxy 负载 安装 , 修改hosts
 ```
 yum install haproxy -y
 systemctl enable haproxy
 systemctl start haproxy
 systemctl status haproxy
+
+#修改hosts
+[root@haproxy01 ~] cat /etc/hosts
+10.124.5.171    node1
+10.124.5.172    node2
+10.124.5.173    node3
 ```
 配置 vim /etc/haproxy/haproxy.cfg
 <br>
