@@ -24,9 +24,9 @@ enabled=1
 <br>
 ```
 [root@node1 ~]# mkdir -p ~/download && cd ~/download
-[root@node1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3.6.10-1.el7.noarch.rpm
+[root@node1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/rabbitmq-server-3.6.15-1.el7.noarch.rpm
 [root@node1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
-[root@node1 download]# rpm -Uvh rabbitmq-server-3.6.10-1.el7.noarch.rpm
+[root@node1 download]# rpm -Uvh rabbitmq-server-3.6.15-1.el7.noarch.rpm
 ```
 安装好之后，就可以启动 RabbitMQ Server 了：
 <br>
