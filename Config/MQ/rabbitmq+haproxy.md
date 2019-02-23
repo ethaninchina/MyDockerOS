@@ -53,12 +53,23 @@ node1,node2,node3 上安装 RabbitMQ Server：
 [root@node1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
 [root@node1 download]# rpm -Uvh rabbitmq-server-3.6.15-1.el7.noarch.rpm
 ```
-启动 RabbitMQ Server ：
+node1,node2,node3 修改配置文件, 启动 RabbitMQ Server ：
 <br>
 ```
+#改为自定义存储数据目录和日志目录
+mkdir -p /data/{rabbitmq,logs}
+chown rabbitmq.rabbitmq /data/{rabbitmq,logs}
+
+cat>/etc/rabbitmq/rabbitmq-env.conf<<EOF
+RABBITMQ_MNESIA_BASE=/data/rabbitmq
+RABBITMQ_LOG_BASE=/data/logs
+EOF
+
+#启动 mq
 [root@node1 download]# systemctl start rabbitmq-server
 systemctl enable rabbitmq-server
 systemctl status rabbitmq-server
+
 ```
 启动 RabbitMQ Web 管理控制台
 <br>
