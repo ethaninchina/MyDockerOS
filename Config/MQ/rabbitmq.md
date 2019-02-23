@@ -1,7 +1,32 @@
-node1,node2,node3上执行
+node1,node2,node3上执行修改 hostname
+<br>
+```
+[root@node1 ~] vim /etc/hostname
+node1
+[root@node1 ~] hostname node1
+
+[root@node2 ~] vim /etc/hostname
+node2
+[root@node2 ~] hostname node2
+
+[root@node3 ~] vim /etc/hostname
+node3
+[root@node3 ~] hostname node3
+```
+node1,node2,node3上执行修改hosts
 <br>
 ```
 [root@node1 ~] cat /etc/hosts
+10.124.5.171    node1
+10.124.5.172    node2
+10.124.5.173    node3
+
+[root@node2 ~] cat /etc/hosts
+10.124.5.171    node1
+10.124.5.172    node2
+10.124.5.173    node3
+
+[root@node3 ~] cat /etc/hosts
 10.124.5.171    node1
 10.124.5.172    node2
 10.124.5.173    node3
