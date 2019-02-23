@@ -10,8 +10,7 @@ node1,node2,node3上执行
 <br>
 ```
 [root@node1 ~]# vi /etc/yum.repos.d/rabbitmq-erlang.repo
-
-[root@node1 ~]# [rabbitmq-erlang]
+[rabbitmq-erlang]
 name=rabbitmq-erlang
 baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/20/el/7
 gpgcheck=1
