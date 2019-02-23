@@ -270,5 +270,81 @@ centos下haproxy日志的配置
  
  sendto logger #0 failed: operation not permitted (errno=1)
  ```
+haproxy 高可用配置(在haproxy 主被机器上安装keepalived)
+<br>
+```
+yum install keepalived -y
+systemctl enable keepalived.service 
+systemctl restart keepalived.service
+systemctl status keepalived.service
+ 
+#### hapoxy 检测脚本
+cat>/etc/keepalived/haproxy_check.sh<<EOF 
+#!/bin/bash
+# /etc/keepalived/haproxy_check.sh
+counter=\$(ps -C haproxy --no-heading|wc -l)
+if [ "\${counter}" = "0" ]; then
+    systemctl start haproxy
+    sleep 2
+    counter=\$(ps -C haproxy --no-heading|wc -l)
+    if [ "\${counter}" = "0" ]; then
+        /bin/systemctl stop keepalived.service
+    fi
+fi
+EOF
+
+chmod +x /etc/keepalived/haproxy_check.sh
+```
+keepalived 主备配置
+<br>
+```
+! Configuration File for keepalived
+
+global_defs {
+   router_id haproxy1 #BACKUP 设置为haproxy2
+}
+
+vrrp_script chk_haproxy {
+    script "/etc/keepalived/haproxy_check.sh"
+    interval 2
+    weight -30
+    fall 3
+    rise 2
+}
+
+vrrp_instance VI_221 {
+    state MASTER  #BACKUP
+    interface ens33 #网卡名
+    virtual_router_id 51
+    unicast_src_ip 10.0.0.101 #本机IP  (BACKUP 对调即可)
+    unicast_peer {
+        10.0.0.108   #本机IP 对端IP  (BACKUP 对调即可)
+    }
+    priority 100  #BACKUP 设置为90 
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 4008
+    }
+
+    track_script {
+        chk_haproxy
+    }
+ 
+    virtual_ipaddress {
+         10.0.0.250
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
 
 
