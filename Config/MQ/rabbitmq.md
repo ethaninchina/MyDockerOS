@@ -128,6 +128,7 @@ LBOTELUJAMXDMIXNTZMB
 [root@node3 ~]# rabbitmqctl stop
 ```
 <br>
+<br>
 ```
 ########## haproxy 负载 
 #全局配置
