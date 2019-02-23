@@ -85,8 +85,8 @@ rabbitmqctl reset application 重置
 卸载 RabbitMQ 命令：
 <br>
 ```
-[root@node1 ~]# rpm -e rabbitmq-server-3.6.10-1.el7.noarch
-[root@node1 ~]# rm -rf /var/lib/rabbitmq/     //清除rabbitmq配置文件
+#[root@node1 ~]# rpm -e rabbitmq-server-3.6.10-1.el7.noarch
+#[root@node1 ~]# rm -rf /var/lib/rabbitmq/     //清除rabbitmq配置文件
 ```
 RabbitMQ Server 高可用集群,将上面的搭建过程，在node2 和 node3 服务器上，再做重复一边。
 <br>
