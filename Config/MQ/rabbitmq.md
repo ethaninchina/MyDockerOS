@@ -23,7 +23,6 @@ enabled=1
 安装 RabbitMQ Server：
 <br>
 ```
-mkdir -p ~/download && cd ~/download
 [root@node1 ~]# mkdir -p ~/download && cd ~/download
 [root@node1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3.6.10-1.el7.noarch.rpm
 [root@node1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
