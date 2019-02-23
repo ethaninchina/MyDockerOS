@@ -31,7 +31,7 @@ node1,node2,node3上执行修改hosts
 10.124.5.172    node2
 10.124.5.173    node3
 ```
-安装 Erlang（RabbitMQ 运行需要 Erlang 环境）：
+node1,node2,node3 上安装 Erlang（RabbitMQ 运行需要 Erlang 环境）：
 <br>
 ```
 [root@node1 ~]# vi /etc/yum.repos.d/rabbitmq-erlang.repo
@@ -45,7 +45,7 @@ enabled=1
 
 [root@node1 ~]# yum -y install erlang socat
 ```
-安装 RabbitMQ Server：
+node1,node2,node3 上安装 RabbitMQ Server：
 <br>
 ```
 [root@node1 ~]# mkdir -p ~/download && cd ~/download
@@ -53,7 +53,7 @@ enabled=1
 [root@node1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
 [root@node1 download]# rpm -Uvh rabbitmq-server-3.6.15-1.el7.noarch.rpm
 ```
-安装好之后，就可以启动 RabbitMQ Server 了：
+启动 RabbitMQ Server ：
 <br>
 ```
 [root@node1 download]# systemctl start rabbitmq-server
@@ -72,14 +72,14 @@ The following plugins have been enabled:
   rabbitmq_management_agent
   rabbitmq_management
 ```
-RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
+node1,node2,node3 上 RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
 <br>
 ```
 [root@node1 download]# rabbitmqctl add_user admin admin123
 rabbitmqctl set_user_tags admin administrator
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 ```
-然后添加防火墙运行访问的端口：
+node1,node2,node3 上添加防火墙运行访问的端口：
 <br>
 ```
 [root@node1 download]# firewall-cmd --zone=public --permanent --add-port=4369/tcp
@@ -113,7 +113,7 @@ rabbitmqctl reset application 重置
 #[root@node1 ~]# rpm -e rabbitmq-server-3.6.10-1.el7.noarch
 #[root@node1 ~]# rm -rf /var/lib/rabbitmq/     //清除rabbitmq配置文件
 ```
-RabbitMQ Server 高可用集群,将上面的搭建过程，在node2 和 node3 服务器上，再做重复一边。
+RabbitMQ Server 高可用集群,将上面的搭建过程，node1上的操作在 node2 和 node3 服务器上，再做重复一边。
 <br>
 ```
 以node1作为集群中心，在node2上执行加入集群中心命令（节点类型为磁盘节点）：
