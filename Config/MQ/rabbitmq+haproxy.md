@@ -86,9 +86,12 @@ The following plugins have been enabled:
 node1,node2,node3 上 RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
 <br>
 ```
-[root@node1 download]# rabbitmqctl add_user admin admin123
+[root@node1 ]# rabbitmqctl add_user admin admin123
 rabbitmqctl set_user_tags admin administrator
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+
+# 设置内存占用
+rabbitmqctl set_vm_memory_high_watermark 0.6   #意思为物理内存的60%。40%的内存并不是内存的最大的限制，它是一个发布的节制，当达到60%时Erlang会做GC
 ```
 node1,node2,node3 上添加防火墙运行访问的端口：
 <br>
