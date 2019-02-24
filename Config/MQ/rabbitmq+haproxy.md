@@ -184,16 +184,16 @@ global
     log     127.0.0.1  local0 info
     log     127.0.0.1  local1 notice
     daemon
-    maxconn 4096
+    maxconn 10000
 
 defaults
     log     global
-    mode    tcp
-    option  tcplog
+    mode    http
+    option  httplog
     option  dontlognull
     retries 3
     option  abortonclose
-    maxconn 4096
+    maxconn 10000
     timeout connect  5000ms
     timeout client  3000ms
     timeout server  3000ms
@@ -212,11 +212,14 @@ listen rabbitmq_status
 #rabbitmq管理界面
 listen rabbitmq_admin
     bind    0.0.0.0:15672
-    server  node1 node1:15672
-    server  node2 node2:15672
-    server  node3 node2:15672
+    mode    http
+    option  httplog
+    balance roundrobin
+    server  node1 node1:15672 check inter 2000 weight 1 rise 2 fall 3
+    server  node2 node2:15672 check inter 2000 weight 1 rise 2 fall 3
+    server  node3 node2:15672 check inter 2000 weight 1 rise 2 fall 3
 
-#rabbitmq集群负载
+#rabbitmq集群负载 TCP
 listen rabbitmq_cluster
     bind    0.0.0.0:5672
     mode    tcp
