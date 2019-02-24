@@ -143,7 +143,7 @@ vrrp_instance NginxCluster {
     } 
 } 
 virtual_server  10.0.0.200 80 { 
-    delay_loop 3 #健康检查时间间隔 
+    delay_loop 1 #健康检查时间间隔 
     lb_algo wrr  #算法
     lb_kind DR  #转发规则
     #persistence_timeout 60 #连接保持，意思就是在这个一定时间内会讲来自同一用户（根据ip来判断的）访问到同一个real server。
@@ -172,7 +172,7 @@ virtual_server  10.0.0.200 80 {
 }
 #设置虚拟ip 10.0.0.201
 virtual_server  10.0.0.201 80 {
-    delay_loop 3 #健康检查时间间隔
+    delay_loop 1 #健康检查时间间隔
     lb_algo wrr  #算法
     lb_kind DR  #转发规则
     #persistence_timeout 60
