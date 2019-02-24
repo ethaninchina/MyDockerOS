@@ -201,7 +201,7 @@ defaults
     balance roundrobin
 
 #haproxy监听status页面
-backend rabbitmq_status
+listen rabbitmq_status
     bind    0.0.0.0:80
     mode    http
     option  httplog
@@ -218,17 +218,17 @@ backend rabbitmq_admin
     balance roundrobin
     server  node1 node1:15672 check inter 2000 weight 1 rise 2 fall 3
     server  node2 node2:15672 check inter 2000 weight 1 rise 2 fall 3
-    server  node3 node2:15672 check inter 2000 weight 1 rise 2 fall 3
+    server  node3 node3:15672 check inter 2000 weight 1 rise 2 fall 3
 
 #rabbitmq集群负载 TCP
-listen rabbitmq_cluster
+backend rabbitmq_cluster
     bind    0.0.0.0:5672
     mode    tcp
     option  tcplog
     balance roundrobin
     server node1 node1:5672 check inter 2000 weight 1 rise 2 fall 3
     server node2 node2:5672 check inter 2000 weight 1 rise 2 fall 3
-    server node3 node2:5672 check inter 2000 weight 1 rise 2 fall 3
+    server node3 node3:5672 check inter 2000 weight 1 rise 2 fall 3
 ```
 centos下haproxy日志的配置
 <br>
