@@ -54,15 +54,15 @@ vrrp_instance NginxCluster {
 } 
 #虚拟ip 10.0.0.200 绑定的server
 virtual_server  10.0.0.200 80 { 
-    delay_loop 3 #健康检查时间间隔 
+    delay_loop 1 #健康检查时间间隔 
     lb_algo wrr  #算法
     lb_kind DR  #转发规则
-    #persistence_timeout 60 #保持长连接,连接保持，意思就是在这个一定时间内会讲来自同一用户（根据ip来判断的）访问到同一个real server。
+    #persistence_timeout 60 #保持长连接,连接保持，意思就是在这个一定时间内会讲来自同一用户（根据ip来判断的）访问到同一个real server,类似 ip_hash
     protocol TCP 
     nat_mask 255.255.255.0
     real_server 10.0.0.110 80 { 
         weight 10　 
-	      inhibit_on_failure 
+	inhibit_on_failure 
         TCP_CHECK { 
             connect_timeout 1 
             nb_get_retry 2 
@@ -72,7 +72,7 @@ virtual_server  10.0.0.200 80 {
     } 
     real_server 10.0.0.111 80 {  #指定real server的真实IP地址和端口
         weight 10
-	      inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
+	inhibit_on_failure  # 若此节点故障，则将权重设为零（默认是从列表中移除）
         TCP_CHECK { 
             connect_timeout 1  #超时时间
             nb_get_retry 2 #重试次数
@@ -83,7 +83,7 @@ virtual_server  10.0.0.200 80 {
 }
 #虚拟ip 10.0.0.201 绑定的server
 virtual_server  10.0.0.201 80 {
-    delay_loop 3 #健康检查时间间隔
+    delay_loop 1 #健康检查时间间隔
     lb_algo wrr  #算法
     lb_kind DR  #转发规则
     #persistence_timeout 60
