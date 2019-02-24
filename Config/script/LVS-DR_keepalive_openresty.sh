@@ -340,7 +340,7 @@ vrrp_instance LVSCluster {
     } 
 } 
 virtual_server  $vip $vs_port { 
-    delay_loop 3 #健康检查时间间隔 
+    delay_loop 1 #健康检查时间间隔 
     lb_algo wrr  #算法
     lb_kind DR  #转发规则
     #persistence_timeout 60 #保持长连接,连接保持，意思就是在这个一定时间内会讲来自同一用户（根据ip来判断的）访问到同一个real server。
