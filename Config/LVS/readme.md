@@ -27,7 +27,7 @@ sysctl -p
 global_defs { 
     router_id lvs_clu_1 
 } 
-virrp_sync_group Prox { 
+vrrp_sync_group Prox { 
     group { 
         NginxCluster 
     } 
@@ -117,7 +117,7 @@ virtual_server  10.0.0.201 80 {
 global_defs { 
     router_id lvs_clu_2 
 } 
-virrp_sync_group Prox { 
+vrrp_sync_group Prox { 
     group { 
         NginxCluster 
     } 
