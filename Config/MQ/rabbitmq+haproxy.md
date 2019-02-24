@@ -221,7 +221,7 @@ listen rabbitmq_admin
     server  node3 node3:15672 check inter 2000 weight 1 rise 2 fall 3
 
 #rabbitmq集群负载 TCP
-backend rabbitmq_cluster
+listen rabbitmq_cluster
     bind    0.0.0.0:5672
     mode    tcp
     option  tcplog
