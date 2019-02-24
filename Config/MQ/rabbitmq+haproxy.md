@@ -211,7 +211,7 @@ listen rabbitmq_status
     stats   auth  admin:admin
 
 #rabbitmq管理界面
-backend rabbitmq_admin
+listen rabbitmq_admin
     bind    0.0.0.0:15672
     mode    http
     option  httplog
