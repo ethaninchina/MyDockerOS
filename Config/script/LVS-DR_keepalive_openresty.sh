@@ -315,7 +315,7 @@ cat >/etc/keepalived/keepalived.conf <<EOF
 global_defs { 
     router_id $hostname 
 } 
-virrp_sync_group Prox { 
+vrrp_sync_group Prox { 
     group { 
         LVSCluster 
     } 
