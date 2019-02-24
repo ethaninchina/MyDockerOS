@@ -188,9 +188,10 @@ global
 
 defaults
     log     global
-    mode    http
-    option  httplog
+    mode    tcp
+    option  tcplog
     option  dontlognull
+    option  redispatch
     retries 3
     option  abortonclose
     maxconn 10000
@@ -200,7 +201,7 @@ defaults
     balance roundrobin
 
 #haproxy监听status页面
-listen rabbitmq_status
+backend rabbitmq_status
     bind    0.0.0.0:80
     mode    http
     option  httplog
@@ -210,7 +211,7 @@ listen rabbitmq_status
     stats   auth  admin:admin
 
 #rabbitmq管理界面
-listen rabbitmq_admin
+backend rabbitmq_admin
     bind    0.0.0.0:15672
     mode    http
     option  httplog
