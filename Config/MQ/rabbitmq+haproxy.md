@@ -90,8 +90,21 @@ node1,node2,node3 上 RabbitMQ Server 默认guest用户，只能localhost地址�
 rabbitmqctl set_user_tags admin administrator
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
-# 设置内存占用
-rabbitmqctl set_vm_memory_high_watermark 0.6   #意思为物理内存的60%。40%的内存并不是内存的最大的限制，它是一个发布的节制，当达到60%时Erlang会做GC
+##永久配置生效(内存,磁盘,性能等)
+##RabbitMQ的配置文件为：/etc/rabbitmq/rabbitmq.config
+##RabbitMQ的环境配置文件为：/etc/rabbitmq/rabbitmq-env.conf
+##{vm_memory_high_watermark, 0.6},                 #最大使用内存40%，erlang开始GC
+##{vm_memory_high_watermark_paging_ratio, 0.8},    #32G内存，32*0.8*0.2时开始持久化磁盘
+##{disk_free_limit, "10GB"},                       #磁盘使用量剩余10G时，不收发消息
+##{hipe_compile, true},                            #开启hipe，提高erlang性能
+##{cluster_partition_handling, autoheal}           #网络优化参数，不稳定时用这个选项
+##{collect_statistics_interval, 10000},            #统计刷新时间默认5秒，改成10秒
+
+cat>/etc/rabbitmq/rabbitmq.config<<EOF
+[{rabbit,[{vm_memory_high_watermark,0.6},{vm_memory_high_watermark_paging_ratio, 0.8},{disk_free_limit, "10GB"},{hipe_compile, true},{cluster_partition_handling, autoheal}]}].
+EOF
+
+
 ```
 node1,node2,node3 上添加防火墙运行访问的端口：
 <br>
