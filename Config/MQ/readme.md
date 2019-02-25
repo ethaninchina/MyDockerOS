@@ -1,3 +1,4 @@
+### rabbitmq 集群搭建 (https://github.com/station19/MyDockerOS/blob/master/Config/MQ/rabbitmq%2Bhaproxy.md)
 rabbitmq 集群模式下 出现网络分区后 手动解决方案 (建议)
 <br>
 ```
