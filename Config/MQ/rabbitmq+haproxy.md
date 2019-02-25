@@ -176,6 +176,7 @@ LBOTELUJAMXDMIXNTZMB
 <br>
 ```
 [root@node1 ~]# rabbitmqctl cluster_status
+[root@node1 ~]# rabbitmqctl status
 
 试一下容错,关掉node3上的实例
 [root@node3 ~]# rabbitmqctl stop
