@@ -140,34 +140,27 @@ rabbitmqctl reset application 重置
 RabbitMQ Server 高可用集群,将上面的搭建过程，rabbitmq1上的操作在 rabbitmq2 和 rabbitmq3 服务器上，再做重复一边。
 <br>
 ```
-以rabbitmq1作为集群中心，在rabbitmq2上执行加入集群中心命令（节点类型为磁盘节点）：
-[root@rabbitmq1 ~]# cat /var/lib/rabbitmq/.erlang.cookie
+拷贝数据,促成集群,将rabbitmq1上的 /var/lib/rabbitmq/.erlang.cookie 拷贝 到 rabbitmq2 和 rabbitmq3 上
+[root@rabbitmq1 ~]# cat  /var/lib/rabbitmq/.erlang.cookie
 LBOTELUJAMXDMIXNTZMB
 
-将rabbitmq1服务器中的.erlang.cookie文件，拷贝到rabbitmq2/rabbitmq3服务器上：
 [root@rabbitmq1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@rabbitmq2:/var/lib/rabbitmq
 [root@rabbitmq1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@rabbitmq3:/var/lib/rabbitmq
 [root@rabbitmq1 ~]# systemctl restart rabbitmq-server
 ```
-在rabbitmq2上
+以rabbitmq1作为集群中心，在 rabbitmq2 / rabbitmq3 上执行加入集群中心命令（节点类型为磁盘节点）：
 <br>
 ```
-[root@rabbitmq3 ~]# systemctl restart rabbitmq-server
+#增加内存节点 rabbitmq2 和 rabbitmq3 上操作
+[root@ rabbitmq2 ~]# systemctl restart rabbitmq-server
 [root@rabbitmq2 ~]# rabbitmqctl stop_app
-[root@rabbitmq2 ~]# rabbitmqctl reset 
-[root@rabbitmq2 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1
-//默认是磁盘节点，如果是内存节点的话，需要加--ram参数
+[root@rabbitmq2 ~]# rabbitmqctl reset
+
+#//默认是磁盘节点，如果是内存节点的话，需要加--ram参数
+#[root@rabbitmq2 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1
+
+[root@rabbitmq2 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1 --ram
 [root@rabbitmq2 ~]# rabbitmqctl start_app
-```
-在rabbitmq3上
-<br>
-```
-[root@rabbitmq3 ~]# systemctl restart rabbitmq-server
-[root@rabbitmq3 ~]# rabbitmqctl stop_app
-[root@rabbitmq3 ~]# rabbitmqctl reset 
-[root@rabbitmq3 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1
-//默认是磁盘节点，如果是内存节点的话，需要加--ram参数
-[root@rabbitmq3 ~]# rabbitmqctl start_app
 ```
 查看集群状态，我们可以在任意一台机器上查看，我们选择在rabbitmq1上看。
 <br>
