@@ -1,40 +1,40 @@
-node1,node2,node3上执行修改 hostname
+rabbitmq1,rabbitmq2,rabbitmq3上执行修改 hostname
 <br>
 ```
-[root@node1 ~] vim /etc/hostname
-node1
-[root@node1 ~] hostname node1
+[root@rabbitmq1 ~] vim /etc/hostname
+rabbitmq1
+[root@rabbitmq1 ~] hostname rabbitmq1
 
-[root@node2 ~] vim /etc/hostname
-node2
-[root@node2 ~] hostname node2
+[root@rabbitmq2 ~] vim /etc/hostname
+rabbitmq2
+[root@rabbitmq2 ~] hostname rabbitmq2
 
-[root@node3 ~] vim /etc/hostname
-node3
-[root@node3 ~] hostname node3
+[root@rabbitmq3 ~] vim /etc/hostname
+rabbitmq3
+[root@rabbitmq3 ~] hostname rabbitmq3
 ```
-node1,node2,node3上执行修改hosts
+rabbitmq1,rabbitmq2,rabbitmq3上执行修改hosts
 <br>
 ```
-[root@node1 ~] cat /etc/hosts
-10.10.5.171    node1
-10.10.5.172    node2
-10.10.5.173    node3
+[root@rabbitmq1 ~] cat /etc/hosts
+10.10.5.171    rabbitmq1
+10.10.5.172    rabbitmq2
+10.10.5.173    rabbitmq3
 
-[root@node2 ~] cat /etc/hosts
-10.10.5.171    node1
-10.10.5.172    node2
-10.10.5.173    node3
+[root@rabbitmq2 ~] cat /etc/hosts
+10.10.5.171    rabbitmq1
+10.10.5.172    rabbitmq2
+10.10.5.173    rabbitmq3
 
-[root@node3 ~] cat /etc/hosts
-10.124.5.171    node1
-10.124.5.172    node2
-10.124.5.173    node3
+[root@rabbitmq3 ~] cat /etc/hosts
+10.124.5.171    rabbitmq1
+10.124.5.172    rabbitmq2
+10.124.5.173    rabbitmq3
 ```
-node1,node2,node3 上安装 Erlang（RabbitMQ 运行需要 Erlang 环境）：
+rabbitmq1,rabbitmq2,rabbitmq3 上安装 Erlang（RabbitMQ 运行需要 Erlang 环境）：
 <br>
 ```
-[root@node1 ~]# vi /etc/yum.repos.d/rabbitmq-erlang.repo
+[root@rabbitmq1 ~]# vi /etc/yum.repos.d/rabbitmq-erlang.repo
 [rabbitmq-erlang]
 name=rabbitmq-erlang
 baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/20/el/7
@@ -43,17 +43,17 @@ gpgkey=https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
 repo_gpgcheck=0
 enabled=1
 
-[root@node1 ~]# yum -y install erlang socat
+[root@rabbitmq1 ~]# yum -y install erlang socat
 ```
-node1,node2,node3 上安装 RabbitMQ Server：
+rabbitmq1,rabbitmq2,rabbitmq3 上安装 RabbitMQ Server：
 <br>
 ```
-[root@node1 ~]# mkdir -p ~/download && cd ~/download
-[root@node1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/rabbitmq-server-3.6.15-1.el7.noarch.rpm
-[root@node1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
-[root@node1 download]# rpm -Uvh rabbitmq-server-3.6.15-1.el7.noarch.rpm
+[root@rabbitmq1 ~]# mkdir -p ~/download && cd ~/download
+[root@rabbitmq1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/rabbitmq-server-3.6.15-1.el7.noarch.rpm
+[root@rabbitmq1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+[root@rabbitmq1 download]# rpm -Uvh rabbitmq-server-3.6.15-1.el7.noarch.rpm
 ```
-node1,node2,node3 修改配置文件, 启动 RabbitMQ Server ：
+rabbitmq1,rabbitmq2,rabbitmq3 修改配置文件, 启动 RabbitMQ Server ：
 <br>
 ```
 #改为自定义存储数据目录和日志目录
@@ -66,24 +66,24 @@ RABBITMQ_LOG_BASE=/data/logs
 EOF
 
 #启动 mq
-[root@node1 download]# systemctl start rabbitmq-server
+[root@rabbitmq1 download]# systemctl start rabbitmq-server
 systemctl enable rabbitmq-server
 systemctl status rabbitmq-server
 
 ```
-node1,node2,node3 安装插件
+rabbitmq1,rabbitmq2,rabbitmq3 安装插件
 <br>
 ```
 #启动 RabbitMQ Web 管理控制台
-[root@node1 ]# rabbitmq-plugins enable rabbitmq_management
+[root@rabbitmq1 ]# rabbitmq-plugins enable rabbitmq_management
 
  #安装插件将消息从此队列移动到另一个队列功能
-[root@node1 ]# rabbitmq-plugins enable rabbitmq_shovel rabbitmq_shovel_management  
+[root@rabbitmq1 ]# rabbitmq-plugins enable rabbitmq_shovel rabbitmq_shovel_management  
 ```
-node1,node2,node3 上 RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
+rabbitmq1,rabbitmq2,rabbitmq3 上 RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
 <br>
 ```
-[root@node1 ]# rabbitmqctl add_user admin admin123
+[root@rabbitmq1 ]# rabbitmqctl add_user admin admin123
 rabbitmqctl set_user_tags admin administrator
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
@@ -103,10 +103,10 @@ EOF
 
 
 ```
-node1,node2,node3 上添加防火墙运行访问的端口：
+rabbitmq1,rabbitmq2,rabbitmq3 上添加防火墙运行访问的端口：
 <br>
 ```
-[root@node1 download]# firewall-cmd --zone=public --permanent --add-port=4369/tcp
+[root@rabbitmq1 download]# firewall-cmd --zone=public --permanent --add-port=4369/tcp
 firewall-cmd --zone=public --permanent --add-port=25672/tcp
 firewall-cmd --zone=public --permanent --add-port=5671-5672/tcp
 firewall-cmd --zone=public --permanent --add-port=15672/tcp
@@ -115,7 +115,7 @@ firewall-cmd --zone=public --permanent --add-port=1883/tcp
 firewall-cmd --zone=public --permanent --add-port=8883/tcp
 
 重新启动防火墙：
-[root@node1 download]# firewall-cmd --reload
+[root@rabbitmq1 download]# firewall-cmd --reload
 ````
 常用命令
 <br>
@@ -134,75 +134,68 @@ rabbitmqctl reset application 重置
 卸载 RabbitMQ 命令：
 <br>
 ```
-#[root@node1 ~]# rpm -e rabbitmq-server-3.6.10-1.el7.noarch
-#[root@node1 ~]# rm -rf /var/lib/rabbitmq/     //清除rabbitmq配置文件
+#[root@rabbitmq1 ~]# rpm -e rabbitmq-server-3.6.10-1.el7.noarch
+#[root@rabbitmq1 ~]# rm -rf /var/lib/rabbitmq/     //清除rabbitmq配置文件
 ```
-RabbitMQ Server 高可用集群,将上面的搭建过程，node1上的操作在 node2 和 node3 服务器上，再做重复一边。
+RabbitMQ Server 高可用集群,将上面的搭建过程，rabbitmq1上的操作在 rabbitmq2 和 rabbitmq3 服务器上，再做重复一边。
 <br>
 ```
-以node1作为集群中心，在node2上执行加入集群中心命令（节点类型为磁盘节点）：
-[root@node1 ~]# cat /var/lib/rabbitmq/.erlang.cookie
+以rabbitmq1作为集群中心，在rabbitmq2上执行加入集群中心命令（节点类型为磁盘节点）：
+[root@rabbitmq1 ~]# cat /var/lib/rabbitmq/.erlang.cookie
 LBOTELUJAMXDMIXNTZMB
 
-将node1服务器中的.erlang.cookie文件，拷贝到node2/node3服务器上：
-[root@node1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@node2:/var/lib/rabbitmq
-[root@node1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@node3:/var/lib/rabbitmq
-[root@node1 ~]# systemctl restart rabbitmq-server
+将rabbitmq1服务器中的.erlang.cookie文件，拷贝到rabbitmq2/rabbitmq3服务器上：
+[root@rabbitmq1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@rabbitmq2:/var/lib/rabbitmq
+[root@rabbitmq1 ~]# scp /var/lib/rabbitmq/.erlang.cookie root@rabbitmq3:/var/lib/rabbitmq
+[root@rabbitmq1 ~]# systemctl restart rabbitmq-server
 ```
-在node2上
+在rabbitmq2上
 <br>
 ```
-[root@node3 ~]# systemctl restart rabbitmq-server
-[root@node2 ~]# rabbitmqctl stop_app
-[root@node2 ~]# rabbitmqctl reset 
-[root@node2 ~]# rabbitmqctl join_cluster rabbit@node1
+[root@rabbitmq3 ~]# systemctl restart rabbitmq-server
+[root@rabbitmq2 ~]# rabbitmqctl stop_app
+[root@rabbitmq2 ~]# rabbitmqctl reset 
+[root@rabbitmq2 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1
 //默认是磁盘节点，如果是内存节点的话，需要加--ram参数
-[root@node2 ~]# rabbitmqctl start_app
+[root@rabbitmq2 ~]# rabbitmqctl start_app
 ```
-在node3上
+在rabbitmq3上
 <br>
 ```
-[root@node3 ~]# systemctl restart rabbitmq-server
-[root@node3 ~]# rabbitmqctl stop_app
-[root@node3 ~]# rabbitmqctl reset 
-[root@node3 ~]# rabbitmqctl join_cluster rabbit@node1
+[root@rabbitmq3 ~]# systemctl restart rabbitmq-server
+[root@rabbitmq3 ~]# rabbitmqctl stop_app
+[root@rabbitmq3 ~]# rabbitmqctl reset 
+[root@rabbitmq3 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1
 //默认是磁盘节点，如果是内存节点的话，需要加--ram参数
-[root@node3 ~]# rabbitmqctl start_app
+[root@rabbitmq3 ~]# rabbitmqctl start_app
 ```
-查看集群状态，我们可以在任意一台机器上查看，我们选择在node1上看。
+查看集群状态，我们可以在任意一台机器上查看，我们选择在rabbitmq1上看。
 <br>
 ```
-[root@node1 ~]# rabbitmqctl cluster_status
-[root@node1 ~]# rabbitmqctl status
+[root@rabbitmq1 ~]# rabbitmqctl cluster_status
+[root@rabbitmq1 ~]# rabbitmqctl status
 
-试一下容错,关掉node3上的实例
-[root@node3 ~]# rabbitmqctl stop
+试一下容错,关掉rabbitmq3上的实例
+[root@rabbitmq3 ~]# rabbitmqctl stop
 ```
-设置镜像队列策略,在任意一个节点上执行下面的命令将所有队列设置为镜像队列，即队列会被复制到各个节点，各个节点状态保持一直,RabbitMQ 高可用集群就已经搭建好了，最后一个步骤就是搭建均衡器。
+设置镜像队列策略,在任意一个节点上执行下面的命令将所有队列设置为镜像队列，即队列会被复制到各个节点，各个节点状态保持一直
 <br>
 ```
-
-#将所有的queue mirror到cluster中 众多集群中的随机2台机器，且自动同步 (默认优先级)
-rabbitmqctl set_policy ha-all "^" '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
-
-#在任意一个节点上 执行(将所有队列设置为镜像队列,包括新建的所有队列，即队列会被复制到各个节点，各个节点状态保持一致)
-#rabbitmqctl set_policy ha-all "^" '{"ha-mode":"all"}'
-#将cc开头的队列设置为镜像队列,包括新建的cc开头的队列
-#rabbitmqctl set_policy ha-all "^cc" '{"ha-mode":"all"}'
-
+#将所有的queue mirror到cluster中 众多集群中的随机2台机器，且自动同步 (优先级10)
+rabbitmqctl set_policy ha-all "^" --priority 10 '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
 ```
-haproxy 负载 安装 , 修改hosts
+haproxy 负载rabbitmq安装 , 修改主备haproxy的hosts  (haproxy01,haproxy02)
 ```
 yum install haproxy -y
 systemctl enable haproxy
 systemctl start haproxy
 systemctl status haproxy
 
-#修改hosts
+#修改hosts 
 [root@haproxy01 ~] cat /etc/hosts
-10.124.5.171    node1
-10.124.5.172    node2
-10.124.5.173    node3
+10.124.5.171    rabbitmq1
+10.124.5.172    rabbitmq2
+10.124.5.173    rabbitmq3
 ```
 配置 vim /etc/haproxy/haproxy.cfg
 <br>
@@ -243,9 +236,9 @@ listen rabbitmq_admin
     mode    http
     option  httplog
     balance roundrobin
-    server  node1 node1:15672 check inter 2000 weight 1 rise 2 fall 3
-    server  node2 node2:15672 check inter 2000 weight 1 rise 2 fall 3
-    server  node3 node3:15672 check inter 2000 weight 1 rise 2 fall 3
+    server  rabbitmq1 rabbitmq1:15672 check inter 2000 weight 1 rise 2 fall 3
+    server  rabbitmq2 rabbitmq2:15672 check inter 2000 weight 1 rise 2 fall 3
+    server  rabbitmq3 rabbitmq3:15672 check inter 2000 weight 1 rise 2 fall 3
 
 #rabbitmq集群负载 TCP
 listen rabbitmq_cluster
@@ -253,9 +246,9 @@ listen rabbitmq_cluster
     mode    tcp
     option  tcplog
     balance roundrobin
-    server node1 node1:5672 check inter 2000 weight 1 rise 2 fall 3
-    server node2 node2:5672 check inter 2000 weight 1 rise 2 fall 3
-    server node3 node3:5672 check inter 2000 weight 1 rise 2 fall 3
+    server rabbitmq1 rabbitmq1:5672 check inter 2000 weight 1 rise 2 fall 3
+    server rabbitmq2 rabbitmq2:5672 check inter 2000 weight 1 rise 2 fall 3
+    server rabbitmq3 rabbitmq3:5672 check inter 2000 weight 1 rise 2 fall 3
 ```
 centos下haproxy日志的配置
 <br>
@@ -378,15 +371,3 @@ vrrp_instance VI_221 {
     }
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
