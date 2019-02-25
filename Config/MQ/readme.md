@@ -91,6 +91,6 @@ rabbitmqctl set_policy ha-two "^ff" '{"ha-mode":"exactly","ha-params":2,"ha-sync
 #设置优先处理 --priority 设置优先级,高数字会优先处理 (自定义优先级)
 rabbitmqctl set_policy ha-node "^bb" --priority 5 '{"ha-mode":"nodes","ha-params":["rabbit@node1", "rabbit@node2"],"ha-sync-mode":"automatic"}'
 
-#将“ff”开头的queue mirror到cluster中两个节点，且自动同步 --priority 设置优先级,高数字会优先处理 自定义优先级
-rabbitmqctl set_policy ha-two "^ff" --priority 10 '{"ha-mode":"exactly","ha-params":3,"ha-sync-mode":"automatic"}'
+#将所有的queue mirror到cluster中两个节点，且自动同步 --priority 设置优先级,高数字会优先处理 自定义优先级
+rabbitmqctl set_policy ha-all "^" --priority 10 '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
 ```
