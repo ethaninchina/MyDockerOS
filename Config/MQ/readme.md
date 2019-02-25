@@ -24,3 +24,28 @@ rabbitmq-server -detached
 rabbitmqctl stop_app 
 rabbitmqctl start_app
 ```
+
+## 手动同步队列
+<br>
+```
+1,) 查看哪些slave已经同步好了  
+rabbitmqctl list_queues $queuename slave_pids synchronised_slave_pids
+
+2,) 手动同步 (默认手动同步) 
+rabbitmqctl sync_queue $queuename
+
+3,) 取消自动同步： 
+rabbitmqctl cancel_sync_queue $queuename 
+```
+
+查看有消息的队列
+```
+rabbitmqctl list_queues -p / |awk '{if($NF>0) print$0}'|grep -v 'Listing queues'
+```
+批量清除消息队列
+```
+for queuename in `rabbitmqctl list_queues -p / |awk '{if($NF>0) print$0}'|grep -v 'Listing queues'| awk '{print $1}'`
+do 
+  rabbitmqctl purge_queue -p / $queuename 
+done
+```
