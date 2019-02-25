@@ -51,3 +51,46 @@ do
   rabbitmqctl purge_queue -p / $queuename 
 done
 ```
+ha-mode   ha-params      行为
+<br>
+```
+all                      queue被mirror到cluster中所有节点。
+                         cluster中新添加节点，queue也会被mirror到该节点。
+
+exactly   count          queue被mirror到指定数目的节点,众多集群中的随机2台机器
+                         count大于cluster中节点数则queue被mirror到所有节点。
+                         若count小于cluster中节点数，在包含mirror的某节点down后不会在其他节点建新的mirror（为避免cluster中queue migrating）
+
+nodes     node names     queue被mirror到指定名字的节点。
+                         若任一名称在cluster中不存在并不会引发错误。
+                         若指定的任何节点在queue声明时都不在线则queue在被连接到的节点创建。
+```
+
+设置策略方法
+<br>
+```
+-p / :设置vhost信息。
+--priority 10 :设置优先级。高数字会优先处理
+--apply-to queue :作用对象。queue、exchanges，all
+
+
+#将“aa”开头的queue mirror到cluster中所有节点 (默认优先级)
+rabbitmqctl set_policy ha-all "^aa" '{"ha-mode":"all"}'
+
+#将所有的queue mirror到cluster中两个节点，且自动同步 (默认优先级)
+rabbitmqctl set_policy ha-all "^" '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
+
+#将“bb”开头队列 同步设置为自动同步到指定节点 (默认优先级)
+rabbitmqctl set_policy ha-node "^bb" '{"ha-mode":"nodes","ha-params":["rabbit@node1", "rabbit@node2"],"ha-sync-mode":"automatic"}'
+
+#将“ff”开头的queue mirror到cluster中两个节点，且自动同步 (默认优先级)
+rabbitmqctl set_policy ha-two "^ff" '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
+
+
+
+#设置优先处理 --priority 设置优先级,高数字会优先处理 (自定义优先级)
+rabbitmqctl set_policy ha-node "^bb" --priority 5 '{"ha-mode":"nodes","ha-params":["rabbit@node1", "rabbit@node2"],"ha-sync-mode":"automatic"}'
+
+#将“ff”开头的queue mirror到cluster中两个节点，且自动同步 --priority 设置优先级,高数字会优先处理 自定义优先级
+rabbitmqctl set_policy ha-two "^ff" --priority 10 '{"ha-mode":"exactly","ha-params":3,"ha-sync-mode":"automatic"}'
+```
