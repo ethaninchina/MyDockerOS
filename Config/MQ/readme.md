@@ -25,7 +25,7 @@ rabbitmqctl stop_app
 rabbitmqctl start_app
 ```
 
-## 手动同步队列
+手动同步队列
 <br>
 ```
 1,) 查看哪些slave已经同步好了  
@@ -39,10 +39,12 @@ rabbitmqctl cancel_sync_queue $queuename
 ```
 
 查看有消息的队列
+<br>
 ```
 rabbitmqctl list_queues -p / |awk '{if($NF>0) print$0}'|grep -v 'Listing queues'
 ```
 批量清除消息队列
+<br>
 ```
 for queuename in `rabbitmqctl list_queues -p / |awk '{if($NF>0) print$0}'|grep -v 'Listing queues'| awk '{print $1}'`
 do 
