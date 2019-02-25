@@ -71,17 +71,14 @@ systemctl enable rabbitmq-server
 systemctl status rabbitmq-server
 
 ```
-启动 RabbitMQ Web 管理控制台
+node1,node2,node3 安装插件
 <br>
 ```
-[root@node1 download]# rabbitmq-plugins enable rabbitmq_management
-The following plugins have been enabled:
-  amqp_client
-  cowlib
-  cowboy
-  rabbitmq_web_dispatch
-  rabbitmq_management_agent
-  rabbitmq_management
+#启动 RabbitMQ Web 管理控制台
+[root@node1 ]# rabbitmq-plugins enable rabbitmq_management
+
+ #安装插件将消息从此队列移动到另一个队列功能
+[root@node1 ]# rabbitmq-plugins enable rabbitmq_shovel rabbitmq_shovel_management  
 ```
 node1,node2,node3 上 RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
 <br>
