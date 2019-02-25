@@ -43,7 +43,7 @@ rabbitmqctl cancel_sync_queue $queuename
 ```
 rabbitmqctl list_queues -p / |awk '{if($NF>0) print$0}'|grep -v 'Listing queues'
 ```
-批量清除消息队列
+批量清除消息队列消息
 <br>
 ```
 for queuename in `rabbitmqctl list_queues -p / |awk '{if($NF>0) print$0}'|grep -v 'Listing queues'| awk '{print $1}'`
