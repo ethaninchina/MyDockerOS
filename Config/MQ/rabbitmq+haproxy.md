@@ -115,9 +115,9 @@ rabbitmq1,rabbitmq2,rabbitmq3 上添加防火墙运行访问的端口：
 #firewall-cmd --zone=public --permanent --add-port=1883/tcp 
 #firewall-cmd --zone=public --permanent --add-port=8883/tcp
 
-重新启动防火墙：
-[root@rabbitmq1 download]# firewall-cmd --reload
-````
+#重新启动防火墙：
+#[root@rabbitmq1 download]# firewall-cmd --reload
+```
 常用命令
 <br>
 ```
