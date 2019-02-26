@@ -64,6 +64,7 @@ chown rabbitmq.rabbitmq /data/{rabbitmq,logs}
 cat>/etc/rabbitmq/rabbitmq-env.conf<<EOF
 RABBITMQ_MNESIA_BASE=/data/rabbitmq
 RABBITMQ_LOG_BASE=/data/logs
+RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="+A 128"
 EOF
 
 #启动 mq
