@@ -40,6 +40,6 @@ def call_gevent(count):
 
 
 if __name__ == '__main__':
-    # 10万并发请求队列
+    # 发送给10W个message
     test_count = 100000
     call_gevent(count=test_count)
