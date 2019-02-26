@@ -37,7 +37,7 @@ rabbitmq1,rabbitmq2,rabbitmq3 上安装 Erlang（RabbitMQ 运行需要 Erlang �
 cat>/etc/yum.repos.d/rabbitmq-erlang.repo<<EOF
 [rabbitmq-erlang]
 name=rabbitmq-erlang
-baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/21/el/7
+baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/20/el/7
 gpgcheck=1
 gpgkey=https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
 repo_gpgcheck=0
