@@ -178,8 +178,8 @@ LBOTELUJAMXDMIXNTZMB
 设置镜像队列策略,在任意一个节点上执行下面的命令将所有队列设置为镜像队列，即队列会被复制到各个节点，各个节点状态保持一直
 <br>
 ```
-#将所有的queue mirror到cluster中 众多集群中的随机2台机器，且自动同步 (优先级10)
-rabbitmqctl set_policy ha-all "^" --priority 10 '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
+#将所有的queue mirror到cluster中 众多集群(3个节点)中的随机3台机器，且自动同步 (优先级10)
+rabbitmqctl set_policy ha-all "^" --priority 10 '{"ha-mode":"exactly","ha-params":3,"ha-sync-mode":"automatic"}'
 ```
 haproxy 负载rabbitmq安装 , 修改主备haproxy的hosts  (haproxy01,haproxy02)
 ```
