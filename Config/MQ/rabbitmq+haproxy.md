@@ -34,24 +34,25 @@ rabbitmq1,rabbitmq2,rabbitmq3上执行修改hosts
 rabbitmq1,rabbitmq2,rabbitmq3 上安装 Erlang（RabbitMQ 运行需要 Erlang 环境）：
 <br>
 ```
-[root@rabbitmq1 ~]# vi /etc/yum.repos.d/rabbitmq-erlang.repo
+cat>/etc/yum.repos.d/rabbitmq-erlang.repo<<EOF
 [rabbitmq-erlang]
 name=rabbitmq-erlang
-baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/20/el/7
+baseurl=https://dl.bintray.com/rabbitmq/rpm/erlang/21/el/7
 gpgcheck=1
 gpgkey=https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
 repo_gpgcheck=0
 enabled=1
+EOF
 
-[root@rabbitmq1 ~]# yum -y install erlang socat
+yum -y install erlang socat
 ```
 rabbitmq1,rabbitmq2,rabbitmq3 上安装 RabbitMQ Server：
 <br>
 ```
 [root@rabbitmq1 ~]# mkdir -p ~/download && cd ~/download
-[root@rabbitmq1 download]# wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.15/rabbitmq-server-3.6.15-1.el7.noarch.rpm
+[root@rabbitmq1 download]# wget https://dl.bintray.com/rabbitmq/rpm-prereleases/rabbitmq-server/v3.7.x/el/7/noarch/rabbitmq-server-3.7.12~rc.2-1.el7.noarch.rpm
 [root@rabbitmq1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
-[root@rabbitmq1 download]# rpm -Uvh rabbitmq-server-3.6.15-1.el7.noarch.rpm
+[root@rabbitmq1 download]# rpm -Uvh rabbitmq-server-3.7.12~rc.2-1.el7.noarch.rpm
 ```
 rabbitmq1,rabbitmq2,rabbitmq3 修改配置文件, 启动 RabbitMQ Server ：
 <br>
