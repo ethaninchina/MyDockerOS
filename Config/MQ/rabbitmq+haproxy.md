@@ -50,9 +50,9 @@ rabbitmq1,rabbitmq2,rabbitmq3 上安装 RabbitMQ Server：
 <br>
 ```
 [root@rabbitmq1 ~]# mkdir -p ~/download && cd ~/download
-[root@rabbitmq1 download]# wget https://dl.bintray.com/rabbitmq/rpm-prereleases/rabbitmq-server/v3.7.x/el/7/noarch/rabbitmq-server-3.7.12~rc.2-1.el7.noarch.rpm
+[root@rabbitmq1 download]# wget https://dl.bintray.com/rabbitmq/rpm-prereleases/rabbitmq-server/v3.6.x/el/7/noarch/rabbitmq-server-3.6.16~rc.1-2.el7.noarch.rpm
 [root@rabbitmq1 download]# rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
-[root@rabbitmq1 download]# rpm -Uvh rabbitmq-server-3.7.12~rc.2-1.el7.noarch.rpm
+[root@rabbitmq1 download]# rpm -Uvh rabbitmq-server-3.6.16~rc.1-2.el7.noarch.rpm
 ```
 rabbitmq1,rabbitmq2,rabbitmq3 修改配置文件, 启动 RabbitMQ Server ：
 <br>
