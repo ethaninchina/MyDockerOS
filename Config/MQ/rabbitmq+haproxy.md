@@ -92,15 +92,15 @@ rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 ##永久配置生效(内存,磁盘,性能等)
 ##RabbitMQ的配置文件为：/etc/rabbitmq/rabbitmq.config
 ##RabbitMQ的环境配置文件为：/etc/rabbitmq/rabbitmq-env.conf
-##{vm_memory_high_watermark, 0.6},                 #最大使用内存40%，erlang开始GC
-##{vm_memory_high_watermark_paging_ratio, 0.8},    #32G内存，32*0.8*0.2时开始持久化磁盘
-##{disk_free_limit, "10GB"},                       #磁盘使用量剩余10G时，不收发消息
+##{vm_memory_high_watermark, 0.6},                 #最大使用内存60%，erlang开始GC
+##{vm_memory_high_watermark_paging_ratio, 0.8},    #8G内存，当rabbitmq占用内存20%的时候 (为 8*0.8*0.2 时(1.28G)) 开始持久化到磁盘
+##{disk_free_limit, "5GB"},                       #磁盘使用量剩余5G时，不收发消息
 ##{hipe_compile, true},                            #开启hipe，提高erlang性能
 ##{cluster_partition_handling, autoheal}           #网络优化参数，不稳定时用这个选项,网络分区的自动处理方式 
 ##{collect_statistics_interval, 10000},            #统计刷新时间默认5秒，改成10秒
 
 cat>/etc/rabbitmq/rabbitmq.config<<EOF
-[{rabbit,[{vm_memory_high_watermark,0.6},{vm_memory_high_watermark_paging_ratio, 0.8},{disk_free_limit, "10GB"},{hipe_compile, true},{cluster_partition_handling, autoheal}]}].
+[{rabbit,[{vm_memory_high_watermark,0.6},{vm_memory_high_watermark_paging_ratio, 0.8},{disk_free_limit, "5GB"},{hipe_compile, true},{cluster_partition_handling, autoheal}]}].
 EOF
 
 
