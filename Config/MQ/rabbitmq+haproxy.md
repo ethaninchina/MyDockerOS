@@ -156,7 +156,8 @@ LBOTELUJAMXDMIXNTZMB
 #增加内存节点 rabbitmq2 和 rabbitmq3 上操作
 [root@ rabbitmq2 ~]# systemctl restart rabbitmq-server
 [root@rabbitmq2 ~]# rabbitmqctl stop_app
-[root@rabbitmq2 ~]# rabbitmqctl reset
+
+##[root@rabbitmq2 ~]# rabbitmqctl reset
 
 #//默认是磁盘节点，如果是内存节点的话，需要加--ram参数
 #[root@rabbitmq2 ~]# rabbitmqctl join_cluster rabbit@rabbitmq1
