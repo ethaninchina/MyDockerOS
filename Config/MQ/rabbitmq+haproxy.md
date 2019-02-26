@@ -83,6 +83,7 @@ rabbitmq1,rabbitmq2,rabbitmq3 安装插件
 rabbitmq1,rabbitmq2,rabbitmq3 上 RabbitMQ Server 默认guest用户，只能localhost地址访问，我们还需要创建管理用户：
 <br>
 ```
+#创建管理员用户 admin
 [root@rabbitmq1 ]# rabbitmqctl add_user admin admin123
 rabbitmqctl set_user_tags admin administrator
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
@@ -94,7 +95,7 @@ rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 ##{vm_memory_high_watermark_paging_ratio, 0.8},    #32G内存，32*0.8*0.2时开始持久化磁盘
 ##{disk_free_limit, "10GB"},                       #磁盘使用量剩余10G时，不收发消息
 ##{hipe_compile, true},                            #开启hipe，提高erlang性能
-##{cluster_partition_handling, autoheal}           #网络优化参数，不稳定时用这个选项
+##{cluster_partition_handling, autoheal}           #网络优化参数，不稳定时用这个选项,网络分区的自动处理方式 
 ##{collect_statistics_interval, 10000},            #统计刷新时间默认5秒，改成10秒
 
 cat>/etc/rabbitmq/rabbitmq.config<<EOF
@@ -106,13 +107,13 @@ EOF
 rabbitmq1,rabbitmq2,rabbitmq3 上添加防火墙运行访问的端口：
 <br>
 ```
-[root@rabbitmq1 download]# firewall-cmd --zone=public --permanent --add-port=4369/tcp
-firewall-cmd --zone=public --permanent --add-port=25672/tcp
-firewall-cmd --zone=public --permanent --add-port=5671-5672/tcp
-firewall-cmd --zone=public --permanent --add-port=15672/tcp
-firewall-cmd --zone=public --permanent --add-port=61613-61614/tcp
-firewall-cmd --zone=public --permanent --add-port=1883/tcp 
-firewall-cmd --zone=public --permanent --add-port=8883/tcp
+##[root@rabbitmq1 download]# firewall-cmd --zone=public --permanent --add-port=4369/tcp
+#firewall-cmd --zone=public --permanent --add-port=25672/tcp
+#firewall-cmd --zone=public --permanent --add-port=5671-5672/tcp
+#firewall-cmd --zone=public --permanent --add-port=15672/tcp
+#firewall-cmd --zone=public --permanent --add-port=61613-61614/tcp
+#firewall-cmd --zone=public --permanent --add-port=1883/tcp 
+#firewall-cmd --zone=public --permanent --add-port=8883/tcp
 
 重新启动防火墙：
 [root@rabbitmq1 download]# firewall-cmd --reload
