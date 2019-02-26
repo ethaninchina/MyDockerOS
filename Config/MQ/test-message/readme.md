@@ -4,5 +4,6 @@ pip 安装
 curl https://bootstrap.pypa.io/get-pip.py|python
 
 pip install pika
+pip install gevent
 ```
 修改脚本内的变量,然后执行脚本即可
