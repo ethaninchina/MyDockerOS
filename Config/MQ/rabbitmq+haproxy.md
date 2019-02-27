@@ -182,7 +182,8 @@ LBOTELUJAMXDMIXNTZMB
 #优先级高的队列消息被优先消费，这样也能形成一个相对意义上的优先级，所以说这里不是消息的优先级而是队列的优先级.
 #rabbitmqctl set_policy ha-all "^" --priority 5 '{"ha-mode":"exactly","ha-params":3,"ha-sync-mode":"automatic"}'
 
-rabbitmqctl set_policy ha-all "^aa" --priority 5 '{"ha-mode":"all","ha-sync-mode":"automatic"}'
+#所有队列同步
+rabbitmqctl set_policy ha-all "^" --priority 5 '{"ha-mode":"all","ha-sync-mode":"automatic"}'
 ```
 haproxy 负载rabbitmq安装 , 修改主备haproxy的hosts  (haproxy01,haproxy02)
 ```
