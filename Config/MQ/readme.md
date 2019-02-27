@@ -79,8 +79,8 @@ nodes     node names     queue被mirror到指定名字的节点。
 --apply-to queue :作用对象。queue、exchanges，all
 
 
-#将“aa”开头的queue mirror到cluster中所有节点 (默认优先级)
-rabbitmqctl set_policy ha-all "^aa" '{"ha-mode":"all"}'
+#将“aa”开头的queue mirror到cluster中所有节 (默认优先级)
+rabbitmqctl set_policy ha-all "^aa" '{"ha-mode":"all","ha-sync-mode":"automatic"}'
 
 #将所有的queue mirror到cluster中两个节点，且自动同步 (默认优先级)
 rabbitmqctl set_policy ha-all "^" '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
