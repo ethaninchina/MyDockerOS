@@ -34,7 +34,7 @@ rabbitmqctl start_app
 <br>
 ```
 1,) 查看哪些slave已经同步好了  
-rabbitmqctl list_queues $queuename slave_pids synchronised_slave_pids
+rabbitmqctl list_queues name slave_pids synchronised_slave_pids
 
 2,) 手动同步 (默认手动同步) 
 rabbitmqctl sync_queue $queuename
