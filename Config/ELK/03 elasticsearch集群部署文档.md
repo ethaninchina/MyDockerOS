@@ -34,9 +34,9 @@ transport.tcp.compress: true
 
 xpack.security.enabled: true
 
-xpack.ssl.key: elasticsearch/elasticsearch.key
-xpack.ssl.certificate: elasticsearch/elasticsearch.crt
-xpack.ssl.certificate_authorities: ca/ca.crt
+#xpack.ssl.key: elasticsearch/elasticsearch.key
+#xpack.ssl.certificate: elasticsearch/elasticsearch.crt
+#xpack.ssl.certificate_authorities: ca/ca.crt
 xpack.security.transport.ssl.enabled: true
 EOF
 ```
