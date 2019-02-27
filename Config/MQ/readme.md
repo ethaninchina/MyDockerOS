@@ -1,4 +1,9 @@
 ### rabbitmq 集群搭建 (https://github.com/station19/MyDockerOS/blob/master/Config/MQ/rabbitmq%2Bhaproxy.md)
+持久化
+<br>
+```
+设置持久化有两个步骤，第一个是创建queue的时候将其设置为持久化的，这样就可以保证RabbitMQ持久化queue的元数据，但是不会持久化queue里的数据；第二个是发送消息的时候将消息的deliveryMode设置为2，就是将消息设置为持久化的，此时RabbitMQ就会将消息持久化到磁盘上去。必须要同时设置这两个持久化才行，RabbitMQ哪怕是挂了，再次重启，也会从磁盘上重启恢复queue，恢复这个queue里的数据。
+```
 rabbitmq 集群模式下 出现网络分区后 手动解决方案 (建议)
 <br>
 ```
