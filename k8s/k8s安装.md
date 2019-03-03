@@ -147,7 +147,7 @@ systemctl start kubelet
 systemctl status kubelet
 ```
 
-######### 部署master节点
+# 部署master节点
 #Master节点执行初始化：
 #注意这里执行初始化用到了- -image-repository选项，指定初始化需要的镜像源从阿里云镜像仓库拉取。
 
