@@ -16,6 +16,11 @@ roleRef:
   name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
   ```
+现有的
+```
+wget https://raw.githubusercontent.com/station19/MyDockerOS/master/k8s/kubernetes-dashboard/kubernetes-dashboard.yaml
+wget https://raw.githubusercontent.com/station19/MyDockerOS/master/k8s/kubernetes-dashboard/k8s-admin.yaml
+```
 综合查看
 ```
 kubectl get svc,pod -n kube-system
