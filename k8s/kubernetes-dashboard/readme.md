@@ -16,6 +16,10 @@ roleRef:
   name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
   ```
+综合查看
+```
+kubectl get svc,pod -n kube-system
+```
 查看dashboard被k8s分配到了哪一台机器上
 ```
 kubectl get pods --all-namespaces -o wide
