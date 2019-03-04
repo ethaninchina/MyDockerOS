@@ -16,3 +16,27 @@ roleRef:
   name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
   ```
+查看dashboard被k8s分配到了哪一台机器上
+```
+kubectl get pods --all-namespaces -o wide
+```
+查看dashboard的集群内部IP
+```
+kubectl get services --all-namespaces
+```
+删除老的 dashboard
+```
+kubectl delete -f kubernetes-dashboard.yaml 
+kubectl delete -f k8s-admin.yaml
+```
+创建新的dashboard
+```
+kubectl create -f kubernetes-dashboard.yaml
+kubectl create -f k8s-admin.yaml
+```
+查看token
+```
+kubectl get secret -n kube-system
+
+kubectl describe secret kubernetes-dashboard-token-2rbgp -n kube-system
+```
