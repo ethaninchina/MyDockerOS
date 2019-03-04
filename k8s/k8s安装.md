@@ -216,7 +216,7 @@ kube-scheduler-k8s-master            1/1     Running   0          16m   10.0.0.1
 
 #可以看到，CoreDNS依赖于网络的 Pod 都处于 Pending 状态，即调度失败。这当然是符合预期的：因为这个 Master 节点的网络尚未就绪。集群初始化如果遇到问题，可以使用kubeadm reset命令进行清理然后重新执行初始化。
 # root 用户才可以 reset
-<!-- [k8s@k8s-master ~]$ kubeadm reset -->
+#[k8s@k8s-master ~]$ kubeadm reset 
 
 #部署网络插件,要让 Kubernetes Cluster 能够工作，必须安装 Pod 网络，否则 Pod 之间无法通信。Kubernetes 支持多种网络方案，这里我们使用 flannel,执行如下命令部署 flannel：
 # kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
@@ -232,7 +232,6 @@ daemonset.extensions/kube-flannel-ds-arm64 created
 daemonset.extensions/kube-flannel-ds-arm created
 daemonset.extensions/kube-flannel-ds-ppc64le created
 daemonset.extensions/kube-flannel-ds-s390x created
-
 
 #过个几分钟再次查看, 状态已经全部OK
 [k8s@k8s-master ~]$ kubectl get pod -n kube-system -o wide
@@ -250,10 +249,35 @@ kube-proxy-cld8d                     1/1     Running   0          7m20s   10.0.0
 kube-proxy-dkctt                     1/1     Running   0          7m26s   10.0.0.110   k8s-node1    <none>           <none>
 kube-scheduler-k8s-master            1/1     Running   0          10m     10.0.0.111   k8s-master   <none>           <none>
 
+##########如果出现 Init:0/1  之类的 检查下镜像是否下载, 执行 sudo docker images
+[k8s@k8s-master ~]$ kubectl get pod -n kube-system -o wide
+NAME                                 READY   STATUS     RESTARTS   AGE     IP                NODE         NOMINATED NODE   READINESS GATES
+coredns-78d4cf999f-ggnpr             0/1     Pending    0          9m19s   <none>            <none>       <none>           <none>
+coredns-78d4cf999f-x95q2             0/1     Pending    0          9m19s   <none>            <none>       <none>           <none>
+etcd-k8s-master                      1/1     Running    0          8m31s   192.168.204.128   k8s-master   <none>           <none>
+kube-apiserver-k8s-master            1/1     Running    0          8m28s   192.168.204.128   k8s-master   <none>           <none>
+kube-controller-manager-k8s-master   1/1     Running    0          8m40s   192.168.204.128   k8s-master   <none>           <none>
+kube-flannel-ds-amd64-vgfp6          0/1     Init:0/1   0          6m9s    192.168.204.128   k8s-master   <none>           <none>
+kube-proxy-2hxt5                     1/1     Running    0          9m19s   192.168.204.128   k8s-master   <none>           <none>
+kube-scheduler-k8s-master            1/1     Running    0          8m30s   192.168.204.128   k8s-master   <none>           <none>
+
+
+#######重新拉取一下镜像即可
+[k8s@k8s-master ~]$ sudo docker pull quay.io/coreos/flannel:v0.11.0-amd64
+v0.11.0-amd64: Pulling from coreos/flannel
+cd784148e348: Already exists 
+04ac94e9255c: Already exists 
+e10b013543eb: Already exists 
+005e31e443b1: Pull complete 
+74f794f05817: Pull complete 
+Digest: sha256:7806805c93b20a168d0bbbd25c6a213f00ac58a511c47e8fa6409543528a204e
+Status: Downloaded newer image for quay.io/coreos/flannel:v0.11.0-amd64
+
+
 ##(node节点) 加入node到集群
 kubeadm join 10.0.0.111:6443 --token 2slxl5.u5csvsvumooarxr8 --discovery-token-ca-cert-hash sha256:786380f8826222d004910611c2e015f02373a6ee8ca707e89f12bee56a887b4b
 
-#(master节点) 查看
+#(master节点) 等一下查看
 [k8s@k8s-master ~]$ kubectl get nodes
 NAME         STATUS   ROLES    AGE     VERSION
 k8s-master   Ready    master   11m     v1.13.2
