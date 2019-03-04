@@ -89,7 +89,6 @@ net.ipv4.ip_forward = 1
 EOF
 
 # 使配置生效
-yum install ipset ipvsadm -y
 modprobe br_netfilter
 sysctl -p /etc/sysctl.d/k8s.conf
 
@@ -103,6 +102,7 @@ modprobe -- nf_conntrack_ipv4
 EOF
 
 #执行脚本
+yum install ipset ipvsadm -y
 chmod 755 /etc/sysconfig/modules/ipvs.modules && bash /etc/sysconfig/modules/ipvs.modules && lsmod | grep -e ip_vs -e nf_conntrack_ipv4
 ```
 
