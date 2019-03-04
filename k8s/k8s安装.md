@@ -120,7 +120,7 @@ gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
 EOF
 
 
-yum install -y kubelet-1.13.1 kubeadm-1.13.1 kubectl-1.13.1
+yum install -y kubelet-1.13.2 kubeadm-1.13.2 kubectl-1.13.2
 systemctl enable kubelet
 systemctl start kubelet
 systemctl status kubelet
@@ -145,7 +145,7 @@ Kubernetes Master 初始化成功，提示如何配置常规用户使用kubectl�
 kubeadm init \
     --apiserver-advertise-address=10.0.0.111 \
     --image-repository registry.aliyuncs.com/google_containers \
-    --kubernetes-version v1.13.1 \
+    --kubernetes-version v1.13.2 \
     --pod-network-cidr=10.244.0.0/16
 ```
 
@@ -184,7 +184,7 @@ etcd-0               Healthy   {"health": "true"}
 #查看节点状态
 [k8s@k8s-master ~]$ kubectl get nodes 
 NAME         STATUS     ROLES    AGE   VERSION
-k8s-master   NotReady   master   14m   v1.13.1
+k8s-master   NotReady   master   14m   v1.13.2
 
 #使用 kubectl describe 命令来查看这个节点（Node）对象的详细信息、状态和事件（Event）：
 [k8s@k8s-master ~]$  kubectl describe node k8s-master
@@ -256,9 +256,9 @@ kubeadm join 10.0.0.111:6443 --token 2slxl5.u5csvsvumooarxr8 --discovery-token-c
 #(master节点) 查看
 [k8s@k8s-master ~]$ kubectl get nodes
 NAME         STATUS   ROLES    AGE     VERSION
-k8s-master   Ready    master   11m     v1.13.1
-k8s-node1    Ready    <none>   7m32s   v1.13.1
-k8s-node2    Ready    <none>   7m26s   v1.13.1
+k8s-master   Ready    master   11m     v1.13.2
+k8s-node1    Ready    <none>   7m32s   v1.13.2
+k8s-node2    Ready    <none>   7m26s   v1.13.2
 
 这时，所有的节点都已经 Ready，Kubernetes Cluster 创建成功，一切准备就绪。
 如果pod状态为Pending、ContainerCreating、ImagePullBackOff 都表明 Pod 没有就绪，Running 才是就绪状态。
