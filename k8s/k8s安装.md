@@ -80,27 +80,6 @@ systemctl start docker
 systemctl enable docker
 systemctl status docker
 
-
-
-
-
-<!-- #安装cfssl（所有节点）
-wget -q  --timestamping \
-https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
-https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 \
-https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
-
-chmod +x cfssl_linux-amd64 cfssljson_linux-amd64 cfssl-certinfo_linux-amd64
-
-mv cfssl_linux-amd64 /usr/local/bin/cfssl
-mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
-mv cfssl-certinfo_linux-amd64 /usr/bin/cfssl-certinfo
-
-mkdir /k8s/etcd/{bin,cfg,ssl} -p
-mkdir /k8s/kubernetes/{bin,cfg,ssl} -p
-cd /k8s/etcd/ssl/ -p /etc/kubernetes/ca -->
-
-
 #(master, node)在所有节点上
 cat>/etc/sysctl.d/k8s.conf<<EOF
 vm.swappiness = 0
