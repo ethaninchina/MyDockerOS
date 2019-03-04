@@ -1,5 +1,6 @@
 #
 当然，如果直接用官方提供的该文件创建dashboard，由于创建的用户kubernetes-dashboard绑定的角色为kubernetes-dashboard-minimal，由于改角色并没有访问和操作集群的权限，因此登陆dashboard的时候，会提示权限错误：“configmaps is forbidden: User "system:serviceaccount:kube-system:kubernetes-dashboard"。因此需修改RoleBinding的相关参数，绑定权限更高的角色：
+https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
 
 kubernetes-dashboard.yaml 修改如下
 ```
