@@ -1,0 +1,116 @@
+#nginx-k8s-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: nginx-cluster-k8s
+    labels:
+        name: nginx-cluster-k8s
+
+#nginx-k8s-deploy.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: nginx-cluster-k8s
+  name: nginx-autoscaling-deploy
+  labels:
+    software: nginx
+    project: autoscaling-nginx
+    app: hpa
+    version: v1      
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: nginx-autoscaling-deploy
+      software: nginx
+      project: autoscaling-nginx
+      app: hpa
+      version: v1
+  template:
+    metadata:
+      labels:
+        name: nginx-autoscaling-deploy
+        software: nginx
+        project: autoscaling-nginx
+        app: hpa
+        version: v1
+    spec:
+      containers:
+      - name: nginx-autoscaling-deploy
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+          name: nginx-tcp
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 1
+            memory: 500Mi
+          limits:
+            cpu: 2
+            memory: 800Mi
+
+#nginx-k8s-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nginx-cluster-k8s
+  name: nginx-k8s-svc
+  labels:
+    software: nginx
+    project: autoscaling-nginx
+    app: hpa
+    version: v1
+spec:
+  selector:
+    software: nginx
+    project: autoscaling-nginx
+    app: hpa
+    version: v1
+    name: nginx-autoscaling-deploy
+  ports:
+  - name: nginx-tcp
+    port: 80
+    protocol: TCP
+
+
+#nginx-k8s-autoscaling.yaml
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: nginx-cluster-k8s
+  name: nginx-hpa
+  labels:
+    software: nginx
+    project: autoscaling-nginx
+    app: hpa
+    version: v1
+spec:
+  scaleTargetRef:
+    apiVersion: v1
+    kind: Deployment
+    name: nginx-autoscaling-deploy
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageValue: 500Mi
+  - type: Pods
+    pods:
+      metricName: packets-per-second
+      targetAverageValue: 1k
+  - type: Object
+    object:
+      metricName: requests-per-second
+      target:
+        apiVersion: extensions/v1beta1
+        kind: Ingress
+        name: main-route
+      targetValue: 10k
+
