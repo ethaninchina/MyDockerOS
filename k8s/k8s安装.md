@@ -124,6 +124,7 @@ yum install -y kubelet-1.13.2 kubeadm-1.13.2 kubectl-1.13.2
 systemctl enable kubelet
 systemctl start kubelet
 systemctl status kubelet
+#如果第一次无法启动,请检查是否加载swap分区...反之,则先执行下面的 kubeadm init 命令
 ```
 
 # 部署master节点
