@@ -1,4 +1,4 @@
-# 1,) 第一步先 创建空间 namespace.yaml
+### 1,) 第一步先 创建空间 namespace.yaml
 ```
 apiVersion: v1
 kind: Namespace
@@ -7,7 +7,7 @@ metadata:
     labels:
         name: nginx-cluster
 ```
-# 2,) 第二步 创建部署文件 deployment.yaml
+### 2,) 第二步 创建部署文件 deployment.yaml
 ```
 apiVersion: v1
 kind: ReplicationController
@@ -36,7 +36,7 @@ spec:
           hostPath:
             path: /tmp/data
 ```
-# 3,) 第三步,创建服务  service.yaml
+### 3,) 第三步,创建服务  service.yaml
 ```
 apiVersion: v1
 kind: Service
