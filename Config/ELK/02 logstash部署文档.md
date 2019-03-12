@@ -201,7 +201,8 @@ EOF
 ```
 # 五、启动相关服务
 ```shell
-nohup ./logstash-6.2.4/bin/logstash -f config/zabbix.conf >/dev/null 2>&1 &
-nohup ./logstash-6.2.4/bin/logstash -f config/ec.conf >/dev/null 2>&1 &
-nohup ./logstash-6.2.4/bin/logstash -f config/vms.conf >/dev/null 2>&1 &
+nohup /usr/local/logstash/logstash/bin/logstash -f /usr/local/logstash/config/abc-bb.conf --path.data=/data/logstash/abc-bb >/dev/null 2>&1 &
+nohup /usr/local/logstash/logstash/bin/logstash -f /usr/local/logstash/config/abc-cc.conf --path.data=/data/logstash/abc-cc >/dev/null 2>&1 &
+nohup /usr/local/logstash/logstash/bin/logstash -f /usr/local/logstash/config/dd.conf --path.data=/data/logstash/dd >/dev/null 2>&1 &
+nohup /usr/local/logstash/logstash/bin/logstash -f /usr/local/logstash/config/abc-es.conf --path.data=/data/logstash/abc-es >/dev/null 2>&1 &
 ```
